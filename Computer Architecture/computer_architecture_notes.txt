@@ -1,0 +1,218 @@
+levels our program execution goes through (taking example of cron job) :
+
+Levels execute in isolation triggered from level above it.
+
+1. User level i.e. cron job as an application for end users (I think this should be what we call app)
+
+2. Programmer level i.e. high level code that is written for business logic (this is for professional coders).
+
+3. since different system has different architectures so we need to have layer for compilation/interpretation/assembly language instructions
+
+4. Control Measures to prevent unauthorized or dangerous instructions to be executed and orchestration of assembly language with OS libraries.
+
+5. Instruction code specific to underlying hardware architecture (Instruction Set Architecture - ISA)
+
+6. Hardware circuit design to implement specific instruction code
+
+7. gate/transistor/semi-conductor level binary manipulation
+
+
+
+
+************* How a program is executed ************
+
+whener we write a program and compile it then it gets converted into ISA (Instruction Set Architecture).
+
+Basically, there is a cycle called Fetch - Decode - Execute.
+
+below components are involved :
+1. CPU 
+2. registers present in CPU like instruction register, memory address register, accumulator, program counter.
+3. our high level code is converted into instructions (via compiler?) which is referenced by program counter.
+4. compiled code is loaded into main memory i.e. RAM in form of instruction
+5. CPU consists of ALU and control unit as well, control unit loads instruction from RAM which is a fetch cycle.
+6. Instruction put into instruction register is read and broken into instruction (operator) and operand which is a decode phase
+7. ALU then performs the operation (which is an execution phase)
+
+Question is who does all these operations ? -- OS but that is also a high level program in a way. 
+
+
+1. High level programs are converted into ISA via compiler/interpreter/assembler.
+
+2. One clock cycle is basically one fetch-decode-execute cycle.
+
+3. ISA length is dependent on RAM structure (16 bits - 4 bits OPCODE (e.g. ADD) and 4 bits each of operands.)
+
+
+There are different ways to fetch data from registers or main memory.
+registers are on the processor board so accessing them is faster than accessing something from main memory i.e. RAM.
+
+1. Clock is basically signal to hardware, one clock signal is one unit of work that CPU performs.
+   one instruction can fit into one clock cycle (RISC) or may span over multiple clock cycles. 
+   
+   
+-----------------------------------------------------------------------------------------------------
+
+When we say processor, it actually denotes a component which consists of ALU, CU, Register and System bus.   
+
+System bus is needed for communication between different components of CPU and it consists of data bus, control bus and address bus.
+
+ALU is for performing computation and processing of data.
+
+Control Unit : Provides ALU with neccessary data to perform operation
+
+Registers : Used as internal memory
+
+System bus : pathway between processor, memory and I/O.
+
+Registers are basically to store any sort of state that would help in performing operation based on which there are different different registers.
+
+Registers can be categorized into two categories :
+1. User Accessible registers
+2. System confined registers e.g. MBR (Memory Buffer Register which basically stores data that is read/written from/to main memory)
+
+
+Interconnection between different CPU parts :
+
+CU puts/gets data from Data bus and fetches into PC regsiter.
+
+MAR puts/gets data from Address bus.
+
+MBR puts/gets data from Data bus.
+
+MAR and MBR helps ALU to perform operations.
+
+
+Cache memory is inside processor and so it's fast.
+Register is also in processor but size is small. 
+
+
+
+-------------------------- CPU Pipelining ------------------------------
+
+This is basically leveraging multiple components to work in parallel.
+
+Different components of CPU have fixed set of work that can be performed so instead of keeping components idle, it is assigned task from next instruction 
+rather than waiting for previous instruction to totally complete task.
+
+
+
+
+---------------------------- I/O ---------------------------------
+
+Electromechanical device is a device which trigger mechanical movement if electric signals are supplied to it or vice versa.
+e.g. HDD is electromechanical device as it gets signal and rotates magnetic disk to read/write data.
+
+Electromagnet device is a device which produces electromagnetic waves on receiving electric signals.
+
+Electronic device is a device which is made up of electronic circuits like transistors etc.
+
+peripherals -> Drivers (I/O interface) -> System bus to CPU.
+
+
+There are two types via which I/O devices can be read :
+
+1. Shared memory(address) space - I/O device address are also stored in RAM and have same control bus.
+
+2. Isolated or different memory space - I/O device address are stored in separate memory location and have separate Control bus 
+
+
+Asynchronous data transfer :
+
+There are two modes :
+
+1. Strobe mode
+
+In strobe mode, we send a signal along with corresponding data as well to notify destination to start reading data.
+
+since, one clock contains one bit so data signal is longer than strobe signal to provide enough opportunity for destination to read data. 
+ 
+2. Handshake mode 
+
+In handshake mode, apart from data signal and control signal, there is one more signal known as data accept signal.
+
+Source keeps on sending data signal untill it gets a data accept signal from destination.
+
+
+
+Ways of data transfer :
+
+1. Program controlled I/O - whenever I/O operation is required, CU (of processor) will start checking if I/O device is ready to send data, 
+   this is a continuous proces and is in loop unless this signal is errored out or data transfer is feasible.
+   Hence, because of above reason and also because data rate transfer is relatively less in peripheral devices so I/O is slow.
+   
+2. Interupt I/O - Another way of reading from I/O device is via interrupt, there is a hardware interface in between which listens for any
+   interrupt from I/O device and if it gets an interrupt then interface requests processor to start executing I/O related tasks, meanwhile 
+processor stores last executed instruction address in Program counter register to resume operation after interrupt related operation is done.
+
+3. DMA - Direct Memory Access - Processor delegates it's responsibility to a separate controller which is supplied with information such as starting memory location
+   and total size of word that needs to be written to memory and then DMA controller takes up the responsibility and does the work, on completion it sends signal
+   back to processor confirming work is completed.
+   There is a separate bus dedicated for this process called memory bus.
+   
+   
+   
+-------------------- Memory Organization ----------------------   
+
+Principle of locality :
+
+1. Spatial locality (Locality in space) : e.g. in case of data structures like array, where we know that there is a very high chance of accessing next memory location, current 
+and next memory locations are fetched into registers for faster response time. 
+
+2. Temporal locality (Locality in time) : In case a variable is being referenced again and again then that memory location is pulled into registers to save computation time.
+
+In case of memory miss, processor tends to find data from lower level of memory heirarchy.
+
+memory heirarchy (In increasing response time) :
+
+registers < cache (L1,L2,L3) < RAM < local Disk < NAS (cloud)
+
+When we say main memory, we are actually referring to RAM.
+
+Transistors vs Capacitors : Once transistor is charged (i.e. set with value 1) then it retains the power so refreshing is not required.
+
+In Capacitor, since it starts losing power over time (roughly every 8 ms ) so refresh is required to set value again.
+
+Cache is made of SRAM which internally is made of transistors.
+
+Main Memory(RAM) is made up of DRAM which is made up of capacitors and transistors both.
+
+SRAM needs 6 transistors to store 1 bit while DRAM takes 1 transistor for 1 bit.
+
+SRAM is costlier, while DRAM is cheaper.
+
+
+Capacitor vs Transistor : https://www.quora.com/What-is-the-difference-between-a-capacitor-and-a-transistor
+
+
+
+**** How memory is read ****
+
+in DRAM, it is stored as 2D matrix.
+
+First there is row strobe which selects corresponding row
+Second step is to generate control strobe(signal) which selects corresponding column
+
+
+We have control unit, data lines, address lines, row decoder, column decoder, memory refresh unit (signal amplifier), 2D matrix of memory, row buffer, column buffer.
+
+***** Read path *****
+
+Control Unit - It receives control signal where WE (write enable) pin is not receiving any signal.
+It first receives RAS control signal which signifies that it has to figure out corresponding row in 2D memory matrix.
+Corresponding Address is stored in Row buffer as in one clock cycle it can get either RAS or CAS(Control Address strobe).
+
+Similarly, in next cycle we get CAS along with neccessary address which denotes underlying circuit needs to figure out corresponding column.
+
+This is also stored in Column buffer and probably in next CPU cycle, based on WE control signal, processor decides whether it has to read from memory cell
+or write to memory cell.
+
+This read/write diminishes charge on cell (not exactly sure why ???), so we need a separate power refresh circuit to set bits again in corresponding cell.
+
+Address lines or number of address bus required can be calculated using below logic :
+
+If there are 64 memory cells then 2^6 = 64 so we would need 6 address bus.
+However, in DRAM, since we have RAS and CAS control signals and memory is in 2D form so we could re-use same address lines to figure out ROW and column separately.
+Hence, we would only 6/2 = 3 address lines.
+
+Do we have data buffer as well ? - yes, we do mostly.
