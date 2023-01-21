@@ -23,3 +23,5 @@ public : any instance can access these states or methods.
 private : local to instance and cannot be accessed by any other instance.
 
 protected : other instance can access protected members (state or methods) if they are related via inheritance. 
+
+default : usually we group types(class) in a package to ship it as library, default members are accessible within a package.
