@@ -6,6 +6,20 @@ identity(We need a mechanism to identify objects uniquely such that we can combi
 
 ------
 
+Class is basically an abstract data type and object is (run-time) instance of that type.
 
+------
 
- 
+UML diagram (format - 3 boxes stack one over another) :
+
+type/class Name -> Data Members -> Methods
+
+------ 
+
+access modifiers :
+
+public : any instance can access these states or methods.
+
+private : local to instance and cannot be accessed by any other instance.
+
+protected : other instance can access protected members (state or methods) if they are related via inheritance. 
