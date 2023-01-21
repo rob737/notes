@@ -1,0 +1,11 @@
+Java has simple concept.
+Map every problem in terms of object, 
+an object has state(some intrinsic values that can be used to represent building block of problem),
+behaviour(state is of no use if we can't access it for some utility which is driven by behaviour), 
+identity(We need a mechanism to identify objects uniquely such that we can combine and communicate between objects to solve problem)
+
+------
+
+
+
+ 
