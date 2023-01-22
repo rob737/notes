@@ -25,3 +25,15 @@ private : local to instance and cannot be accessed by any other instance.
 protected : other instance can access protected members (state or methods) if they are related via inheritance. 
 
 default : usually we group types(class) in a package to ship it as library, default members are accessible within a package.
+
+
+-------
+
+Composition : using functionality of a class/object to create another class/object. (e.g. Medicine has an ingredients or medicine is composed of ingredients ).
+If by default we get composition then it's called aggregration (e.g. String Object has Object's functionality).
+
+
+Inheritance :
+
+Derived class is (derived) from base class (using extends keyword) and is exactly of the same type.
+To differentiate a bit we can add more methods in derived class or override methods from base class and change it's implementation.
