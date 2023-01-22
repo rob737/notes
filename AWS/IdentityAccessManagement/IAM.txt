@@ -1,0 +1,48 @@
+-------
+We can create groups and assign roles for access.
+Groups can only contain users and not other groups.
+
+-----
+
+Policy : JSON document that is used to define permissions for groups or users.
+
+Policy is assigned to group or users.
+
+Least Privilege Principle : Bare minimum access given to perform a job. (Follow this principle in AWS).
+
+We assign tag such that we can perform audit based on those tags.
+
+IAM users are created and assigned groups accordingly.
+
+---------
+
+IAM Policy Structure :
+
+version : policy version
+Id : policy distinguished Id
+Statement : [Array of information in JSON format]
+  : {
+  
+     SID : statement ID (uniquely identify statement)
+	 Effect : Either allow or reject access to a resource
+	 Principal : [account/user/role to which this policy is applied]
+	 Action: [list of actions this policy allows or denies e.g. "S3:GetObject"]
+	 Resource: [list of actual resources/APIS that this policy allows or denies e.g. "arn:aws:S3::mybucket/*"]	
+  }
+  
+We can assign IAM policy at user level (called Inline policy) or at group level.
+
+
+
+------------
+
+AWS CLI is open source and alternative AWS management console (website).
+
+AWS SDK : language specific set of libraries .
+
+-------------
+
+IAM Roles for services
+
+IAM roles are analogous to users but they are not used by physical people but by AWS services to perform actions.
+AWS Entities(services) get credentials for the time they are performing some action with AWS services.
