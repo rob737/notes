@@ -1,0 +1,12 @@
+-----
+For India, region is ap-south-1.
+Region is basically cluster of data centers.
+Data center is basically where servers are present physically.
+
+Prices and available services vary from region to region.
+
+Within a region we have availability zones and within availability zones, we have data centers.
+
+Availability zones are separated from one another and hence is disaster prone.
+
+AWS has 216 points of presence or edge locations.
