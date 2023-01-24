@@ -37,3 +37,14 @@ Inheritance :
 
 Derived class is (derived) from base class (using extends keyword) and is exactly of the same type.
 To differentiate a bit we can add more methods in derived class or override methods from base class and change it's implementation.
+
+
+--------
+
+early binding  & late binding : 
+
+In case of inheritance, compiler doesn't know which subclass to be called at compile.
+So it binds to base class at compile time and at runtime based on certain parameters exact subclass 
+is determined which is called late binding. 	
+
+This concept is also called polymorphism.
