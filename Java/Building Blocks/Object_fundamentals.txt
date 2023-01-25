@@ -48,3 +48,13 @@ So it binds to base class at compile time and at runtime based on certain parame
 is determined which is called late binding. 	
 
 This concept is also called polymorphism.
+
+------
+Object is base type for all objects.
+
+
+------
+
+Heap : Object is created in heap memory and compiler has no idea about it's lifetime.
+
+part of RAM is dedicated for heap memory.
