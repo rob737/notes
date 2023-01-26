@@ -1,0 +1,34 @@
+1. Create a budget first with alerts.
+
+EC2 -----------
+
+EC2 is basically elastic compute cloud.
+It is also referred to as Infrastructure as a Service.
+In general terms, it is basically a remotely localted laptop that you will be using to run softwares like you do in your laptop.
+
+Virtual machine - EC2
+Virtual Drives (Storing data) - EBS
+Distributing load across machines - ELB
+Scale service using Auto Scaling Group - ASG
+
+
+--------
+
+
+Constituents of EC2 :
+
+Firewall : Security Group
+OS : Linux/Windows/Mac
+Compute processing : Cores (also referred to as vCPU in specification)
+RAM : also referred to as memory
+
+Storage space :
+
+	- Network attached storage (EBS & EFS)
+	- Hardware (EC2 instance storage)
+	
+Network Card :
+	- Speed of card, public IP address (to connect to internet)
+
+Bootstrap script : It gets executed only once (at first launch) with root permission.
+				   Also called EC2 user data which is used to install dependent softwares, updates etc.	
