@@ -27,7 +27,7 @@ Storage space :
 	- Network attached storage (EBS & EFS)
 	- Hardware (EC2 instance storage)
 	
-Network Card :
+Network Card (What is network card : https://www.youtube.com/watch?v=778rS_FMb10):
 	- Speed of card, public IP address (to connect to internet)
 
 Bootstrap script : It gets executed only once (at first launch) with root permission.
