@@ -46,3 +46,9 @@ IAM Roles for services
 
 IAM roles are analogous to users but they are not used by physical people but by AWS services to perform actions.
 AWS Entities(services) get credentials for the time they are performing some action with AWS services.
+
+--------
+
+IAM Security tools 
+
+Credential Report : To get list of all IAM users who has accessed AWS .
