@@ -1,0 +1,16 @@
+Java memory management :
+
+1. Registers : Java programmer doesn't have any control over it.
+
+2. Stack : Designated area in RAM along with stack pointer, only constraint is lifecycle should be known while 
+		   putting entry in stack.
+		   Note : Objects are not stored on stack as lifecycle can't be decided at compile time.
+
+3. Heap Storage : Designated area in RAM, benefit is compiler need not know lifecycle at compile time.
+				  using 'new' operator we create memory space in heap.
+				  
+4. Constant Values : Constant values are stored along with code.
+
+5. Non-RAM storage : Disk Storage.
+					 Stream objects(using streams) and persistent objects(using JDBC/Hibernate).
+					
