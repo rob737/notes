@@ -14,3 +14,24 @@ Java memory management :
 5. Non-RAM storage : Disk Storage.
 					 Stream objects(using streams) and persistent objects(using JDBC/Hibernate).
 					
+					
+------ 
+Primitive type :
+
+It is placed on stack and the variable holds the value directly and not the reference.
+
+High Precision numbers :
+
+There are two classes that can be used for this : BigInteger and BigDecimal.
+
+------
+
+Array :
+
+Array of objects initialized with null.
+Array of primitives initialized with 0.
+
+Scope :
+
+Primitive and reference variables have block scope (defined by curly braces)
+However, object lies in the memory (heap area of RAM) and thus garbage collector is needed to clear memory(transistor). 					
