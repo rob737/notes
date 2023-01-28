@@ -35,3 +35,18 @@ Scope :
 
 Primitive and reference variables have block scope (defined by curly braces)
 However, object lies in the memory (heap area of RAM) and thus garbage collector is needed to clear memory(transistor). 					
+
+Class :
+ It has data members(fields) and data functions (methods).
+ 
+ 
+Note : Default values of primitive variables are only guaranteed if they are data members of an object.
+
+Signature of a method : method name and argument list (obviously with type)
+
+
+Static :
+
+For both methods and fields, static implies that concerned entity is common across all objects.  
+Alternatively, static members can be called even without objects, directly by class name or by creating object.
+It makes senses that static members cannot call not-static members directly as non-static members are tied to an object.
