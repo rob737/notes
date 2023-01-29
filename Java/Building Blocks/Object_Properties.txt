@@ -50,3 +50,26 @@ Static :
 For both methods and fields, static implies that concerned entity is common across all objects.  
 Alternatively, static members can be called even without objects, directly by class name or by creating object.
 It makes senses that static members cannot call not-static members directly as non-static members are tied to an object.
+
+
+Package :
+By default, java.lang package is already imported.
+
+javac filename.java -- to compile java file and check for compile time errors.
+java filename.java -- to execute java code.
+
+
+Comments and Embedded documentation :
+
+To put embedded docs - /** 
+
+* @param
+
+*/
+
+Coding Style :
+
+Camel Case notation. - for classes. e.g. ObjectProperties
+lower camel case - for methods and fields e.g. getObjectProperties
+screaming snake case - for constants e.g. PHI_VALUE.
+

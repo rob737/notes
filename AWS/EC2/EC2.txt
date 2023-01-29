@@ -32,3 +32,9 @@ Network Card (What is network card : https://www.youtube.com/watch?v=778rS_FMb10
 
 Bootstrap script : It gets executed only once (at first launch) with root permission.
 				   Also called EC2 user data which is used to install dependent softwares, updates etc.	
+				   You get this option under heading 'User Data' when creating EC2 instance.
+				   
+				   
+AMI (Amazon Machine Image) is basically underlying OS in EC2. 			
+
+After re-starting EC2 instance, public IP may change but private IP of EC2 instance will remain same.	   
