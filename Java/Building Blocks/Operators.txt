@@ -1,0 +1,33 @@
+Object a = Object b.
+
+In case of objects, reference is copied and original object can be changed.
+
+Integer division truncates and doesn't round off the results.
+
+
+
+----------------
+
+
+== and equals() for objects :
+
+== will compare reference for objects.
+
+equals() unless defined specifically will also compare for references and for values if defined explicitly.
+
+--------
+
+Exponential notation : 
+
+e means '10 to the power of'.  
+
+--------
+
+sizeOf : Java has no sizeOf operator.
+
+
+-------
+
+return keyword is for method level execution termination and not loop or control statement level.
+
+break and continue is for terminating loop or control statement. 
