@@ -37,4 +37,46 @@ Bootstrap script : It gets executed only once (at first launch) with root permis
 				   
 AMI (Amazon Machine Image) is basically underlying OS in EC2. 			
 
-After re-starting EC2 instance, public IP may change but private IP of EC2 instance will remain same.	   
+After re-starting EC2 instance, public IP may change but private IP of EC2 instance will remain same.
+
+
+------
+
+AWS has following naming convention :
+m5.2xlarge
+
+m : instance class (e.g. General purpose, Compute optimized, Memory optimized)
+5 : hardware generation (AWS improves it over time)
+2xlarge : size of instance (memory, bandwidth etc)
+
+
+-------
+
+
+Security Groups :
+
+They control access to EC2 instance over network or we can say it is firewall to EC2.
+
+Inbound rules : IPs(and/or ports) or security groups that are allowed to interact with EC2.
+Outbound rules : EC2 instance output to internet.
+
+EC2 and security group has many to many relationship.
+
+security group is confined to region/VPC.
+If region is changed then a new security group needs to be configured.
+
+Maintain separate security group for SSH.
+
+-------
+
+Classic ports to know :
+
+22 : SSH (Secure Shell)
+21 : FTP (File Transfer Protocol)
+22 : SFTP (Secure File Transfer Protocol over SSH)
+80 : HTTP (access unsecured websites)
+443 : HTTPS (access secured websites)
+3389 : RDP (Remote Desktop Protocol) - log into windows machine.
+
+
+If there is a timeout while connecting to EC2 then it's 100% because of security group configuration.
