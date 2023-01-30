@@ -1,0 +1,41 @@
+----- 
+Constructor :
+
+Constructor is automatically called when an object is created.
+Name of the constructor is same as that of the class.
+
+e.g. new Class() then storage is allocated and constructor with same name Class() is called.
+
+Constructor has no return value.
+
+java compiler by default creates a default constructor if not already defined by user.
+
+
+---- Method Overloading :
+
+same method name but different type of arguments or different ordering of arguments.
+
+arguments will be automatically upcasted but downcasting has to be done manually.
+
+
+----- this keyword :
+
+this refers to method's calling object in Java (no complications like JavaScript).
+
+e.g. class ThisExplain {
+
+     explainingThis(secretReference, args){
+	    this = secretReference; // This secretReference is basically reference of ThisExplain object.
+		// However, we need not mention secretReference as argument explicitly, this is done internally by compiler.	
+	 }
+	 psvm(String[] args){
+	   ThisExplain t = new ThisExplain();
+	   t.explainingThis(args);
+	 } 	
+}
+
+
+this keyword can "obviously" be used only in non-static methods as static methods are linked to class and not any particular object.
+
+
+continue : Page 140.
