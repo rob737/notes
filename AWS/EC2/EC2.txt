@@ -80,3 +80,21 @@ Classic ports to know :
 
 
 If there is a timeout while connecting to EC2 then it's 100% because of security group configuration.
+
+---------
+
+SSH :
+
+To connect to EC2 instance :
+
+ssh -i <pem file> ec2-user@<public IP>
+
+ec2-user is the default username for AMI (Amazon Machine Image)
+
+ssh -i <pem file> ec2-user@ec2-<public ip>.<region>.compute.amazonaws.com
+
+Note : use iam roles for EC2 instance and never use aws configure.
+
+
+Dedicated Instance : Own EC2 instance on own hardware.
+Dedicated Hosts : Access to physical server itself.
