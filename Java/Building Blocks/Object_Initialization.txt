@@ -37,5 +37,20 @@ e.g. class ThisExplain {
 
 this keyword can "obviously" be used only in non-static methods as static methods are linked to class and not any particular object.
 
+this(args) -> It can be used to call other constructor based on args that is passed as arguments.
 
-continue : Page 140.
+
+------- static :
+
+We cannot call non static methods from static methods.
+Possible reason : As static methods are bound to class there is no way to figure out concerned object for non static method that is intended to be called.
+
+
+------- Garbage collection :
+
+1. By default, garbage collector only re-instates memory for objects created using new operator.
+   It doesn't cleanup memory for object's special memory (need to figure this out).
+   Solution for this is to define a finalize() method in your class.
+   Garbage collector first calls this finalize() method and then in next cycle start with garbage collection process.
+   
+2. Garbage collection is not destruction.
