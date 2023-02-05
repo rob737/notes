@@ -54,3 +54,14 @@ Possible reason : As static methods are bound to class there is no way to figure
    Garbage collector first calls this finalize() method and then in next cycle start with garbage collection process.
    
 2. Garbage collection is not destruction.
+
+3. Garbage collection is only about memory.
+
+finalize() only cleans up memory that is created by using native methods (i.e. C/C++ methods).
+Hence, it is hardly used and dangerous.
+
+
+Note : Garbage colllection is not guaranteed, if JVM is not close to filling up memory then garbage collection will not happen.
+
+System.gc() - It iterates over all object and finds out if something can be cleaned up.
+			  Also, for each object finalize() method is called.		  
