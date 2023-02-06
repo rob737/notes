@@ -65,3 +65,33 @@ Note : Garbage colllection is not guaranteed, if JVM is not close to filling up 
 
 System.gc() - It iterates over all object and finds out if something can be cleaned up.
 			  Also, for each object finalize() method is called.		  
+			  
+			  
+Memory paging - It is a phenomenon where processor reads/writes data to and from main memory to disk to increase capacity.
+
+Memory paging is costly as there are couple of CPU cycles that would be overhead for to and fro disk operations.
+
+Garbage collectoe rearranges things and makes space for infinte object storage.			  
+
+
+--------- Garbage Collection Techniques :
+
+1. Reference counting - analogous to topological sorting (This however is never used in any JVM implementation).
+   Memory is released instantly as soon as reference count to a particular object becomes zero.
+   So, when an object is referenced, it's reference count is increased and when referencing object is deleted then 
+   all referenced object's count is decreased accordingly.
+   
+2. Non dead object must be traceable back to an object (What is static storage ?)
+   So, reference is put on stack (and static storage ?) and each reference is traversed to find out live object and 
+   each live object is traversed to find all nested live objects.
+   This gives a list of all live objects that should not be cleared.
+   Above logic is used to figure out live objects in stop and copy garbage collector mechanism where in
+   all live objects are copied from one heap to another living behind all dead objects in previous heap to clear out.
+
+3. Mark and Sweep is similar to above (stop and copy) garbage collector, the main point of difference is that 
+   after all live objects are marked then only sweep operation i.e. cleaning off dead objects is initiated.
+   mark and sweep also stops program execution.
+
+In adaptive mark and sweep, garbage collection mechanism is switched between mark and sweep and stop and copy.
+Continue : 146.   
+   
