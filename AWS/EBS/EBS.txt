@@ -1,0 +1,74 @@
+EC2 instance storage :
+
+
+------ EBS Volume :
+
+Elastic Block Store - attached network drive and data persists even after EC2 instance is terminated.
+
+Since, it is attached to EC2 instance over network, there can be some delay.
+Also, EBS is confined to Availability Zone.
+
+There are 6 types :
+1. gp2/gp3 - general purpose EBS volume and 5 others.
+
+if we need more than 32,000 IOPS then we need EBS of type io1/io2.
+In above case, gp2/gp3 will not be of use.
+
+io1/io2 supports multi attachment i.e. same volume can be attached to multiple EC2 instance within same Availability Zone.(upto 16 instances at a time).
+
+EBS IOPS peaks at 16,000 IOPS or equivalent 5334 GB
+
+------- EBS snapshot :
+
+Snapshot or backup of EBS at any point of time (it is recommended to detach it from EC2 instance before taking snapshot).
+EBS snapshots can be attached to EC2 instance of different availability zone as well.
+Also, EBS snapshot can be stored in different region.
+
+Configure recycle bin configuration to have protection from accidental deletion.
+
+
+-------- AMI :
+
+Amazon Machine Image : can be customized as well.
+
+Main use case of AMI is as following :
+
+Create an EC2 instance, on first time start, it executes user data script that would contain all softwares to be installed etc.
+
+once this is up which means softwares are successfully installed then stop EC2 instance and create an AMI out of it.
+
+created AMI will have software already installed.
+
+we can create EC2 instance out of this AMI which doesn't need to install software again on startup, thus faster boot time.
+
+AMI is also bound to region.
+
+
+---------- EC2 instance store :
+
+EBS is network attached so has limitations and relatively slow.
+
+EC2 instance store is disk on the physical server where EC2 instance is present.
+
+Main problem with EC2 instance store is : It is ephemeral i.e. if EC2 instance is stopped then data stored would be erased.
+It is users responsibility to have backup.
+
+It has very IOPS (Input Output per sec). 
+
+
+------------ EFS :
+
+Elastic File System : Network attached file system.
+
+EFS is wrapped around security group and then can be linked to multiple EC2 instance over multiple Availability Zones (AZ).
+
+Note : It is only compatible with linux based AMI.
+
+File system scales automatically and it's pay per use.
+
+It is multi - tiered : can be setup based on the frequency of access.
+
+
+EFS can be used as web server etc (for low latency) and image proocessing (higher latency).
+
+  
