@@ -93,5 +93,23 @@ Garbage collectoe rearranges things and makes space for infinte object storage.
    mark and sweep also stops program execution.
 
 In adaptive mark and sweep, garbage collection mechanism is switched between mark and sweep and stop and copy.
-Continue : 146.   
-   
+
+-------- JIT (Just In Time) compiler
+
+After compilation, bytecode (i.e. .class file) is created.
+bootstrap program loads this class file into main memory and JIT compiler creates hardware specific Instruction sets just before 
+when there is a need to create first object or start of the execution.
+
+one of the possible optimization is lazy compilation i.e. loading only part of bytecode that is required for task at hand. 
+
+--------- Memory Initialization
+members of an object are initialized with a default value (e.g. null for uninitialized object reference).
+
+
+Note : all variables inside a class are first initialized (either explicitly or implicitly) and then constructor is called.
+	   Order of code is irrelevant i.e. initialization statements can be present after constructor but even then initialization 
+	   will be called first and then constructor.
+
+-------- static data initialization
+
+static keyword can only be applied to object members and not local variables.
