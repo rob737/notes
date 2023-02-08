@@ -109,7 +109,25 @@ members of an object are initialized with a default value (e.g. null for uniniti
 Note : all variables inside a class are first initialized (either explicitly or implicitly) and then constructor is called.
 	   Order of code is irrelevant i.e. initialization statements can be present after constructor but even then initialization 
 	   will be called first and then constructor.
-
+	   
+	   1. First all static members will be initialized and then non static members and then constructor would be called.
+	   2. static objects are initialized only once (i.e. in case of multiple object creation or multiple static calls to static methods/variables etc it would not be re-initialized).
+	
 -------- static data initialization
 
 static keyword can only be applied to object members and not local variables.
+
+
+Java interpreter locates .class file in classpath and bootstrap program loads it into memory for execution.
+
+Static initialization (even static block) takes place only once at the time when .class file is loaded.
+
+if new operator is used for object creation then requried amount of memory is created in heap.
+
+after above step, members of an object are initialized with default value.
+
+-------- Non static data intialization 
+
+can be put inside curly braces and object initialization can be done.
+this will ensure that code inside curly braces will be executed before constructor.
+
