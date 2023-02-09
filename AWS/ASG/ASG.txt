@@ -43,3 +43,32 @@ Downstream EC2 systems are part of target groups.
 Doubt : 
 Is connection from client to ALB terminated once connection is established between ALB and client or it waits for response from one of EC2 servers?
 						
+------------ Network Load Balancer :
+
+It is Layer 4 load balancer : Forward TCP and UDP traffic to downstream instances.
+
+Less latency around ~100 ms as compared to ~400 ms in ALB.
+
+Note : It has one static IP per AZ and is used for high performance systems.
+not included in AWS free tier.
+
+Unlike ALB, NLB doesn't have associated security groups.
+
+
+------------ Gateway Load Balancer :
+
+Operates at Layer 3 i.e. Network layer.
+
+It is used for request interception like firewall etc.
+
+Route table in VPC is modified to forward incoming request to GLB and if packet is successfully verified then it gets forwarded to ALB or directly to EC2 instance.
+
+
+uses the GENEVE protocol on port 6081.
+
+
+------------- Sticky Session :
+
+Also called as session affinity.
+
+Basically same client must be redirected to same downstream instance via LB.
