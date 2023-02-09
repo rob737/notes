@@ -131,3 +131,12 @@ after above step, members of an object are initialized with default value.
 can be put inside curly braces and object initialization can be done.
 this will ensure that code inside curly braces will be executed before constructor.
 
+-------- Array initialization
+
+e.g. One of the syntax : new Object[]{1,2,3,4};
+
+default behaviour is to print class name followed by address of object unless toString() method is defined.
+
+Variable args in method is defined like below :
+
+void methodName(ObjectType... args){}
