@@ -140,3 +140,22 @@ default behaviour is to print class name followed by address of object unless to
 Variable args in method is defined like below :
 
 void methodName(ObjectType... args){}
+
+When we print object, we get output something like this :
+class [Ljava.lang.Character -- [ denotes array and consequent string represents type of array.
+
+autoboxing : upgrading primitive to it's wrapper object.
+
+
+--------- Enumerated Types :
+
+e.g. public ENUM Spiciness {
+NOT, MILD
+}
+
+all values above are constant references.
+to access it, we need to do something like : 
+Spiciness obj = Spiciness.NOT;
+sout(obj); // Java implicitly provides toString method and so we get NOT as value and not reference's address.
+
+enums are classes and have their own methods.
