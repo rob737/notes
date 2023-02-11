@@ -72,3 +72,73 @@ uses the GENEVE protocol on port 6081.
 Also called as session affinity.
 
 Basically same client must be redirected to same downstream instance via LB.
+
+This is applicable only for ALB (Application Load balancer).
+
+Cookie is used to implement sticky session.
+
+use case : maintain user session.
+
+
+Cookies are of two types :
+
+1. Application based cookie. : custom - created and set by application and one automatically created by load balancer.
+
+2. Duration based cookie. : created by load balancer.
+
+it is basically if cookie is set at target group level then first request that comes to one of the instances in target group will continue to get request 
+from the same client unless duration expires.
+
+----------- Cross zone load balancing :
+
+enabled by default in ALB but diasbled in others.
+
+
+----------- SSL/TLS fundamentals :
+
+SSL/TLS encrypts traffic between client and load balancer.
+
+SSL : Secure Socket Layer.
+TLS : Transport Layer Security.(It is newer version of SSL but everyone still refers to it as SSL).
+
+public SSL certificates are issued by CA (Certificate Authorities). e.g. Symantec, GoDaddy etc. 
+
+SSL certificate expires and needs to be renewed.
+
+Load balancer uses an X.509 certificate.
+
+manage certificate using ACM (AWS Certificate Manager).
+
+
+------------- Server Name Indication (SNI)
+
+Different clients(browsers) can have different certificates, server needs to understand which certificate to load based on the client.
+
+SNI solves this problem for us.
+
+Formally, It solves the problem of loading multiple SSL certificates onto web server (to server multiple clients/webistes).
+
+It's a newer protocol and requires client to indicate the hostname of target server in initial SSL handshake.
+
+
+-------------- Deregistration Delay :
+
+For example, if an instance is getting shut down then AWS ELB gives sometime for existing connection to shutdown normally and prevent 
+new connections to get established to this EC2 instance.
+
+deafult time period is 5 mins.
+
+
+-------------- ASG (Auto Scaling Group) :
+
+Goals of auto scaling group are as follows :
+
+1. Scale out (i.e. add Ec2 instance) on increased traffic on website.
+2. Scale in (i.e. remove EC2 instance) on decreased traffic on website.
+3. Automatically register new instances to a load balancer.
+
+To create an ASG, we have one launch template which asks for corresponding details (mostly related to EC2 attributes).
+
+It is possible to scale ASG in and out based on cloudwatch alarms.
+
+metrics such as average CPU utilization can be used as auto scaling matrix.
