@@ -1,0 +1,82 @@
+-------- RDS :
+
+Relational Database Service.
+
+RDS allows us to install Mysql (any many other relational DB) as a service, SQL is the query language.
+
+RDS supports almost all relational DB engines.
+
+Biggest advantage is it's a managed service so automatic provisioning, backup, DR etc is provided out of the box.
+
+we can't directly SSH to RDS instances.
+
+It has storage Auto scaling facility as well.
+
+
+
+------------ Read replicas : 
+
+we can setup upto 5 read replicas.
+
+read replicas can be within AZ, cross AZ aor cross region.
+
+read replicas are updated asynchronously i.e. it is eventually consistent.
+
+Ensure that read replicas are used only for select statements and not write statements (e.g. insert, update etc).
+
+In AWS, usually there is an extra cost when data goes from one AZ to another.
+
+Since, RDS is a managed service so there is no extra network cost for cross AZ connections within a region but it costs extra if connection is cross region.
+
+From single AZ to multi AZ is no downtime operation (snapshot is taken and then consequently it is synched synchronously) and just need to modify db configurations.
+
+------------- Amazon elastic cache : 
+
+Elastic cache is to get managed redis or memcached.
+
+Using elastic cache involves heavy application code changes and it is not just configuration changes.
+
+
+Redis : 
+
+High availabilty as it replicates data.
+It comes with persistence.
+Multi AZ with Auto failover.
+
+Memcached :
+
+It shards data and doesn't replicate.
+No persistence.
+Multi threaded architecture.
+No backup and restore.
+
+
+------------ Elastic Cache Replication Types:
+
+--- cluster mode disabled : 
+
+
+One primary node for read/write and upto 5 read replicas only for read.
+Asynchronous replication.
+
+one shard, all nodes have data.
+multi AZ enabled by default.
+
+--- cluster mode enabled :
+
+Data is partitioned across shards(helpful to scale writes).
+
+
+
+
+
+------------- Caching design pattern :
+
+1. Lazy loading/ cache-aside / lazy population : 
+    In case of cache miss, only concerned data is read from db and made available on cache.
+	
+2. Write through cache :
+    It adds or updates cache simultaneously when there is an update/insert in DB.
+
+3. Cache Eviction and TTL (Time To Live) :
+   TTL is basically the duration for which data will be present in cache before it gets automatically evicted. 	
