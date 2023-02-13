@@ -1,0 +1,43 @@
+---- Why is it needed ?
+access control provides a way to hide some object methods or members that library creator doesn't want to lose control over.
+
+----- Package 
+
+Group of classes within a namespace.
+
+these namespace helps in preventing class name clashes.
+
+There can be only one public class inside a source code file.
+
+import statement only lets us to resolve namespace for a particular class type that we want to use.
+if we don't define import statement then we need to write full path of a class name everytime we want to use it.
+
+When we compile a class which has couple of other classes within it then .class file is created for each class 
+and it's job of interpreter to find, link, load and interpret classes.
+
+
+------ Convention of package naming :
+
+use all lowercase letters for package name.
+
+to keep the package name unique : follow convention of prefixing reverse of company's internet domain name.
+
+
+------ How java interpreter identifies the location of .class file :
+
+CLASSPATH variable is set by java installation tool.
+
+CLASSPATH serves as the root directory and then let's say we have given package as com.jpmc.connectivity
+
+then interpreter will look into folder ${CLASSPATH}/com/jpmc/connectivity for .class files and then load it.
+
+in case of class name collission, java interpreter complains only if instance of that class is being created (which makes sense).
+
+
+------ Java Access Specifiers :
+
+public, protected, private : placed in front of each member of a class whether it's a field or a method.
+
+Default is package access :
+
+classes within a package have access to each other member's.
