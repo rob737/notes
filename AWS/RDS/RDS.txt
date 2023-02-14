@@ -43,6 +43,8 @@ High availabilty as it replicates data.
 It comes with persistence.
 Multi AZ with Auto failover.
 
+IAM Auth is not supported in Redis cluster.
+
 Memcached :
 
 It shards data and doesn't replicate.
@@ -67,6 +69,9 @@ multi AZ enabled by default.
 Data is partitioned across shards(helpful to scale writes).
 
 
+Read replicas uses async synchronization and multi AZ uses sync synchronization of data.
+
+
 
 
 
@@ -80,3 +85,8 @@ Data is partitioned across shards(helpful to scale writes).
 
 3. Cache Eviction and TTL (Time To Live) :
    TTL is basically the duration for which data will be present in cache before it gets automatically evicted. 	
+   
+   
+------------- Flow :
+
+Application -> Elastic Cache -> RDS

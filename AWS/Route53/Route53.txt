@@ -1,0 +1,20 @@
+---------- DNS 
+
+DNS is the program which converts human readable url to it's equivalent IP address.
+
+Terminologies :
+
+1. Domain Registrar : e.g. Amazon Route 53, GoDaddy etc.
+2. DNS Records : A, AAAA, CNAME etc.
+3. Zone File : contains DNS records
+4. Name Server : resolves DNS queries
+5. Top Level Domain, Second Level Domain, Sub Domain and FQDN (Fully Qualified Domain Name) as described below :
+
+   http://api.www.example.com
+   
+   TLD : .com
+   Second Level Domain : example.com
+   Sub domain : www.example.com
+   FQDN : api.www.example.com
+   
+   protocal : http
