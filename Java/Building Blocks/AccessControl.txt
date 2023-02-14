@@ -41,3 +41,9 @@ public, protected, private : placed in front of each member of a class whether i
 Default is package access :
 
 classes within a package have access to each other member's.
+
+public : provides access of member everywhere.
+
+default package is at directory level i.e. every directory if package name is not explicitly defined have a default package.
+
+continue : 177.
