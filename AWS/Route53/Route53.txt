@@ -10,7 +10,9 @@ Terminologies :
 4. Name Server : resolves DNS queries
 5. Top Level Domain, Second Level Domain, Sub Domain and FQDN (Fully Qualified Domain Name) as described below :
 
-   http://api.www.example.com
+   http://api.www.example.com.
+   
+   final . : root
    
    TLD : .com
    Second Level Domain : example.com
@@ -18,3 +20,50 @@ Terminologies :
    FQDN : api.www.example.com
    
    protocal : http
+   
+   
+   Flow diagram of DNS resolution :
+   
+   Let's say we need to connect to www.example.com
+   
+   Following steps are performed in background :
+   
+   1. client connects to local DNS Server (created by company or provided automatically by ISP)
+   2. Assuming it is first ever access to this domain or is not cached in local DNS server.
+   3. Local DNS server makes a call to root DNS (managed by organization called ICANN) and gets in return IP address of DNS which can have information
+      about .com domain
+   4. Local DNS server now connects to IP address (TLD DNS managed by branch of ICANN called IANA) provided after step 3 and gets IP address of Second Level DNS.
+   5. Final call is to Second Level (managed by Domain Registar like Amazon Registrar, Route53 etc) DNS's IP provided in previous step which gives the concerned IP of example.com
+   6. This information is cached in Local DNS for further requests
+   7. Now, web browser can make a call to corresponding IP address.   
+   
+   
+------------ Route53 :
+
+Route53 is authoritative DNS i.e. users can update the record directly.
+
+Route53 records constitute of following :
+1. Domain/Sub domain : e.g. example.com
+2. Record type : A/AAAA/CNAME/NS
+3. Value : corresponding IP
+4. Routing policy : how route53 responds to queries
+5. TTL : amount of time the record lives on DNS.
+
+
+----- Record Types :
+
+1. A - maps hostname to corresponding IPv4 address.
+2. AAAA - maps hostname to corresponding IPv6 address.
+3. CNAME - maps hostname to another hostname (target is a domain name which must have either A or AAAA record).
+4. NS - Name Servers that resolve our DNS queries - basically this is the one that defines routing.
+        Alternatively : name servers for the hosted zone.
+		e.g www.example.com will be routed to servers with following Ips that can in turn will give you IP for corresponding domain.
+		
+		
+----- Hosted Zone :
+
+A container for records that define how to route traffic to a domain and it's subdomains.
+public hosted zone : internet facing. (contains record that specify how to route traffic on internet)
+private hosted zone : internal or within VPC.		
+
+   
