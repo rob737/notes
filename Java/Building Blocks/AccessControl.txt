@@ -46,4 +46,16 @@ public : provides access of member everywhere.
 
 default package is at directory level i.e. every directory if package name is not explicitly defined have a default package.
 
-continue : 177.
+private access : It is accessible only inside class.
+
+protected : Inherited class in different package can access these members or classes within the same package.
+
+order of methods in a class : public -> protected -> private
+
+------ Class Access :
+
+1. public access classes can only be instantiated.
+
+2. File name should exactly match class name for public classes otherwise compiler will raise an issue.
+
+3. Class can neither be protected or private.
