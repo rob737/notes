@@ -1,0 +1,21 @@
+------ Composition :
+
+Create object of existing class in new class and use it's functionality.
+This means that new class is composed of existing class.
+
+e.g. order and purchase
+
+------ Inheritance :
+
+Create an entirely new type based on the type of existing class and override functionality using polymorphism.
+
+e.g. User and doctor.
+
+
+toString() : this method is called when a compiler wants a String but it has an object.
+
+By default, every class is sub class of Object class.
+
+class A extends B { // At this point, we get all the "accessible" members of base class B in A.
+
+} 
