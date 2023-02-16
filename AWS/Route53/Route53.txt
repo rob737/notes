@@ -66,4 +66,49 @@ A container for records that define how to route traffic to a domain and it's su
 public hosted zone : internet facing. (contains record that specify how to route traffic on internet)
 private hosted zone : internal or within VPC.		
 
-   
+
+------ Record TTL (Time To Live) :
+
+Based on TTL, DNS record can be cached at client's local DNS.   
+
+
+------ CNAME vs Alias :
+
+CNAME : 
+
+DNS record which maps one hostname to another hostname.
+e.g. domain name can be mapped to a load balancer name as we don't want to expose our LB information.
+
+CNAME doesn't work on root domains i.e. www.example.com can be mapped to LB's name but example.com can't be mapped.
+
+Alias :
+
+Maps a hostname to an AWS record.
+
+Alias unlike CNAME work on both root and non root domains.
+
+Alias record is always of type A or AAAA.
+
+Note : we can't set Alias for EC2 DNS name.
+
+
+since Route53 is for DNS resolution so typically flow can be :
+
+1. web client -> Route53 (for DNS resolution)
+
+2. web client -> target IP obtained from Step 1 (assume target IP is of LB).
+
+3. Step2 -> ALB -> EC2 instances.
+
+
+
+--------- Routing or DNS resolution policies :
+
+
+-- Simple Routing :
+	usual DNS to IP mapping.
+	
+-- Weighted Routing :
+    Controls the % of resource that goes to each Downstream.
+	Doubt : what if my downstream is ALB ?
+	
