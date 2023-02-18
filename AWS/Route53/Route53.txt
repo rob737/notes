@@ -111,4 +111,23 @@ since Route53 is for DNS resolution so typically flow can be :
 -- Weighted Routing :
     Controls the % of resource that goes to each Downstream.
 	Doubt : what if my downstream is ALB ?
+	this would be helpful if we have multiple load balancers spanning across regions otherwise it's better to use it as DNS resolver only.
+	
+-- Latency :
+	resolves ALB IP based on lowest latency.
+
+-- Failover :
+   It is mandatory to create route53 healtchecks prior to this.
+   If active downstream is unhealthy then route53 starts resolving DNS name with passive healthy downstream instance.   
+   
+-- Geolocation :
+   DNS resolution based on client's "physical" location.
+   physical location is identified by "location" attribute set during routing policy creation.   
+
+
+
+-------- Route53 Healthcheck :
+
+most common use case is to create healthcheck on cloudwatch alarms.
+
 	
