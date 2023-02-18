@@ -130,4 +130,8 @@ since Route53 is for DNS resolution so typically flow can be :
 
 most common use case is to create healthcheck on cloudwatch alarms.
 
+------- Domain Registrar :
+we can register our domain with any domain registrar service e.g. GoDaddy, Route53 etc.
+Let's say we have registered our domain with GoDaddy then still we can use Route53 as DNS service.
+
 	
