@@ -1,0 +1,87 @@
+------ VPC (Virtual Private Cloud) Fundamentals :
+
+private network to deploy our regional resources.
+
+VPC is at region level.
+
+Subnets :
+  Partitions within VPC.  
+  Subnet is AZ level.
+  
+  Public Subnet is accessible from the internet.
+  Private Subnet is not accessible from the internet.
+  
+We use Route tables within VPC to decide how network flows between different subnets (e.g. from public subnet to private subnet).
+
+
+VPC Flow Diagram :
+
+AWS cloud consists of region.
+Region consists of VPC.
+
+VPC consists of subnets (confined to AZ).
+
+each subnet can have at most 1 public subnet.
+subnet is comprised of EC2 instances.  
+
+VPC CIDR : It is basically range of IPs available for subnet. 10.0.0.0/16 (https://www.techtarget.com/searchnetworking/definition/CIDR)
+
+
+Internet Gateway and NAT Gateway : 
+
+Internet gateway is defined in VPC , public subnets connect to Internet Gateway and Internet gateway in turn communicates with Internet and vice versa.
+
+NAT Gateway is a way for private subnets to connect to Internet, NAT gateway is configured in public subnet.
+so private subnet EC2 instance connects to NAT gateway defined in public subnet which in turn talks to Internet gateway.
+
+
+----- Network ACL and Security Groups :
+
+NACL is at public subnet level which allows or denies traffic to our downstream EC2.
+
+NACL is basically firewall which operates only on IP level.
+
+NACL operates at Subnet level.
+
+Security group is attached to an EC2 or ENI (Elastic Network Interface).
+It operates both on IP as well as other security group.
+
+Note : By default, EC2 instance is created within default VPC which has default NACL which allows all incoming/outgoing traffic.
+
+
+
+------ VPC flow logs :
+
+All internet activity within our VPC are logged here and it can be exported to AWS cloudwatch etc.
+
+------ VPC Peering :
+
+VPC Peering is the process of creating connection between two VPC's which can be in different region, same region, different aws account anywhere.
+
+It gives the illusion that they are in the same VPC.
+
+Imp: Subnets should not have overlapping CIDR otherwise it will be impossible to figure out which subnet belongs to which VPC.
+     So, this is prohibited.
+	 
+We can create VPC peering between two VPCs and is not transistive i.e. let's say we have VPC A and VPC B peered and also VPC A and VPC C peered
+then it won't allow VPC C to automatically connect to VPC B , we need to separate peer connection if that is required.
+
+
+------ VPC endpoint :
+
+endpoint allows us to connect to AWS services using private network instead of public WWW network.
+
+Note : All AWS services are public.
+
+Flow is : VPC private subnet EC2 -> VPC endpoint gateway -> AWS resource.
+
+Site to Site VPN :
+To connect our office premise to cloud.
+Site to Site VPN is encrypted and connection is made on internet.	 
+
+
+
+-------- Three tier architecture :
+
+
+Client ----- > Public Subnet (ELB) ----> Private Subnet(EC2 instances) -----> Data Subnet (RDS etc on another private subnet).
