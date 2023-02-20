@@ -19,3 +19,48 @@ By default, every class is sub class of Object class.
 class A extends B { // At this point, we get all the "accessible" members of base class B in A.
 
 } 
+
+
+we can inherit classes from different package but only public members would be accessible.
+
+Important : Inheritance doesn't copy the members of the base class, when derived object is initialized, it creates within it
+a sub object which points to the instance of the base class.
+
+
+Java automatically synthesises constructor to call constructor of base class.
+since derived object needs to have all accessible members of base class so first base class is initialized and then derived class using constructor.
+
+class A extend B => class B extends C => new C () => order of initialization A,B,C which makes sense because C needs to have reference of B and in turn
+B needs to have reference of C.
+
+So, in C there would be nested object which contains reference of B and A wrapped within instance of A.
+
+In case of parametrized constructor, we need to explictly call base class constructors.
+
+
+------ Delegation :
+
+It is a mix of composition and inheritance.
+
+composition in a way that we define object in our class and calls it whenever needed.
+inheritance in a way that all members of delegated class are accessible from delegating class.
+
+
+------- finally block :
+
+finally block is always executed.
+
+
+------- Name hiding :
+
+If method is overloaded in base class and then it's also overloaded in derived class then also base class overloaded methods are available to use.
+It doesn't hide overloaded methods like it's done in C++. 
+
+@Override restricts a particular method to only be overriden and not overloaded.
+
+
+
+------- When to use composition vs when to use inheritance :
+
+composition is used in "has a" relationship scenario. e.g. customer has orders.
+inheritance is used in "is a" relationship scenario. e.g. whatsapp is a message.
