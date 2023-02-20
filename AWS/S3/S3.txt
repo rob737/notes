@@ -1,0 +1,101 @@
+---- Building blocks :
+
+files are called objects and are stored in directories called buckets.
+
+bucket must have globally unique name (across all regions and all accounts).
+
+Important : Even though bucket name has to be unique globally, buckets are defined within a region.
+
+
+Object :
+
+Object files have a key.
+
+key is full path of the object.
+e.g. s3://my-bucket//folder1/sub_folder1/myfile.txt
+
+key is comprised of prefix and object name.
+
+prefix : folder1/sub_folder1/
+object name : myfile.txt
+
+At once, 5 GB can be uploaded.
+If file is above 5 GB then it has to be uploaded as multi part.
+
+
+After creating object, pre-signed url validates whether we have access to the resource or not.
+
+That's why if we just copy public url and paste it in browser, we won't be able to open it.
+
+but if click on open from your account then we are able to open it because url contains access key attributes (e.g. X-AMZ-Security-Token).
+
+----- S3 Security Policies :
+
+1. IAM Role based :
+
+2. Resource based :
+--- Bucket level access
+--- Object ACL (Access Control List)
+--- Bucket ACL (Access Control List)
+
+3. Encryption :
+
+Encrypt object using encryption keys.
+
+4. S3 bucket policy :
+json structure like IAM policy.
+
+Note : Explicit DENY in an IAM Policy will take precedence over an S3 bucket policy.
+
+
+----- Static Website :
+
+S3 can load static website as well.
+
+----- S3 Versioning :
+
+It can be done at bucket level.
+
+----- S3 Replication :
+
+Prerequisite : S3 versioning is enabled in both source and destination.
+
+-- CRR (Cross Region Replication)
+
+Asynchronous replication
+
+-- SRR (Same Region Replication)
+
+Asynchronous replication
+
+Replication is not transitive i.e. bucket 1 -> bucket 2 and bucket2 -> bucket3 doesn't imply replication between bucket1 and bucket3.
+
+
+----- S3 Storage classes :
+
+S3 Durability : 11 9's i.e. 99.999999999% durable.
+
+S3 Availabilty For S3 Standard : 99.99% (4 9's) i.e. not available 53 minutes a year.
+
+Classes are of following types : 
+
+1. S3 Standard :
+   -- General : for frequent access
+   -- Infrequent : for infrequent access and cheaper than general. 
+   both are 99.99% Availabilty.
+   
+2. S3 Glacier storage classes :
+    Lost cost object storage meant for recovery/archiving or backup.
+   -- Instant Retrieval : access within milliseconds, good for order history.
+   -- Glacier flexible retrieval :
+         - Expedited : access within 1 to 5 mins
+		 - Standard : 3 to 5 hours
+		 - bulk : 5 to 12 hours	
+   -- Glacier Deep Archive
+         - Standard : 12 hours
+		 - Bulk : 48 hours	
+		 
+		 
+Intelligent Tiering service :
+This service automatically migrate object from one tier to another depending on access pattern.
+This can be achieved by setting up lifecycle configuration for buckets.		 
