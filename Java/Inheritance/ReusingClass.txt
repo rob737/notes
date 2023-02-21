@@ -110,3 +110,13 @@ final method cannot be overriden.
 ------ final classes :
 
 final class cannot be inherited.
+all methods in final class is by default final as class itself can't be inherited.
+members can either be final or not.
+
+
+------- Class loading :
+
+Since, all class files are in separate .class file, Java has made lazy loading possible.
+lazy loading is basically class files are loaded into memory only when first object is created or static members initialization is done.
+
+static members are initialized in the order of declaration and are initialized exactly once.
