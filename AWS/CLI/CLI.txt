@@ -41,3 +41,10 @@ If our API calls exceed expected API rate limit then we can leverage exponential
 exponential backoff :wait time doubles after every 5XX exception (server errors).
 
 If our API calls exceed rate limit too often then we need to increase limit on API call.
+
+
+---- Security Credentials are looked into below order :
+
+1. CLI
+2. Environment variables
+3. profile configuration
