@@ -64,3 +64,49 @@ It doesn't hide overloaded methods like it's done in C++.
 
 composition is used in "has a" relationship scenario. e.g. customer has orders.
 inheritance is used in "is a" relationship scenario. e.g. whatsapp is a message.
+
+
+------- protected :
+
+Accessible for same package classes and accessible for derived classes from different package.
+
+
+------- Upcasting :
+
+derived class is of the same type as base class.
+
+so, below assignment will hold good as java type checks:
+
+Base class reference = derived class reference;
+
+Tip : If we need to upcast then use inheritance otherwise design classes keeping composition in mind.
+
+------- final keyword:
+
+final keyword can be used in 3 places :
+
+data, methods and classes.
+
+final with primitives implies that value cannot be changed.
+final with object implies that reference cannot be changed however the value that is object can obviously be changed.
+
+if a variable is both static and final then it is declared in format VARIABLE_NAME_CAPITAL_WITH_UNDERSCORE_FOR_MULTI_WORDS.
+
+final values's doesn't imply that it is known at compile time.
+
+
+------ Blank final :
+
+We can initialize final variable in constructor and there is no mandate to initialize it at declaration time.
+
+------ final arguments in method :
+
+Can't change the reference to point to another object, used for passing args in inner class.
+
+------ final methods :
+
+final method cannot be overriden.
+
+------ final classes :
+
+final class cannot be inherited.
