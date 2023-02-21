@@ -1,0 +1,43 @@
+---- CLI :
+
+**** ALL BELOW COMMANDS NEEDS TO BE EXECUTED AFTER LOGIN TO EC2 INSTANCE ****
+
+some commands (not all) have --dry-run option to simulate original command and save time.
+
+---- To look into encoded error stack trace of CLI command :
+
+aws sts decode-authorization-message --encoded-message <error msg>
+
+
+---- AWS EC2 instance metadata.
+
+Below IP can be hit only from EC2 instance to know about various metadata.
+
+http://169.254.169.254/latest/meta-data.
+
+
+----- profile :
+
+we can setup aws profile for different aws accounts that would have their own access key and access tokens.
+
+command : aws configure --profile <aws-account-name or any other name>
+
+
+sts get-session-token : to generate session token valid for a particular duration.
+
+
+---- SDK (Software Development Kit) :
+
+SDK has to be used to interact with AWS via code.
+
+by deafult sdk configure's region to us-east-1 if no region is specified explicitly.
+
+---- API Rate limiting and exponential backoff :
+
+If we get ThrottlingException intermittently :
+
+If our API calls exceed expected API rate limit then we can leverage exponential backoff strategy for intermittent issues.
+
+exponential backoff :wait time doubles after every 5XX exception (server errors).
+
+If our API calls exceed rate limit too often then we need to increase limit on API call.
