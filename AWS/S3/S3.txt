@@ -98,4 +98,43 @@ Classes are of following types :
 		 
 Intelligent Tiering service :
 This service automatically migrate object from one tier to another depending on access pattern.
-This can be achieved by setting up lifecycle configuration for buckets.		 
+This can be achieved by setting up lifecycle configuration/rules for buckets.		 
+
+Note : Lifecycle rules can also be created for object tags. (This is why tags are useful).
+
+
+---- S3 event notifications :
+
+Events like S3:ObjectCreated, S3:ObjectRemoved etc.
+
+Downstream of S3 in case of events can be SQS, SNS, Lambda function etc.
+
+Navigate to bucket properties , there we have option for Event Notifications etc.
+
+Note: Ensure that SQS has accept permissions enabled.
+
+------ S3 performance
+
+Amazon S3 automatically scales to high request rates, latency 100-200 ms.
+
+It supports 3500 writes and 5500 reads per second per prefix.
+
+prefix is anything between bucket and file name.
+
+e.g. bucket/folder1/subfolder1/images/file : Prefix is folder1/subfolder1/images
+
+
+To increase upload :
+
+1. Multi Part upload
+2. From Client to Edge location via public network and then from Edge server to destination bucket over private network.  
+
+
+To increase download :
+
+1. use Byte range fetch query - basically download in parts.
+
+
+------- S3 Select 
+
+To filter out resource and then fetch it rather than fetching everything.
