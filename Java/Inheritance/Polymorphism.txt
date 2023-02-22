@@ -1,0 +1,10 @@
+----- OOPS :
+
+Polymorphism is 3rd essential OOPS principle after data abstraction and inheritance.
+
+Polymorphism is also called dynamic binding or late binding or run-time binding.
+
+
+Upcasting will include only overlapping members.
+
+continue : 218.
