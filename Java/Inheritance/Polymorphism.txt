@@ -37,4 +37,24 @@ Note : Only ordinary method calls have concept of early and late binding.
 
 this is obvious as derived class constructor tends to use all the functionality of it's members as well as base class members.
 
-continue : page 230.
+----- Dynamic binding in constructor :
+
+dyynamically bound method in base class constructor resolves to derived class method which may cause issues as derived class is not completely 
+initialized.
+
+
+----- State Pattern is achieved via composition.
+
+State pattern is basically changing state (object reference) dyynamically.
+
+Composition can be dynamic but inheritance is always compile time.
+
+
+Important : upcasting doesn't have access to extra methods that are present in derived class and not in base class.
+
+
+------- Runtime Type Identification (RTTI):
+
+Java checks for type compatability at runtime otherwise raises a ClassCastException.
+
+ClassCastException is during downcast when we try to type cast base class to derived class as it is not safe.
