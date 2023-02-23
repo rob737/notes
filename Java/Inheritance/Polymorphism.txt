@@ -7,4 +7,34 @@ Polymorphism is also called dynamic binding or late binding or run-time binding.
 
 Upcasting will include only overlapping members.
 
-continue : 218.
+
+----- Method call binding :
+
+Early binding : Compiler attaches method call to method body at compile time.
+
+Late or dynamic or runtime binding : Compiler (or linker) attaches method call to method body at runtime based on the type of object.
+
+
+late binding helps with extensibility (can be designed using factory method).
+
+Polymorphism is achieved via late binding or dynamic dispatch.
+
+late binding doesn't happen for private and final memebrs and early binding takes precedence
+so for private and final members, always base class implementation would be called.
+
+Note : Only ordinary method calls have concept of early and late binding.
+       Field/members etc have only compile time or early binding.
+	   
+	   Static methods also doesn't follow late binding i.e. it is also not polymorphic (which makes sense as it belongs to a class).
+	   Constructors are also implicitly static.
+	   
+	   
+----- Order of constructor calls :
+
+1. all base class constructors are called first (which makes sense).	   
+2. all members of derived class is intialized. 
+3. derived class constructor body is executed.
+
+this is obvious as derived class constructor tends to use all the functionality of it's members as well as base class members.
+
+continue : page 230.
