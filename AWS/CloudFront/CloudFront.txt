@@ -1,0 +1,39 @@
+------ Cloudfront fundamentals :
+
+Cloudfront is a CDN.
+
+cloudfront has 216 edge locations (Points of presence).
+
+can be used as DDOS protection as well.
+
+Flow :
+
+Client ---> Cloudfront edge location (local cache) --> Origin (S3 or any http backend like ALB, EC2 instance etc).
+
+if edge location doesn't have content then it requests content from origin server and stores it in it's local cache.
+This allow subsequent requests from client in same edge location to access the contents with minimal latency.
+
+
+Cloudfront to origin server is private network.
+
+files are cached for a TTL.
+
+Origin Access Control can be leveraged to configure security around access. (This is basically analogous to bucket policy).
+
+
+------ Caching Strategy :
+
+Contents can be cached at edge location based on application layer properties like :
+
+1. Headers
+2. Query String Parameters
+3. Session Cookies
+
+
+TTL can be set by origin using the cache control header or expires header.
+
+The header "x-cache": "Miss from cloudfront" / "Hit from cloudfront", will tell you if the request was from cloudfront or origin server.
+
+
+Note : EC2 instances must be public otherwise cloudront will not be able to access it as there is no private VPC connection 
+       between EC2 and cloudfront unlike EC2 and S3.
