@@ -65,7 +65,25 @@ Can filter by IP, path, date, expiration.
 
 ------ Public vs Private key :
 
-Private key is used by instances/applications to sign URLs.
-Public key (uploaded) by cloudfront is used to verify URLs.
+Private key is used by EC2 instances/applications to sign URLs (i.e. encrypt url and it's contents).
+Public key (uploaded) by cloudfront is used to verify URLs (i.e. decrypt url and figure out if request is valid).
 
 Note : Understand public / private key signing before proceeding #############################
+
+Resource : https://www.youtube.com/watch?v=r1nJT63BFQ0
+
+basically the concept is as follows :
+
+1. client connects to cloudflare
+2. cloudflare sends public key to client for encryption
+3. EC2 instance decrypts the content using it's private key.
+
+sending public key is safe because it is protected by wrapping certificate.
+
+certificate is nothing but encrypted set of characters using a different set of prublic/private keys issued by CA authority.
+
+using this certificate client identifies whether the response is from cloudflare or someone sniffing in between.
+
+
+----- 
+Reduce the number of edge locations to reduce price.
