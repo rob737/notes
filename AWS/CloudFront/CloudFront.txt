@@ -34,6 +34,38 @@ TTL can be set by origin using the cache control header or expires header.
 
 The header "x-cache": "Miss from cloudfront" / "Hit from cloudfront", will tell you if the request was from cloudfront or origin server.
 
-
 Note : EC2 instances must be public otherwise cloudront will not be able to access it as there is no private VPC connection 
        between EC2 and cloudfront unlike EC2 and S3.
+	   
+------- Signed URL vs Signed Cookie :
+
+Signed URL : One file has one signed URL.
+
+Signed Cookie : One signed cookie can span over multiple files.	   
+
+
+------ Cloudfront Signed URL vs S3 pre-signed URL :
+
+-- Cloudfront signed URL :
+
+This is for access to path irrespective of the origin.
+
+Can filter by IP, path, date, expiration.
+
+1. client -> application code -> authentication/authorization. -> gets cloudfront signed url.
+
+2. After getting cloudfront signed url from step 1, it can download content from cloudfront.
+
+-- Presigned URL :
+1. Issues a request as the person who has generated pre-signed url.
+
+2. This is specific to S3 upload.
+
+
+
+------ Public vs Private key :
+
+Private key is used by instances/applications to sign URLs.
+Public key (uploaded) by cloudfront is used to verify URLs.
+
+Note : Understand public / private key signing before proceeding #############################
