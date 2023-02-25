@@ -90,3 +90,15 @@ Read replicas uses async synchronization and multi AZ uses sync synchronization 
 ------------- Flow :
 
 Application -> Elastic Cache -> RDS
+
+
+--------- RDS Proxy :
+
+One of the use case is RDS proxy will pool DB connections such that overall connections on main RDS gets reduced.
+it must be accessible only from VPC.
+
+
+---------- Amazon MemoryDb for Redis :
+
+analogous to redis provided by amazon.
+this is in-persistent db.
