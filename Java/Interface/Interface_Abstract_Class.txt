@@ -1,0 +1,11 @@
+----- Abstract class or Abstract base class :
+
+This is the base class which provides a sort of blueprint for derived class without defining method in base class.
+
+abstract method is defined in abstract class which is just a signature and no body.
+
+abstarct method can only be present in abstarct class.
+
+abstract classes cannot be instantiated as it doesn't have any body.
+
+continue : 242
