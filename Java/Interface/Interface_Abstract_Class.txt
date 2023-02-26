@@ -8,4 +8,57 @@ abstarct method can only be present in abstarct class.
 
 abstract classes cannot be instantiated as it doesn't have any body.
 
-continue : 242
+derived class of abstract base class must provide method definition of all abstarct methods otherwise derived class is also abstract.
+
+---- Interface :
+
+Abstract class can have method definitions but interface cannot.
+
+interface keyword is used to create interface.
+
+fields in interface are all static and final.
+
+methods in the interface are implicitly public so if we are implementing this interface then we need to define this method as public in 
+implmented class as well.
+
+reducing the accessibility of a method in inheritance is not allowed.
+
+Interfaces can be used for late binding exactly like abstract classes and normal classes.
+
+
+
+----- Strategy design pattern :
+
+Creating a method that behaves differently depending on the type of argument.
+
+
+----- Adapter design pattern :
+
+You take input in a particular format and generate output in a particular format.
+
+
+Important : You can implement multiple interfaces and this provides a great flexibility.
+
+prefer interface over abstract class.
+
+Also, we can extend from multiple interfaces as we don't have implementation in interface and it will not result in diamond problem.
+
+let's say there are interface A and B.
+
+interface A extends B 
+
+class Demo extends A --> then we need to define methods of both A and B in Demo class (which makes sense because object creation needs to have access 
+of public base class/interface methods).
+
+---- Scanner class leverages strategy pattern.
+
+Strategy pattern is basically type of argument decides the underlying implementation.
+
+
+---- Factory Method design pattern :
+
+client program -> Factory class -> one of the list of factories (why exactly is this layer needed ?) -> underlying interface -> implementation. 
+
+Answer : If there are very specific thing according to a service then that can be done.
+
+continue : 265.
