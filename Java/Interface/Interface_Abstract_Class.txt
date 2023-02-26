@@ -60,5 +60,3 @@ Strategy pattern is basically type of argument decides the underlying implementa
 client program -> Factory class -> one of the list of factories (why exactly is this layer needed ?) -> underlying interface -> implementation. 
 
 Answer : If there are very specific thing according to a service then that can be done.
-
-continue : 265.
