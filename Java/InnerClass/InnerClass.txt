@@ -1,0 +1,83 @@
+----- Inner classes :
+Classes within a class but there will only be one public class.
+
+To create object of inner class in static methods : OuterClass.InnerClass x = new InnerClass();
+
+from non-static methods : InnerClass x = new InnerClass();
+
+
+Note : Object of the inner class has a link (maintains reference implicitly) to the enclosing outer class (irrespective of the level) 
+and hence it can access all members of outer class heirarchy.
+
+.this will give us the reference of the outer class.
+
+we can prefix inner classes with usual access specifiers (private, public, protected).
+
+inner classes can be defined not only within an outer class but also within any scope (block or method).
+
+
+::: one of the main use case of inner class is anonymous inner class :::
+
+Anonymous inner class leverage the possibility that inner classes can be defined within any method block.
+
+ e.g. Class A {
+ 
+	  public B demo(){
+	  
+	   return new B () { // this means that create an object of anonymous class that is inherited from B.
+	     
+		 // class body in this scope
+		 *{
+		   // this is instance initializer block.
+		   // write all instance initialization code here.
+		  }
+	   
+	   }; // It should end with semicolon.
+	  }	
+ }
+ 
+ it can access only final members of outer defined class because it doesn't have late binding features.
+ 
+ anonymous inner class cannot have named constructor only instance initializer (denoted by curly brace) as highlighted by star above.
+ 
+ 
+ ----- Nested Class :
+ 
+ If we don't need the conenction between inner class and outer class object then we can make inner class as static.
+ this is called as nested class.
+ 
+ Typically, it means following :
+ 
+ 1. We don't need an object of outer class to create instance of inner class like we do for normal inner classes.
+ 
+ 2. We can access only static reference of outer class which makes complete sense.
+ 
+ Another difference between normal inner class and static inner class (i.e. nested class) is :
+ 
+ static Fields and methods in ordinary inner class can only be at the outer level of class but that is not the case with nested class.
+ 
+ we can have nested class in interface as well.
+ By default, class defined inside interface is public and static.
+ 
+ Sometimes you want to tell some other object to create an object of one of its inner classes. 
+ To do this you must provide a reference to the other outer-class object in the new expression, using the .new syntax
+ 
+ 
+---- Why Inner classes :
+
+ Each inner class can independently inherit from implementation and not neccessarily be confined to what outer class has inherited.
+ 
+ very Important : Inner class can inherit from multiple implementation classes. (How ??)
+ 
+ 
+----- closures and callbacks :
+
+closure is basically an object that maintains state of outer scope in inner scope. 
+
+inner classes provides a way to implement closure and callback.
+
+
+class files of inner class are created in format "outerclass$innerclass.class"
+
+
+continue : 297.
