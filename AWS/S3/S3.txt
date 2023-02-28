@@ -138,3 +138,65 @@ To increase download :
 ------- S3 Select 
 
 To filter out resource and then fetch it rather than fetching everything.
+
+------- S3 encryption :
+
+There are two types :
+
+1. Server Side encryption
+
+-- Encryption by key managed by AWS.
+   To request amazon to encrypt S3 object : pass "x-amz-server-side-encryption":"AES256" in header.
+   This is enabled by default for new buckets and new objects.
+
+-- Encryption using AWS KMS (Key Management Service)
+   Keys can be user defined as well here.	
+   must set header "x-amz-server-side-encryption":"aws:kms".   
+
+2. Client Side encryption
+
+-- Client takes care of encrypting and decrypting object.
+
+
+-------- S3 CORS :
+
+Cross Origin Resource Sharing.
+
+very important : 
+Origin = protocol + hostname(domain) + port 
+e.g. https://www.example.com/api1 is of same origin as https://www.example.com/nested/api2
+as protocal + domain + port are same.
+
+
+Flow is like below :
+
+1. Components are client server / web browser, web server (origin) and one more server (cross origin).
+2. client request web server to load a page and also some images along with index.html page to be downloaded.
+
+3. client now makes options http call to other server to see if it has access to load images corresponding to origin server.
+
+e.g. OPTIONS /
+     Host: www.other.com 
+	 origin : https:www.example.com
+	 
+	 we get a response from other domain server with below two headers:
+	 Access-Control-Allow-Origin : list of domains that we have access to (e.g. https://www.example.com)
+	 Access-Control-Allow-Methods : GET,PUT,DELETE
+	 
+	 if Access-Control-Allow-Origin has our origin in value then we can load images from cross origin server otherwise we can't.
+	 
+	we have CORS setting option in Permissions tab of S3. 
+
+
+---- Pre-signed url :
+
+This can be generated using aws cli, sdk or S3 console (under Object Actions option).
+
+It has expiration time which can be configured while creating it.
+
+Core concept is that the user which has pre-signed url attains the access policies of the users 
+that has created the url for GET/PUT operation on S3.
+
+one of the use case :
+
+Allow a user temporarily to upload a file to private S3 bucket.
