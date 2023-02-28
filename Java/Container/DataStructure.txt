@@ -24,7 +24,7 @@ Arrays.asList(arg) returns a list of type of args.
 args can be comma separated individual values or an array of values.
 
 
-Collections.addAll(args) -> args can also be a collectio object apart from above.
+Collections.addAll(args) -> args can also be a collection object apart from above.
 
 We can give hint to Collections to define type of reference that needs to be stored.
 e.g. instead of Arrays.asList(), use Arrays.<reference type>asList().
@@ -60,3 +60,30 @@ Flow :
 There is a subtype applicabe only on List which is called ListIterator which can move bi-directional.
 
 ---- Linked List :
+
+
+---- Set :
+
+TreeSet uses Red Black Tree for sorting elements in ascending order.
+
+---- Comparators :
+
+Comparators will be explained in details in Arrays chapter.
+
+
+
+Very Important : You can't use primitives with containers.
+
+e.g. let's say we do Map<Integer, Integer> map = new HashMap<>();
+
+map.put(1,2) -> autoboxing will convert both primitives 1,2 to Integer object.
+
+
+---- Priority Queue :
+
+We can define order of insertion and removal using comparator.
+
+
+Note : If you create any class that implements Iterable interface then forEach can be used.
+
+All collection classses implements Iterable but not map. 
