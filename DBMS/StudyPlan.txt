@@ -1,0 +1,22 @@
+
+DB (Database systems books by Gracie) :
+
+Chapter 1 : The Worlds of Databse Systems
+
+Chapter 2 : The Relational model of Data
+
+Chapter 6 : Database language : SQL (page 243).
+
+Chapter 7 : Constraints and Triggers
+
+Chapter 8 : Views and Indexes
+
+Chapter 9 : SQL in server environment (till 9.6 JDBC)
+
+Chapter 10 : only 10.3 (The Object Relation model)
+
+Chapter 13 : Secondary Storage management
+
+Chapter 15 : Query Execution
+
+Chapter 16 : Query Compiler
