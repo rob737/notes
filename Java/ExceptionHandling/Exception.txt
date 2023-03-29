@@ -1,0 +1,43 @@
+---
+When exception is thrown, following things happen :
+
+1. Using new operator, Exception object is created in heap.
+ e.g. throw new NullPointerException();
+ 
+--- 
+
+Exception root class is Throwable.
+we can return any type of Throwable. 
+
+syntax :
+
+try{
+
+}catch(ExceptionType ex){
+
+}
+
+-- Creating own Exceptions
+
+class CustomExceptionClass extends Exception {
+    public CustomExceptionClass(){}
+	public CustomExceptionClass(String str){super(str);}
+}
+
+
+Exception is inherited from Throwable class i.e. Exception extends Throwable.
+
+-- Exception Specification
+
+e.g. void f() throws Exception1, Exception2 {}
+
+above declaration tells client programmer the possible Exception types that can be thrown from a method.
+
+Note : instances of RuntimeException can be thrown even without explicit exception specification.
+
+
+--- Checked Exceptions :
+
+Exceptions that are checked and can be reported at compile time.
+
+continue : 347
