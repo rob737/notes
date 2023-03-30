@@ -38,6 +38,56 @@ Note : instances of RuntimeException can be thrown even without explicit excepti
 
 --- Checked Exceptions :
 
-Exceptions that are checked and can be reported at compile time.
+Exceptions that needs to be mentioned via throws or handled in catch and must be reported at compile time.
 
-continue : 347
+--- Rethrowing exceptions :
+
+try {
+// code that would throw an exception.
+}catch(Ex1){
+throw Exception
+}catch(Ex2){
+// some logic
+}catch(Ex3){
+// some logic
+}
+
+if exception is caught at first catch handler then it will be re-thrown to calling method and will bypass other catch exceptions.
+
+stack trace is reset to point from where exception is thrown and previous stack trace is lost.
+To retain the original stack trace, we need to set exception in cause or initCause method of corresponding exception class. (This is called Exception chaining).
+
+there are 3 exception classes : Error, Exception, RuntimeException.
+
+--- Standard Java Exceptions :
+
+Throwable class has two subtypes :
+
+1. Error : compile time or system error that we don't catch.
+2. Exception : Custom user defined anamoly that is thrown by code snippet.
+
+3. RuntimeException: This is a special exception class provided by Java that are always thrown automatically by java.
+   RumtimeException falls into the category of unchecked exceptions i.e. we don't need to catch or throw it explicitly.
+   i.e. compiler doesn't need exception specification for these types.
+
+--- finally block :
+
+try{
+}catch(){
+}finally {
+
+// finally block always run despite the fact whether exception was caught in try/catch or not.
+
+// Important : Even if we return from try block or exception is not caught in catch clause then also finally block is executed.
+
+}
+
+
+--- Exception restriction :
+
+when we override a method in derived class then we can only throw exception that has been derived in base class method. (makes sense).
+
+--- Exception matching :
+
+Once Exception is raised, Exception handling system looks through the nearest catch handlers in the order they are coded.
+handler with base class args can also match derived class exceptions.
