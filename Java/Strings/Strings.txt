@@ -1,0 +1,52 @@
+-----
+
+Strings are immutable.
+
+e.g. String s = "Robin";
+     String t = return s.toUpperCase();
+	 
+	 now, t will point to a new object in heap with contents "ROBIN" instead of overriding reference s.
+	 
+---- Decompilation :
+
+To decompile any file :
+
+javap -c filename
+
+
+Use StringBuilder over String because in concatenation String internally creates many StringBuilder objects and call append object.
+
+But with StringBuilder, only one StringBuilder object is created.	 
+
+
+----- Formatter :
+
+use Formatter class while object creation to print contents in a particular format.
+
+private Formatter f;
+
+t = new SomeObject("x",new Formatter(System.out));
+
+f.format("mention formatting pattern here").
+
+t.anyMethodCall() -> if it contains f.format() will print to the output console in a defined format.
+
+----- Regex :
+
+String.split("this argument can take any regular expression");
+
+package : java.util.regex.*;
+
+Pattern p = Pattern.compile("regex pattern"); // compile and validates for correct regex pattern.
+Matcher m = p.matcher("regex pattern");
+
+
+---- Split :
+
+Pattern.compile("!!").split(input, 3)));
+
+---- IO classes :
+
+BufferedReader and Scanner classes.
+
+continue : 415.
