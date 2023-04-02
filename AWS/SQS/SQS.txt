@@ -1,0 +1,78 @@
+----- Asynchronous communication:
+
+SQS : Queue model
+SNS : PUB/SUB model
+Kinesis : Real time streaming model
+
+---- SQS (Simple Queueing Service) :
+
+Fundamentals :
+
+Producer to SQS (Push)
+
+Consumer "pulls" message from SQS and then notifies Queue to delete it from the Queue (untill consumer sends this ack to delete msg,
+msg is retained on the queue).
+
+Consumer does it using deleteMessage API.
+
+Doubt : What if multiple consumers are listening to the same queue?
+Ans : Each consumer will receive a different set of msgs.
+
+
+SQS are of two types :
+
+1. Standard Queues :
+
+ -- Low latency for storing and reading of msgs (<10 ms)
+ -- Default retention of msgs : 4 days
+ -- Msg size limitation is 256KB.
+ -- Guarantees atleast one delivery i.e. we can have duplicate msgs.
+ -- Can have out of order msgs. 
+ -- Unlimited throuput i.e. unlimited number of msgs that can be sent or read from.
+ 
+2. FIFO Queues :
+
+ -- Throughput is limited i.e. around 3k msgs per second.
+ -- Ensures Exactly-once send capability (by removing duplicates).
+ -- Msgs are consumed in an order.
+ -- Msg de-duplication can be set in FIFO queue for a specific time period.
+     - Type 1 : De-duplication on content.
+	 - Type 2 : De-duplication on message id.
+ -- We can setup MessageGroupId to send msg to a particular consumer everytime.
+
+Note : Queue name must end with .fifo otherwise it won't be treated as FIFO queue. 
+ 
+ Security :
+ 
+ IAM policies and SQS Access policies.
+ 
+ 
+ -- SQS Access Policies :
+ It is same as normal policies that we have seen in S3.
+ 
+ Important : We can setup events at SQS to send msgs to SQS queue.
+ 
+ -- Message Visibility Timeout :
+ 
+ Visibility timeout states that for this time after consumer has picked up the msg, it will not be visible to other consumers.
+ Default : 30 seconds
+ 
+ Post which if message is not deleted by consumer then it will again appear on the queue(in front).
+ 
+ -- Dead Letter Queue :
+ 
+ If VisibilityTimeout Window is expired and msg is not yet deleted from the queue then it gets pushed back to the queue.
+ The problem is this can happen for indefinite amount of time.
+ 
+ To prevent this indefinite recurssion, we can set MaximumReceive threshold post which it would fall into Dead Letter queue.
+ 
+ There is a feature called "Redrive to Source" that can be used to put msg from dead letter queue to Source SQS queue.
+ 
+ -- Delay Queue property of SQS :
+ 
+ Consumer can only start consuming msg after delay threshold is exhausted.
+ 
+ Note : Long Polling (of 20 sec) is prefferrable to prevent excessive TCP connections (3 way handshake process).
+ It is achieved by configuring attribute : Receive Message Wait Time.
+ 
+ 
