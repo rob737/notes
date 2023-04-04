@@ -1,0 +1,19 @@
+--- SNS 
+
+Note: This is what is called a PUB/SUB pattern.
+
+Producer puts a message to a "Topic" and from that topic msg goes to all subscribed consumers.
+
+Data is not persisted on topic, it gets lost if not delivered successfully.
+
+-- SNS + SQS Fan out :
+
+producer to topic and topic is subscribed by different queues, this is called SNS + SQS Fan out.
+
+Note : We need to ensure that SQS access policy allows SNS to write on queues.
+
+we also have SNS FIFO with same features as SQS FIFO.
+
+-- SNS Message Filtering :
+
+we can create filter policies at SNS to route the msg to corresponding queue based on msg parameters.

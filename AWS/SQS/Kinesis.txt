@@ -1,0 +1,53 @@
+--- Use Case :
+
+To collect, process and stream real time data.
+
+It provides 4 services :
+
+1. Kinesis Data stream : To collect, process and stream real time data.
+2. Kinesis Data Firehouse : load data streams into AWS data stores.
+3. Kinesis Data Analytics : analyze data streams with SQL or Apache Flink.
+4. Kinesis Video Streams : capture, process and stream real time video streams.
+
+--- Kinesis Data Streams :
+
+Kinesis data stream is divided into multiple shards or partitions.
+
+Producers send records to KDS and Consumers read records from KDS.
+
+Producer Record consists of :
+
+1. Partition key : To decide on the shard.
+2. Data Blob : Actual data to be sent upto 1 MB.
+3. Throughput : 1 MB/sec or 1000 msg/sec per shard. 
+
+Consumer Record consists of :
+
+1. Parition key : same as producer
+2. Data Blob : same as producer
+3. Sequence no. : It helps in identifying till which block records were read (just like Kafka)
+4. Throughput : 2 MB/sec per shard
+
+
+Note :
+1. Data can't be deleted from KDS.
+2. Data that shares the same partition key goes to the same shard (it maintains order of chunks).
+3. KDS is deployed within a region i.e. region level access.
+
+
+--- Kinesis Producers :
+
+Partition key is put into hash function and the output of hash function decides on the shard.
+
+--- Kinesis Consumers :
+
+This is also "pull based" mechanism i.e. consumers initiate getRecords() API call to read records from the shards.
+
+There is an attribute called NextShardIterator that signifies from where we need to resume consumption per consumer per shard.
+
+Note : There is a concept of Enhanced Fan out consumer (i.e. consumer subscribing to the shards) which works on push based mechanism.
+	   However, this is costlier.
+
+
+
+-- Data Ordering for Kinesis vs SQS FIFO :	   
