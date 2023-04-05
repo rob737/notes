@@ -1,0 +1,75 @@
+---- RTTI (Runtime Type Information)
+
+-- Discover information about objects and classes at runtime.
+   -- Tradition RTTI : Type check information available at compile time (e.g. instanceOf) 
+   -- Reflection : Dynamically create objects without using constructors.
+   
+-- use case : Defining behaviour specific to a type.   
+
+-- RTTI is achieved via Class object, every class defined in Java has associated Class object.
+
+-- Loading of java program in JVM :
+
+   1. When we compile java code then it creates a Class object or .class file.
+   2. Class loader looks for these class files and loads it into JVM.
+   3. All classes are not loaded at once, when there is a refernce to static members/methods of a class then it is loaded.
+   4. Constructor is also static reference so when we instantiate a class using new object, then constructor is called and class is loaded into JVM.
+   
+-- Class.forName("case sensitive class name") -> this is basically static reference to Class's forName method which loads the object of Class provided in argument.
+   -- It returns class reference to the class object of corresponding class passed as argument. 
+   -- getClass() will return the object reference of that particular class.
+   -- Another way to get class reference is to use : ClassName.class -- this is compile time hence safe and faster.
+
+-- newInstance() method of Class is a way to create "virtual constructor".
+
+
+-- 3 steps of loading a class into JVM :
+
+   1. Loading : performed by class loader. It finds the bytecode in the classpath on disk mostly and creates a class object.
+   2. Linking : verifies byte code, allocates storage for static fields and resolves all references required to create this class object.
+   3. Initialization : If there is a super class then it initializes this, execute static blocks and reference -> this phase is delayed until first reference
+      to static references.
+
+-- if a field is final and static then initialization is not needed because it already gets stored at a memory location.
+    -- class.forName() -- intializes the class.
+    -- non final static fields compells JVM to initialize the class.
+
+Note : A class reference also points to a class Object or has reference of a class object.
+
+
+-- generic classes :
+
+   Class<?> unbounded = int.class;
+   unbounded = double.class;
+
+   Above works because ? is a wildcard character that allow any type to get assigned to any type.
+
+   -- Bounded :
+   Class<? extends Number> bounded = int.class; // Also, we can do something like <? super SomeClass> which bounds it to any class that is super class of SomeClass.
+   bounder = double.class; // this is allowed as double is sub type of Number
+   bounded = character.class; // this is not allowed as character is neither subtype of Number nor a Number.  
+    
+-- instanceOf operator vs Class equivalence :
+
+instanceOf checks basically says "Are you this class or a class derived from this class".
+
+However, .class checks for equality or == with exact class and doesn't consider inheritance.
+
+-- Reflection : Runtime class information
+
+class "Class" supports the concept of reflection along with java.lang.reflect library.
+
+Above library contains the classes Field, Method and Constructor (each implements Member interface).
+
+Only difference between RTTI and reflection is that one is compile time and other is Runtime. 
+
+-- Dynamic Proxies :
+
+proxy is one of the basic design patterns.
+proxy creates one extra layer which calls the real object underneath.
+This is useful when we need to put some sort of tracking etc which we need to separate from real object implementation.
+
+we can achieve dynamic proxy using Proxy class in java.lang.reflect.* package: 
+Proxy.newProxyInstance();
+
+comtinue : 446 (Null objects).
