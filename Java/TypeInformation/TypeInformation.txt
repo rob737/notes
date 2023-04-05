@@ -71,5 +71,3 @@ This is useful when we need to put some sort of tracking etc which we need to se
 
 we can achieve dynamic proxy using Proxy class in java.lang.reflect.* package: 
 Proxy.newProxyInstance();
-
-comtinue : 446 (Null objects).

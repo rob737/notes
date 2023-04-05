@@ -1,0 +1,100 @@
+--- Generics
+
+use case : to define a container to hold different type of objects.
+
+general placeholder is T e.g. Class<T>
+
+now, T can be replaced with any argument at runtime.
+
+to replace T at runtime, we can do something like this : Class<Automobile> cl = new Class<Automobile>();
+
+T can be replaced with any base type or sub type at runtime.
+
+
+-- Tuple :
+
+Group of objects wrapped into a single object.
+
+This is also called DTO (Data Transfer Object) wherein recipient can only receive and read the object but not modify it.
+
+it can be used to return multiple objects wrapped in a single object.
+
+e.g. 
+
+public class TwoTuple<A,B> {
+public final A first;
+public final B second;
+public TwoTuple(A a, B b) { first = a; second = b; }
+public String toString() {
+return "(" + first + ", " + second + ")";
+}
+}
+
+class SomeClass {
+static TwoTuple<String,Integer> f() {
+  return new TwoTuple<String, Integer>("hi",5)
+}
+}
+ 
+Note: At runtime, A and B will be assigned with String and Integer respectively. 
+
+
+Note : Generic also works with interfaces.
+
+-- Generator and Interface:
+
+A generator is a pattern/class that creates objects.
+
+
+Note: We cannot use primitives as Type paramters in Generics.
+
+
+-- Generic methods :
+
+we can have a generic method even though we don't have a Generic Class.
+
+e.g. we can have public <T> genericMethodName(T arg) {
+					// method body
+				 }
+				 
+Note: we also can have variable arguments with generic methods :
+
+	public <T> genericMethodName(T... args) {
+					// method body
+	}			 
+	
+-- Bounds :
+
+e.g someMethod(<T extends A> args){
+
+}
+
+T can only be substituted with either A or subclasses of A.	
+
+e.g. someMethod(<T extends A & B> args){
+
+  }
+	
+It signifies that T can be substituted by parameter with either A or subclasses of A that implements interface B.	
+	
+-- Wildcard :
+
+To make the parameter generic instead of a particular type, we can use wildcard character ?.
+
+e.g. someMethod(<?> args)
+e.g. someMethod(<? extends ClassA> args)
+
+
+Note : we can't overload methods with same generic signature
+
+e.g. void f(List<T> v) {}
+     void f(List<W> w) {}
+	 
+	 this will give compile time warning because of erasure.
+	 
+-- Mixins :
+
+This is basically like decorator pattern where in classes where mixin is applied and if there are any changes in mixin then changes would be reflected
+in all classes.
+
+Similar to aspect oriented programming (aop).
