@@ -1,0 +1,54 @@
+Note : Primary goal of software engineering is to separate things that change from the things that stay the same.
+
+-- Arrays
+
+Array is basically a reference to a true object that is created on the heap.
+
+Array is pass by reference.
+
+Arrays.deepToString() turns multidimensional array into String, it works with both primitive and object reference.
+
+-- Arrays and Generics :
+
+As erasure removes parameter type information, so we cannot instaniate arrays of parameterized types as array needs to know the exact type.
+
+e.g. Peel<Banana>[] peels = new Peel<Banana>[10]; // This is illegal.
+
+However, we can create generic references i.e. public T[] f(T[] arg) {
+ // body of method
+}
+
+-- fill() method :
+
+Arrays.fill() -- It duplicates same value or reference across all index in an array.
+
+-- Different utility methods in Array
+
+1. Shallow copy of an array :
+
+in java.util.* package, we have System.arraycopy(src, srcOffset, target, targetOffset, NumOfElementsToCopy) method.
+
+Above is shallow copy as for references, it copies the same reference to target i.e. there is no duplication of references.
+
+2. equals() method :
+
+it compares the elements of the array/object.
+Similarly, we have deepEquals() for multidimensional array.
+
+-- Array Element Comparisons :
+
+using compareTo() method of java.lang.Comparable interface.
+
+Arrays.sort() -> It casts it's argument to comparable so if we haven't implemented Comparable then we will get ClassCastException.
+
+Practice below two interfaces :
+
+1. Comparable interface : compareTo() method is used
+
+2. Comparator interface : use case is basically let's say you already have a class that implements Comparable or a class that doesn't implement comparable 
+    but you need to sort it's contents according to your business needs and not exactly how it is done already.
+	Then we use Comparator. (compare() method is used).
+	
+	Arrays.sort(obj, <for comparable 2nd arg is not required or comparator obj reference>) --> This is Strategy design pattern as based on the 2nd arg behaviour is decided.
+
+-- Arrays.binarySearch() is inbuilt binary search functionality.	

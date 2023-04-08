@@ -1,0 +1,21 @@
+--- Annotations :
+
+Annotations allow us to store extra information about our program that is tested and verified by the compiler.
+e.g. @override -> this will throw exception if overriden method's signature changes from base method.
+
+or @Test ::
+
+These annotations doesn't do anything in itself but compiler ensures that there is definition of annotation present in build path.
+
+e.g. 
+
+//: annotations/UseCase.java
+import java.lang.annotation.*;
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UseCase {
+public int id();
+public String description() default "no description";
+}
+

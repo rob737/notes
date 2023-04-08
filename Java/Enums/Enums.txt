@@ -1,0 +1,41 @@
+--- How to define ENUM.
+
+e.g.
+
+enum Fruits {APPLE, BANANA}.
+
+To access it, we would use Fruits.APPLE etc.
+
+-- Useful Info
+
+1. when we define enum then a class is created which automatically inherits from java.lang.Enum.
+2. enum class is comparable i.e. enum class implements Comparable interface
+3. ordinal () -> gets the index of declaration
+4. name() -> gives the name of enum
+5. Enum.valueOf(Fruits.class, APPLE) -> it returns name or corresponding value if explicitly mentioned.
+
+-- Static import 
+
+static import brings all the corresponding enums into local namespace and hence we can use it directly e.g. APPLE instead of Fruits.APPLE.
+
+-- Enum Vs Regular Classes :
+
+Important : Only difference is Enums cannot be inherited otherwise other functionality like defining method etc is allowed.
+
+-- enums can be used in switch statement.
+
+-- enums cannot inherit but can implement interfaces as it automatically inherits from Enum class.
+
+-- create enum of enums using below :
+
+enum Test {
+
+  ColdDrink(Pepsi.class)
+}
+so whatever enum is present in enum Pepsi can be iterated through using getEnumConstants().
+
+-- Chain of responsibility design pattern :
+
+In chain of responsibility pattern, input request is passed through list of solutions until one solution handles the request properly.
+
+one of the use case of enums is state machines.
