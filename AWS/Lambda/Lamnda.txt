@@ -1,0 +1,64 @@
+--- Serverless:
+It basically means we don't have to manually provision or manage servers e.g. auto replication etc.
+
+e.g. S3, Lambda, SQS/SNS, Fargate etc are all serverless.
+
+--- AWS Lambda vs EC2:
+
+-- EC2
+ - Virutal servers in the cloud
+ - manually provision/manage by defining RAM,vcpu etc 
+ - Continuously running even if there is no traffic.
+ - Scaling via ASG or manually add more servers.
+ 
+-- Lambda
+ - Virtual functions i.e. no server to manage and a function is invoked corresponding to a file.
+ - Limited by time i.e. max execution can run for 15 mins straight.
+ - Run on-demand and based on traffic
+ - Scaling is automated.
+ 
+ 
+Example of use case of lambda function :
+
+Upload image to S3 -> triggers an event to Lambda -> lambda creates a thumbnail and push it to metadata db and upload thumbnail image to S3. 
+ 
+Note : It's usually very cheap to run code on lambda so it's very popular.
+       For 10^6 (1 million requests) are free.
+
+Lambda url : https://ap-south-1.console.aws.amazon.com/lambda/home?region=ap-south-1#/begin
+
+--- Use case scenario in lambda functions :
+
+1. Client --(over http/https)--> ALB (Application Load Balancer) ---(Sync Invoke)---> lambda (within a Target Group).
+
+ALB converts HTTP requests into JSON document which serves as input to lambda function.
+response from lambda function which is a JSON is converted back to HTTP response by ALB. 
+
+
+--- Event Source Mapping :
+
+It is primarily used with Kinesis Data Stream, SQS , DynamoDB streams.
+
+All above are pull based which works as follows :
+
+Lambda system is composed of two entities:
+1. Event Source Mapping (Internal)
+2. Lambda function
+
+SQS --(polled by)--> Event Source Mapping --> gets a return batch with data from SQS --> Invoke lambda function in batch.
+
+lambda function deletes item from the queue.  
+
+--- Event and Context Objects :
+
+Event : JSON-formatted document containing data for lambda function to process.
+e.g. input params, invoking service args etc.
+
+Context : 
+Provides methods and properties that provide information about the runtime environment, invocation function etc.
+e.g. aws_request_id etc.
+
+lambda_handler(event,context) : These two objects are passed by lambda runtime to handler as args.
+
+
+-- lambda can connect to external services on internet only if VPC is provided with ENI (Elastic Network Interface). 
