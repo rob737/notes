@@ -1,0 +1,7 @@
+---- Cover only first 2 units i.e. till chapter 9.
+
+---- Project to build along the way , CRUD APP and upderstanding from connection creation to response send including what is happening at OS level.
+	 - Name of project : Application server -- accepts connection and does some work and terminates it. 
+	   basic version of tomcat using spring and java.
+	 
+	 https://www.codeproject.com/Articles/452052/Build-Your-Own-Web-Server
