@@ -1,0 +1,43 @@
+--- File class:
+
+-- File class:
+   -- File path = new File(<any path, if not given then current directory>); // This basically works on the path provided as argument.
+      path.list(<any class that implements FileNameFilter interface>);
+   -- we can also make directories using path.mkdirs();
+   
+-- Strategy design pattern : It is basically callback mechanism i.e. based on the parameter underlying implementation is being invoked.
+
+-- Streams :
+   -- Any data source or sink capable of producing or receiving pieces of data.
+   
+-- Input/Output Streams :
+	-- For reading, Everything is derived from InputStream or Reader class which has a method called read() for reading a single byte or array of bytes.
+    -- For writing, Everything is derived from OutputStream or Writer class which has a method called write() for writing a single byte or array of bytes.
+
+	Note : The fact that we leverage multiple objects to create a single stream is what makes IO library confusing.		
+
+-- Types Of InputStream:
+	-- ByteArrayInputStream : To read from buffer in memory.
+	-- StringBufferInputStream : String as input stream.
+	-- FileInputStream : File as input stream.
+	-- PipedInputStream : Produces data that is consumed to associated PipedOutputStream.
+	-- SequenceInpputStream : Converts two or more input stream into single input stream.
+	-- FilterInputStream : Abstract class that provides useful functionalities for other input stream classes.
+
+-- Types of OutputStream:
+	-- ByteArrayOutputStream : Creates a buffer in memory for the data that is sent.
+	-- FileOutputStream : For sending information to a file.
+	-- PipedOutputStream : Output for associated PipedInputStream.	
+	-- FilterOutputStream : Abstract class that provides useful functionalities for other output stream classes.
+	
+	Note: There isn't String output stream, that is handled using ByteArrayOutputStream.
+	
+-- FilterInputStream
+	-- DataInputStream : To read primitives and String object.
+	-- BufferedInputStream : Read from a buffer rather than physical devices.
+
+-- FilterOutputStream
+	-- DataOutputStream : To format stream of data(primitive data and String) in a way that in can be properly reconstrcuted by DataInputStream.
+	-- BufferedOutputStream : To write stream data to buffer insted of doing write on a physical device everytime.
+
+Continue : 684.	
