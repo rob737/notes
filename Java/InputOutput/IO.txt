@@ -40,4 +40,135 @@
 	-- DataOutputStream : To format stream of data(primitive data and String) in a way that in can be properly reconstrcuted by DataInputStream.
 	-- BufferedOutputStream : To write stream data to buffer insted of doing write on a physical device everytime.
 
-Continue : 684.	
+Note: Reader/Writer is used over older InputStreamReader and OutputStreamWriter because it supports unicode (character stream) while Reader/Writer only
+	  supports byte stream.
+	  
+-- when we need to use readLine() then we should use BufferedReader/BufferedInputStream and not DataInputStream, for all other places we can use DataInputStream.
+e.g. BufferedReader in = new BufferedReader(new FileReader(file));
+     while(in.readLine() == null)
+
+-- RandomAccessFile :
+
+It is used to access file of fixed record size, seek() method in this class is used for random access of a record.
+This works only with file.
+
+However, this is replaced with nio memory-mapped files in newer versions of java.
+
+
+-- Input from memory :
+
+StringReader in = new StringReader(BufferedInputFile.read("Filename.java"));
+
+-- Reading in bytes:
+
+DataInputStream in = new DataInputStream(new ByteArrayInputStream(BufferedInputFile.read("Filename.java").getBytes())); 
+
+-- Basic file output :
+
+we should always buffer the output as clock cycles of different devices can be mismatched leading to performance nightmare.
+
+PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+
+-- PipedStreams :
+
+PipedInputStream, PipedOutputStream, PipedReader and PrintWriter are covered in concurrency chapter since they are used to communicate between tasks.	  
+
+-- Standard I/O :
+
+Standard input :
+BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+while(stdIn.readLine() != null)
+
+Standard output :
+
+Either System.out or PrintWriter out = new PrintWriter(System.out, true);
+
+we have some utility method to redirect output:
+
+System.setIn(stdIn);
+System.setOut(out);
+System.setErr(out);
+
+-- Process control :
+
+it is used for executing kernel functions from java.
+
+we need to use OSExecute command :
+
+OSExecute.command("javap JavaClassName");
+
+-- NIO 
+
+package is java.nio.*;
+
+it is used for speed.
+
+concept of channel and buffer.
+
+channel is basically stream of data and buffer is where you put chunks of data or read chunks of data.
+
+nio operates only at byte level e.g. java.nio.ByteBuffer
+
+Example :
+
+FileChannel fc = new FileOutputStream("data.txt").getChannel(); // creates a channel or stream of data.
+To write :
+
+fc.write(ByteBuffer.wrap("Some text".getBytes()));
+fc.close();
+
+To read :
+
+ByteBuffer buff = ByteBuffer.allocate(<some application tested size>);
+fc.read(buff);
+
+
+--- Endians (Important) :
+
+Big Endian : Most significant byte into lowest memory address (ending with big)
+Little Endian : Most significant byte into highest memory address (ending with small)
+
+It is important because multiple byte storage like int, float etc can generate corrupt data if sender and receiver are using different 
+endians to send/receive data.
+
+ByteBuffer and data sent over network always uses Big Endian order.
+
+
+we can change endianness using order() method of ByteBuffer.
+
+ByteBuffer bb = ByteBuffer.wrap(new byte[12]);
+bb.asCharBuffer().put("abcdef");
+bb.order(ByteOrder.BIG_ENDIAN); // similarly, ByteOrder.LITTLE_ENDIAN.
+print(Arrays.toString(bb.array()));
+
+-- Memory Mapped files :
+
+It allows us to create/modify file that are too big to bring into memory.
+
+Example code :
+
+import java.nio.*;
+import java.nio.channels.*;
+
+import java.io.*;
+
+public class LargeMappedFiles {
+static int length = 0x8FFFFFF; // 128 MB
+
+psvm(String[] args) throws Exception{
+
+MappedByteBuffer out = new RandomAccessFile("test.dat","rw").getChannel().map(FileChannel.MapMode.READ_WRITE,0,length);
+for(int i=0; i<length; i++){
+out.put((byte)'x');
+}
+
+sout("Finished writing");
+for(int i=length/2; i<length/2+6; i++)
+sout((char)out.get(i));
+
+// Doubt :::: What is a direct buffer ?
+}
+}
+
+
+continue : 715
