@@ -171,4 +171,82 @@ sout((char)out.get(i));
 }
 
 
-continue : 715
+--- File locking :
+
+File locking allows you to synchronize access to a file as a shared resource. However, two threads that contend for the same file may be in different JVMs, 
+or one may be a Java thread and the other some native thread in the operating system.
+The file locks are visible to other operating system processes because Java file locking maps directly to the native operating system locking facility.
+
+package : import java.util.concurrent.*;
+
+FileLock is the class.
+
+tryLock () -- doesn't blocks the thread and returns if file is locked.
+
+lock () -- blocks the thread if file is already locked
+
+release () -- to release the file lock.
+
+Note : (SocketChannel, DatagramChannel, and ServerSocketChannel do not need locking since they are inherently singleprocess entities; 
+you don’t generally share a network socket between two processes.)
+
+--- Compression :
+
+classes are ZipOutputStream, GZIPOutputStream compresses data into particular formats.
+Similarly, ZipInputStream and GZIPInputStream to decompress data.
+
+--- JARs (Java Archives) :
+
+A JAR file consists of a single file containing a collection of zipped files along with a "manifest" that describes them.
+(You can create your own manifest file; otherwise, the jar program will do it for you.).
+
+Doubt : How do we know the classpath?
+
+--- Serialization and Deserialization :
+
+we need serialization to send data over network or any stream as it operates at byte level. 
+
+It is used for object persistence and recreating object after program is terminated.
+
+ By itself, object serialization is interesting because it allows you to implement lightweight persistence.
+ Persistence means that an object’s lifetime is not determined by whether a program is executing; 
+ the object lives in between invocations of the program.
+ By taking a serializable object and writing it to disk, then restoring that object when the program is reinvoked,
+ you’re able to produce the effect of persistence. 
+ The reason it’s called "lightweight" is that you can’t simply define an object using some kind of "persistent" keyword 
+ and let the system take care of the details (perhaps this will happen in the future).
+ Instead, you must explicitly serialize and deserialize the objects in your program.
+ 
+ Java’s object serialization allows you to take any object that implements the Serializable interface and turn it into a sequence of bytes 
+ that can later be fully restored to regenerate the original object.
+ 
+ serialize example : 
+ ObjectOutputStream out = new ObjectOutputStream(
+new FileOutputStream("worm.out"));
+
+out.writeObject(w); // here w must implement Serializable interface.
+
+deserialize example :
+
+ ObjectInputStream in = new ObjectInputStream(
+new FileInputStream("worm.out"));
+
+Worm w2 = (Worm)in.readObject();
+
+Note : Serialization and Deserialization works at byte level.
+
+-- Externalizable
+
+Implement this interface if you want to serialize only parts of your object and not complete object.
+
+writeExternal( ) -- this method allows you to serialize objects partially.
+
+-- transient keyword :
+
+If you’re working with a Serializable object, however, all serialization happens automatically. 
+To control this, you can turn off serialization on a field-by-field basis using the transient keyword, 
+which says, "Don’t bother saving or restoring this—I’ll take care of it."
+
+-- using persistence :
+
+Doubt : How do you deep copy an object?
