@@ -1,0 +1,57 @@
+--- What is it?
+
+It's similar to ALB but with some extra features like authentication/authorization etc.
+
+So the architecture can be something like this :
+
+Client --(make request)---> API Gateway (for authentication/ rate limiting etc) --> ALB --> Target group rest end point.
+
+
+Note : AWS Cognito can be used for auhtenticating external users.
+
+--- Canary deployment :
+
+We can define percentage of request from client that can go to main prod API gateway and some requests to prod "canary" api gateway.
+
+Note : SOAP API are XML based while REST API are JSON based.
+
+Note : we can also cache at API gateway level.
+
+-- API gateway throttling :
+
+we can create rate limiter at API gateway for API requests.
+
+--- API gateway CORS :
+
+Flow :
+
+
+1. Web browser calls let's say S3 statically hosted web page (Origin: https://www.example.come).
+
+2. Now hosted web page needs to call another server to get some data for browser's request to get successfully completed.
+
+3. Now, web browser will send an OPTIONS request in the following format (called preflight request) :
+	OPTIONS /
+	Host : api.example.com (another server that S3 is trying to call)
+	Origin: https://www.example.com (S3 server)
+	
+4. Now, another server will send a preflight response with following headers :
+	Access-Control-Allow-Origin: https://www.example.com (S3 server , it is called origin because request is generated from there)
+    Access-Control-Allow-Methods: GET,PUT,DELETE
+
+5. If above headers have our S3's server mentioned as Origin server then our web browser can start interacting with another server.	
+
+--- Authentication and Authorization :
+
+Authentication is done via IAM.
+Authorization is done via IAM Policy.
+
+--- Websocket API gateway :
+
+websocket protocol starts with wss.
+
+It creates a persistent connection with API Gateway identified by a connection id.
+
+so client(using WSS) --(sends message called frames)--> Amazon API gateway (websocket API) --(invoke connectionId)--> lambda function --(connectionId)--> DynamoDb.
+
+Client would send more frames over the same connection.
