@@ -1,0 +1,67 @@
+---- Beans and Spring Application Context :
+
+Any application or process is typically built on many components.
+
+let's say you are creating one Todo APP.
+
+There will be following components involved primarily :
+
+1. component to perform DB related activities
+
+2. component to cater to client activities
+
+3. component working as an adapter between client and backend related activities.
+
+4. component that performs backend specific logic before data is persisted into DB.
+
+Each component in Spring's term is called as Bean.
+
+so basically bean in java terms would be an object that has members and methods to perform an activity.
+
+We would need some orchestrator to create these beans when and where it's needed.
+
+Other primary role of orchestrator is dependency injection.
+
+let's say there is a custom component that is created to that uses component 3 and component 4 described above.
+
+there are two ways to do this job, first is to create each component individually in custom component and maintain it.
+
+other way is to delegate this responsibilty to Spring Application Context (or Orchestrator) which injects components(beans) wherever necessary.
+
+e.g. in above custom component, Spring Application Context will inject component 3 and 4 into custom component and this is known as 
+dependency injection.
+
+more formally, Spring Application Context (or container) creates and manages components (also called as Beans).
+
+
+---- Two ways of defining beans :
+
+1. xml based e.g. <bean id = "" .... />
+
+2. java annotation based e.g.
+
+   @Configuration
+   public class ServiceConfiguration{
+   
+   @Bean
+   public InventoryService inventoryService(){
+    return new InventoryService();
+   }
+   
+  }
+  
+Explanation : @Configuration annotation tells Spring Application context that is the class that would give you bean definitions.
+              by default bean id is method's name.
+
+
+--- Autowiring and Component Scanning :
+
+Autowiring : Spring's mechanism for dependency injection.
+
+Component Scanning : Spring (Doubt : what is actually the thing that is being referred as Spring?) scans the classpath(Doubt: By default, what is the classpath)
+and creates them as beans in SpringApplicationContext.
+
+--- Spring boot :
+
+Spring boot provides a mechanism called autoconfiguration, where spring boot decides on autowiring and component scanning on the fly i.e. without us 
+manually defining those.
