@@ -65,3 +65,89 @@ and creates them as beans in SpringApplicationContext.
 
 Spring boot provides a mechanism called autoconfiguration, where spring boot decides on autowiring and component scanning on the fly i.e. without us 
 manually defining those.
+
+--- Initializing Spring APP :
+
+From the web application at http://start.spring.io
+
+
+---- **** Important ****
+
+@SpringBootApplication : This annotation signifies that it is a spring boot application.
+
+Above annotation constitutes of below 3 annotations :
+
+1. @SpringBootConfiguration :
+
+Desingates corresponding class as a configuration class.
+This is specialized form of @Configuration.
+
+2. @EnableAutoConfiguration :
+this tells spring to enable autoconfiguration(will be discussed later).
+
+3. @ComponentScan :
+
+enables component scanning, this basically enables us to define other annotations like 
+@Configuration, @Service, @Controller, @Repository etc which in turn is identified by Spring and register 
+them as components in spring application context.
+
+we define a "main" method which serves as the entry point.
+
+
+--- Testing Spring application :
+
+Spring Initializer gives a test suite to get started.
+
+It uses Junit4 library for test cases.
+
+-- @RunWith(SpringRunner.class) and @SpringBootTest annotations are tasked to load the Spring Application context for the test.
+
+-- @Controller :
+
+On it's own @Controller annotation just signals @ComponentScan to create bean of the underlying class in Spring Application Context.
+
+Similar is the role of other annotations like @Service, @Component, @Repository etc.
+@Controller is defined because it gives a valid description of the utility of this class.
+
+Note :
+
+@WebMvcTest(<SomeClassName>.class) -- This annotation provides annotations for MVC.
+
+
+So, what exactly is MVC (Model View Controller) :
+
+Controller : It is basically the front line soldier who accepts client requests and route to specific methods based on request's path.
+
+Model : It's used optionally to map response to POJO that can be converted into a view.
+
+View : A html template that gets downloaded by browser and then rendered on it.
+
+so basically, browser downloads fronend code and then renders it.
+Alternative to that is that we can give one template instead of client side code which will be downloaded by browser and then rendered on screen.
+
+--- Spring Boot Dev Tools :
+
+It provides following features :
+
+1. Automatic application restart when application code changes.
+2. Automatic browser refresh when browser destined resources (e.g. templates, javacript etc changes).
+3. Automatic disable of template caches.
+4. Inbuilt in-memory H2 db.
+
+-- Automatic Application restart using dev tool.
+
+Devtool loads application into two separate class loaders, one loader is responsible for loading code present in /src/main/ 
+and other is responsible for loading dependency.
+
+-- When Spring boot application starts :
+Spring boot's autoconfiguration comes into play and does the following things :
+
+1. Configures and creates the beans in SpringApplicationContext
+2. Configures an embedded Tomcat server in the Spring Application context
+3. Configures thymeleaf view resolver for resolving views.
+
+Spring vs Spring boot :
+
+Actuator is present in Spring boot but not in Spring.
+Actuator provides runtime insights into the inner workings of an application, including metrics, thread dump information, application health
+and environment variables.

@@ -1,0 +1,63 @@
+---- MVC architecture (Model-View-Controller) :
+
+lombok framework :
+
+It has @Data annotation that generates getters and setters and constructors that initializes final members.
+
+Controllers response can be of two forms :
+
+1. Html content generated from a view.
+2. JSON response from REST API in response object.
+
+@Slf4j is used for logging.
+
+@RequestMapping annotation defines the context mapping i.e. prefix of url or base path.
+Subsequently, we have @GetMapping etc. for specific path related mapping.
+
+--- Model :
+
+Model is that interface that carries data from controller to a view.
+
+Data placed into Model's attribute (model.addAttribute(key,value)) is visible to Servlet's response and can be rendered on a view.
+
+Note: Thymeleaf or JSP is primarily used for creating/rendering a view.
+
+Thymeleaf or other view generating libraries have access to Servlet requests and can't read model directly.
+So, Spring copies data from model to Servlet.
+
+Note : We can execute spring boot application using command mvn spring-boot:run or java -jar.
+
+--- Request Validation :
+
+Spring supports Java’s Bean Validation API (also known as JSR-303;
+https://jcp.org/en/jsr/detail?id=303) for creating validation at controller's level.
+
+e.g. javax.validation.constraints.Digits;
+
+or import org.hibernate.validator.constraints.CreditCardNumber;
+
+@NotBlank(message="Name is required")
+private String name;
+
+@Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$",
+message="Must be formatted MM/YY")
+private String ccExpiration;
+
+
+--- Application.properties :
+
+This class will have properties that needs to be setup for Spring boot runtime assignment.
+
+--- WebMvcConfigurer :
+
+We can directly route requests to a view without explicitly defining a controller for it using WebMvcConfigurer interface.
+
+e.g. 
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+@Override
+public void addViewControllers(ViewControllerRegistry registry) {
+registry.addViewController("/").setViewName("home");
+}
+}
