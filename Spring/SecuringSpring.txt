@@ -1,0 +1,135 @@
+---- Spring Security
+
+Pom dependency :
+
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+
+When the application starts, autoconfiguration will detect that Spring Security
+is in the classpath and will set up some basic security configuration.
+
+The username is user. As for the password, it’s randomly generated and written
+to the application log file.
+
+-- Configuring Spring Security :
+
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+-- Following code can be used to configure user store i.e. place where user login data would be stored.
+
+@Override
+protected void configure(AuthenticationManagerBuilder auth)
+throws Exception {
+...
+}
+
+}
+
+-- For in memory :
+
+auth
+.inMemoryAuthentication()
+.withUser("buzz")
+.password("infinity")
+.authorities("ROLE_USER")
+.and()
+.withUser("woody")
+.password("bullseye")
+.authorities("ROLE_USER");
+
+above is called builder-style API.
+
+-- For JDBC user store :
+
+@Autowired
+DataSource dataSource;
+
+auth
+.jdbcAuthentication()
+.dataSource(dataSource);
+
+
+-- PasswordEncoder :
+
+No matter which password encoder you use, it’s important to understand that the
+password in the database is never decoded. Instead, the password that the user enters
+at login is encoded using the same algorithm, and it’s then compared with the
+encoded password in the database.
+
+-- LDAP (Lightweight Directory Access Protocol) :
+
+It is basically a centralized server that is used to store/retrieve user authentication information.
+It follows client/server model, client requests LDAP server with some parameters to figure out authentication information.
+
+-- LDAP in localhost
+
+By default, Spring Security’s LDAP authentication assumes that the LDAP server is
+listening on port 33389 on localhost. But if your LDAP server is on another machine,
+you can use the contextSource() method to configure the location:
+@Override
+protected void configure(AuthenticationManagerBuilder auth)
+throws Exception {
+auth
+.ldapAuthentication()
+.userSearchBase("ou=people")
+.userSearchFilter("(uid={0})")
+.groupSearchBase("ou=groups")
+.groupSearchFilter("member={0}")
+.passwordCompare()
+.passwordEncoder(new BCryptPasswordEncoder())
+.passwordAttribute("passcode")
+.contextSource()
+.url("ldap://tacocloud.com:389/dc=tacocloud,dc=com");
+}
+
+-- @Service :
+
+@Service.
+This is another one of Spring’s stereotype annotations that flag it for inclusion in Spring’s
+component scanning, so there’s no need to explicitly declare this class as a bean.
+Spring will automatically discover it and instantiate it as a bean.
+
+
+Note : After configuring spring security,
+
+if you start it up at this point, you’ll notice that you can’t even get to the
+registration page without being prompted to log in. That’s because, by default, all
+requests require authentication. Let’s look at how web requests are intercepted and
+secured so you can fix this strange chicken-and-egg situation.
+
+
+-- Securing Web Requests :
+
+To configure the security rules where new users have access to registration page etc, let me introduce you to WebSecurityConfigurer-
+Adapter’s other configure() method:
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+...
+}
+
+This configure() method accepts an HttpSecurity object, which can be used to configure
+how security is handled at the web level.
+
+-- Securing requests :
+
+You need to ensure that requests for /design and /orders are only available to authenticated
+users; all other requests should be permitted for all users. The following configure()
+implementation does exactly that:
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+http
+.authorizeRequests()
+.antMatchers("/design", "/orders")
+.hasRole("ROLE_USER")
+.antMatchers(“/”, "/**").permitAll()
+;
+}
+
+The order of these rules is important. Security rules declared first take precedence
+over those declared lower down.
+
+Note : Even login and logout can be achieved via HttpSecurity object.
+

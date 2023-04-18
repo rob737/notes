@@ -1,0 +1,264 @@
+---- JDBC and JPA:
+
+Spring supports both JDBC and JPA.
+
+
+-- Example of JDBC :
+
+private JdbcTemplate jdbc;
+
+@Override
+public Ingredient findOne(String id) {
+return jdbc.queryForObject(
+"select id, name, type from Ingredient where id=?",
+this::mapRowToIngredient, id);
+}
+
+Note : the line this::mapRowToIngredient is a ResultRowMapper that is used to map each SQL row to an object because java understands object and not SQL.
+
+Note : Above syntax is basically Java 8's method reference and lambda.
+
+
+private Ingredient mapRowToIngredient(ResultSet rs, int rowNum)
+throws SQLException {
+return new Ingredient(
+rs.getString("id"),
+rs.getString("name"),
+Ingredient.Type.valueOf(rs.getString("type")));
+}
+
+
+--
+
+public Ingredient findOne(String id) {
+Connection connection = null;
+PreparedStatement statement = null;
+ResultSet resultSet = null;
+try {
+connection = dataSource.getConnection();
+statement = connection.prepareStatement(
+"select id, name, type from Ingredient");
+statement.setString(1, id);
+resultSet = statement.executeQuery();
+Ingredient ingredient = null;
+if(resultSet.next()) {
+ingredient = new Ingredient(
+resultSet.getString("id"),
+resultSet.getString("name"),
+Ingredient.Type.valueOf(resultSet.getString("type")));
+}
+return ingredient;
+} catch (SQLException e) {
+// ??? What should be done here ???
+}
+
+-- maven dependency :
+
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-jdbc</artifactId>
+</dependency>
+
+-- H2 database :
+
+<dependency>
+<groupId>com.h2database</groupId>
+<artifactId>h2</artifactId>
+<scope>runtime</scope>
+</dependency>
+
+-- @Autowired usage :
+
+@Autowired
+public JdbcIngredientRepository(JdbcTemplate jdbc) {
+this.jdbc = jdbc;
+}
+
+this tells the SpringApplication context to inject JdbcTemplate into corresponding repository class (JdbcIngredientRepository).
+
+-- Doubt :
+
+@SessionAttributes("order") -- what is this for?
+
+@RequestMapping("/design")
+@SessionAttributes("order")
+public class DesignTacoController {
+@ModelAttribute(name = "order")
+public Order order() {
+return new Order();
+}
+
+Answer :
+
+As with the taco() method, the
+@ModelAttribute annotation on order() ensures that an Order object will be created
+in the model. But unlike the Taco object in the session, you need the order to be
+present across multiple requests so that you can create multiple tacos and add them
+to the order.
+
+But unlike the Taco object in the session, you need the order to be
+present across multiple requests so that you can create multiple tacos and add them
+to the order. The class-level @SessionAttributes annotation specifies any model
+Listing 3.12 Saving taco designs and linking them to orders
+
+objects like the order attribute that should be kept in session and available across
+multiple requests.
+
+Note : 
+
+1. If there’s a file named schema.sql in the root of the application’s classpath, then
+	the SQL in that file will be executed against the database when the application starts.
+
+2. To pre-load data into database, there is a predefined file data.sql that can be placed in classpath with related queries.
+
+Default application classpath : /src/main/
+
+--- Understand SimpleJdbcInsert and Object Mapper while implementing something :
+
+Map<String, Object> values =
+objectMapper.convertValue(order, Map.class);
+
+values.put("placedAt", order.getPlacedAt());
+
+long orderId =
+orderInserter
+.executeAndReturnKey(values)
+.longValue();
+
+
+private SimpleJdbcInsert orderInserter;
+private SimpleJdbcInsert orderTacoInserter;
+private ObjectMapper objectMapper;
+@Autowired
+public JdbcOrderRepository(JdbcTemplate jdbc) {
+this.orderInserter = new SimpleJdbcInsert(jdbc)
+.withTableName("Taco_Order")
+.usingGeneratedKeyColumns("id");
+this.orderTacoInserter = new SimpleJdbcInsert(jdbc)
+.withTableName("Taco_Order_Tacos");
+this.objectMapper = new ObjectMapper();
+}
+
+---
+
+SimpleJdbcInsert has a couple of useful methods for executing the insert:
+
+execute() and executeAndReturnKey(). Both accept a Map<String, Object>, where
+the map keys correspond to the column names in the table the data is inserted into.
+The map values are inserted into those columns.
+
+Jackson's ObjectMapper is used to convert POJO to a map.
+
+---
+
+Once the order is saved, you don’t need it hanging around in a session anymore.
+In fact, if you don’t clean it out, the order remains in session, including its associated
+tacos, and the next order will start with whatever tacos the old order contained.
+Therefore, the processOrder() method asks for a SessionStatus parameter and
+calls its setComplete() method to reset the session.
+
+Note :
+
+Spring’s JdbcTemplate, along with SimpleJdbcInsert, makes working with relational
+databases significantly simpler than plain vanilla JDBC. But you may find that
+JPA makes it even easier.
+
+---
+
+Spring Data JPA -- this is used for relational DB operation with Java.
+
+
+-- JPA's ability to automatically create repository from interface is one outstanding edge over others.
+
+To include it as dependency :
+
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+
+It also brings hibernate as underlying implementation.
+
+
+-- import javax.persistence.Entity
+
+you need to mark your POJO with @Entity annotation for JPA to consider it.
+
+And its id property must be annotated with @Id to designate it as the property that will
+uniquely identify the entity in the database.
+
+-- 
+
+JPA requires that entities have a noarguments
+constructor, so Lombok’s @NoArgsConstructor does that for you.
+
+
+-- @ManyToMany 
+
+To declare the relationship between a Taco and its associated Ingredient list, you
+annotate ingredients with @ManyToMany. A Taco can have many Ingredient objects,
+and an Ingredient can be a part of many Tacos.
+
+You’ll also notice that there’s a new method, createdAt(), which is annotated with
+@PrePersist. You’ll use this to set the createdAt property to the current date and
+time before Taco is persisted.
+
+-- @Table
+
+@Table. This specifies that Order entities should
+be persisted to a table named Taco_Order in the database.
+
+-- Declaring JPA repositories 
+
+public interface IngredientRepository
+extends CrudRepository<Ingredient, String> {
+}
+
+CrudRepository declares about a dozen methods for CRUD (create, read, update,
+delete) operations. 
+
+Notice that it’s parameterized, with the first parameter being the
+entity type the repository is to persist, and the second parameter being the type of the
+entity ID property.
+
+Note : 
+Spring Data JPA—there’s no need to write
+an implementation! When the application starts, Spring Data JPA automatically generates
+an implementation on the fly. This means the repositories are ready to use from
+the get-go. Just inject them into the controllers like you did for the JDBC-based implementations,
+and you’re done.
+
+Note : The methods provided by CrudRepository are great for general-purpose persistence
+of entities.
+
+-- What about custom defined complex repository methods in JPA?
+
+Answer :
+
+Repository methods are composed of 4 things,
+a verb, an optional subject, the word By, and a predicate. 
+
+e.g. List<Order> findByDeliveryZip(String deliveryZip);
+
+In the case of findByDelivery-
+Zip(), the verb is find and the predicate is DeliveryZip; the subject isn’t specified and is
+implied to be an Order. 
+
+predicate is basically the tool using which actions mentioned in verb would be performed.
+
+e.g. If method name is readOrdersByDeliveryZipAndPlacedAtBetween()
+
+then Spring JPA will figure out by word read that it needs to be a get operation, 
+predicate or column name is DeliveryZip and value to be identified by first parameter.
+And -- it will tell JPA that there is one more column to be considered.
+
+PlacedAtBetween() -- this will match DeliveryZip column value between two values as supplied by 2nd and 3rd argument.
+
+PlacedAtBetween can be replaced by many names as specified in page 83 like isLike, isFalse etc.
+
+For complex queries that cannot be identified with method names alone, use @Query annotation.
+
+e.g.
+
+@Query("Order o where o.deliveryCity='Seattle'")
+List<Order> readOrdersDeliveredInSeattle();
