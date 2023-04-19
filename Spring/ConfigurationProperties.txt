@@ -1,0 +1,173 @@
+-- What are configuration properties :
+These are nothing more than properties on beans in the Spring Application context.
+
+-- 2 types :
+
+1. Bean wiring—Configuration that declares application components to be created
+   as beans in the Spring application context and how they should be injected into
+   each other. 
+   
+2. Property injection—Configuration that sets values on beans in the Spring application
+   context.
+
+-- @Bean over method
+
+an @Bean-annotated
+method is likely to both instantiate a bean and then set values to its properties
+
+e.g.
+
+@Bean
+public DataSource dataSource() {
+return new EmbeddedDataSourceBuilder()
+.setType(H2)
+.addScript("taco_schema.sql")
+.addScripts("user_data.sql", "ingredient_data.sql")
+.build();
+}
+
+-- Spring Environment Abstraction :
+
+Spring Environment Abstraction can pick properties from following places:
+
+1. JVM System properties
+2. OS level Environment Variables
+3. Command line
+4. Application properties file
+5. Application.yml file.
+
+It aggregates properties from all above sources into Spring environment from where beans can be injected with required properties.
+
+-- Enable https :
+
+To enable https, we need to have ssl configured i.e. basically we need certificates on server that can be used to encrypt data.
+
+Steps :
+1. First create jks file using below command :
+
+   keytool -keystore mykeys.jks -genkey -alias tomcat -keyalg RSA
+   
+2. Define path in properties
+   
+   server:
+	port: 8443
+	ssl:
+	key-store: file:///path/to/mykeys.jks
+	key-store-password: letmein
+	key-password: letmein    
+
+if you package key-store within the application JAR file, you’ll use a classpath:
+URL to reference it.
+
+-- Logging :
+
+By default, Spring uses lombok's logging , if we need to override it then we can create logback.xml in spring's classpath root (i.e. src/main/resources).
+
+<configuration>
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+<encoder>
+<pattern>
+%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+</pattern>
+</encoder>
+</appender>
+<logger name="root" level="INFO"/>
+<root level="INFO">
+<appender-ref ref="STDOUT" />
+</root>
+</configuration>
+
+By default, the log files rotate once they reach 10 MB in size.
+   
+   
+-- @ConfigurationProperties
+
+we can set properties on a bean using @ConfigurationProperties.
+
+
+e.g. @ConfigurationProperties(prefix="taco.orders")
+
+prefix denotes that we need to use configuration property starting with taco.orders.
+
+if you need to make a quick change while in production, you can do so without
+having to rebuild and redeploy the application by setting the taco.orders.pageSize
+property as an environment variable:
+$ export TACO_ORDERS_PAGESIZE=10
+
+-- Metadata for configuration properties :
+
+To create metadata for your custom configuration properties, you’ll need to create
+a file under the META-INF (for example, in the project under src/main/resources/
+META-INF) named additional-spring-configuration-metadata.json.
+
+Spring Boot’s flexible property naming allows for variations in property names
+such that taco.orders.page-size is equivalent to taco.orders.pageSize.
+
+-- Configuration with profiles :
+
+When applications are deployed to different run-time environments, usually some
+configuration details differ.
+
+Spring profiles : 
+Profiles are a type of conditional
+configuration where different beans, configuration classes, and configuration
+properties are applied or ignored based on what profiles are active at runtime.
+
+Note : To make environment specific property files use below pattern to define file :
+
+application-{profile name}.yml or
+application-{profile name}.properties
+
+profile-name can be anything and corresponding yml file must be defined.
+
+e.g. application-prod.yml for profile prod.
+
+-- Now, question is how do you decide at run time which property file to be used?
+
+This can be achieved by making one of the profiles as active.
+
+for development,
+
+in application.yml, we can do this:
+
+spring:
+profiles:
+active:
+- dev
+
+but that would fix the profile.
+
+For deployment, we can set active profile at runtime using command:
+
+export SPRING_PROFILES_ACTIVE=prod
+
+From then on, any applications deployed to that machine will have the prod profile
+active and the corresponding configuration properties would take precedence over
+the properties in the default profile.
+
+
+-- Note for deployment :
+
+It’s also worth noting that if you deploy a Spring application to Cloud Foundry, a profile
+named cloud is automatically activated for you. If Cloud Foundry is your production
+environment, you’ll want to be sure to specify production-specific properties
+under the cloud profile.
+
+-- Conditionally creating beans :
+
+But suppose there are some beans that you only need to be created if a certain
+profile is active. In that case, the @Profile annotation can designate beans as only
+being applicable to a given profile.
+
+
+@Bean
+@Profile("dev")
+public CommandLineRunner dataLoader(IngredientRepository repo,
+UserRepository userRepo, PasswordEncoder encoder) {
+...
+}
+
+@Profile({"dev", "qa"}) -- if that bean needs to be initialized for multiple environments.
+
+@Profile("!prod") -- If that bean needs to be initialized for any environment except production.
+
