@@ -1,1 +1,150 @@
-Continue -- 137
+--- REST Services :
+
+@RestController annotation :
+
+tells Spring that all handler methods in the controller should have their return
+value written directly to the body of the response, rather than being carried in the
+model to a view for rendering.
+
+-- TO restrict response from REST API to only JSON :
+
+@RequestMapping(path="/design",
+produces={"application/json"})
+
+-- To capture parameter :
+
+@GetMapping("/{id}")
+public Taco tacoById(@PathVariable("id") Long id)
+
+e.g. medicines/chawan so id would be chawan.
+
+
+-- Optional class
+
+Optional<Taco> optTaco = tacoRepo.findById(id);	
+
+-- Sample Read API
+@GetMapping("/{id}")
+public ResponseEntity<Taco> tacoById(@PathVariable("id") Long id) {
+Optional<Taco> optTaco = tacoRepo.findById(id);
+if (optTaco.isPresent()) {
+return new ResponseEntity<>(optTaco.get(), HttpStatus.OK);
+}
+return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+}
+
+-- Sample POST API
+
+@PostMapping(consumes="application/json")
+@ResponseStatus(HttpStatus.CREATED)
+public Taco postTaco(@RequestBody Taco taco) {
+return tacoRepo.save(taco);
+}
+
+-- PUT vs PATCH
+
+PUT is basically complete replacement.
+
+PATCH is basically partial update keeping other things intact.
+
+e.g. of PUT
+
+@PutMapping("/{orderId}")
+public Order putOrder(@RequestBody Order order) {
+return repo.save(order);
+}
+This could work, but it would require that the client submit the complete order
+data in the PUT request.
+
+e.g. of PATCH 
+
+@PatchMapping(path="/{orderId}", consumes="application/json")
+public Order patchOrder(@PathVariable("orderId") Long orderId,
+@RequestBody Order patch) {
+Order order = repo.findById(orderId).get();
+if (patch.getDeliveryName() != null) {
+order.setDeliveryName(patch.getDeliveryName());
+}
+
+Even though PATCH semantically implies a partial update, it’s up to
+you to write code in the handler method that actually performs such an update.
+
+
+-- Delete :
+
+For delete, send HTTP status is 204
+(NO CONTENT)
+
+-- HATEOAS (Hypermedia as the engine of Application state) :
+
+why do we need it ?
+
+one way of defining rest api is like we do in Napses i.e. client knows the exact pattern of url that needs to be formed.
+
+"ingredients": [
+{"id": "FLTO", "name": "Flour Tortilla", "type": "WRAP"}]
+
+What hateos does is it generates a link itself related to the resource that is being asked for and client just need to call that link(present under
+
+_links key).
+
+i.e. If the client wants to deal with a particular ingredient, it only needs to follow the self link for that ingredient.
+
+e.g. 
+
+{
+"name": "Corn Tortilla", "type": "WRAP",
+"_links": {
+Listing 6.3 A list of taco resources that includes hyperlinks
+Enabling hypermedia 151
+"self": { "href": "http://localhost:8080/ingredients/COTO" }
+}
+}
+
+To include HATEOAS:
+
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-hateoas</artifactId>
+</dependency>
+
+--- Spring Data REST :
+
+Spring Data REST is another member of the Spring Data family that automatically
+creates REST APIs for repositories created by Spring Data. By doing little more than
+adding Spring Data REST to your build, you get an API with operations for each
+repository interface you’ve defined.
+
+To start using Spring Data REST, you add the following dependency to your build:
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-data-rest</artifactId>
+</dependency>
+
+Believe it or not, that’s all that’s required to expose a REST API in a project that’s
+already using Spring Data for automatic repositories.
+
+
+---- REST Template to consume REST APIs.
+
+It is basically a client for consuming REST APIs.
+like we have done Axios Client in Napses project.
+
+How to declare ? 
+
+RestTemplate rest = new RestTemplate();
+
+or you can declare it as a bean and inject it where you need it:
+
+@Bean
+public RestTemplate restTemplate() {
+return new RestTemplate();
+}
+
+e.g. Sample GET OPeration 
+
+public Ingredient getIngredientById(String ingredientId) {
+return rest.getForObject("http://localhost:8080/ingredients/{id}",
+Ingredient.class, ingredientId);
+}
+
