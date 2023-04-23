@@ -1,0 +1,86 @@
+---
+
+spring-boot:run goal : this can be used to build application.
+
+--
+
+That said, you’re probably wondering how to deploy a Spring Boot application to a
+more traditional application server environment such as Tomcat, WebSphere, or Web-
+Logic. In those cases, executable JAR files and Groovy source code won’t work. For
+application server deployment, you’ll need your application wrapped up in a WAR file.
+
+-- Deployment choices 
+
+1. Executable JAR using Maven, Gradle, or Spring Boot CLI
+   Deployed to Cloud environments, including Cloud Foundry and Heroku, as
+   well as container deployment, such as with Docker
+
+2. WAR using Maven or Gradle 
+   Deployed to Java application servers or cloud environments such as Cloud Foundry.
+
+-- Deploying to Standalone tomcat server :
+
+But if we’re going to deploy the application to a Java application server,
+we’re going to need to build a WAR file. And so that the application server will know how
+to run the application, we’ll also need to include a servlet initializer in that WAR file.
+
+But that WAR file will be
+useless unless it includes a web.xml file or a servlet initializer to enable Spring MVC’s
+DispatcherServlet.
+
+
+mvn package to create a build using maven.
+
+-- Deployment to Tomcat
+
+For Tomcat, you can deploy an application by copying the WAR file into Tomcat’s
+webapps directory. If Tomcat is running (or once it starts up if it isn’t currently running),
+it will detect the presence of the WAR file, expand it, and install it.
+
+-- Creating production profile for DB 
+
+it may seem obvious that in
+order to use some database other than the embedded H2 database, we simply need to
+declare our own DataSource bean, overriding the auto-configured DataSource, to reference
+a production database of our choosing.
+
+Here the DataSource type is Tomcat’s org.apache.tomcat.jdbc.pool.DataSource,
+not to be confused with javax.sql.DataSource, which it ultimately implements.
+
+
+Note :
+
+Rather than replace the
+auto-configured DataSource bean, we can configure it via properties in application.
+yml or application.properties.
+
+---
+spring:
+profiles: production
+datasource:
+url: jdbc:postgresql://localhost:5432/readinglist
+username: habuma
+password: password
+jpa:
+database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+Notice that this excerpt starts with --- and the first property set is spring.profiles.
+This indicates that the properties that follow will only be applied if the “production”
+profile is active.
+
+--- database migration libraries :
+
+A better choice is to use a database migration library. Database migration libraries
+work from a set of database scripts and keep careful track of the ones that have already
+been applied so that they won’t be applied more than once.
+
+
+<dependency>
+<groupId>org.liquibase</groupId>
+<artifactId>liquibase-core</artifactId>
+</dependency>
+
+--- Pushing to cloud :
+
+PAAS : Platform as a service : Instead of on premise servers, we leverage cloud infrastructure to deploy and scale our application.

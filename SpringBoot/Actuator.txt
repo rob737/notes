@@ -1,0 +1,109 @@
+--- What is actuator 
+
+The Actuator
+offers production-ready features such as monitoring and metrics to Spring Boot
+applications. The Actuator’s features are provided by way of several REST endpoints
+a remote shell, and Java Management Extensions (JMX).
+
+--- use cases apart from above :
+
+Through the Actuator, you can find out how beans are wired together in the
+Spring application context, determine what environment properties are available to
+your application, get a snapshot of runtime metrics, and more
+
+
+-- To enable actuator 
+
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+
+
+-- It can be used to demystify spring's auto configuration
+
+The Actuator has
+endpoints that give you that missing application component map as well as some
+insight into the decisions that auto-configuration made when populating the Spring
+application context.
+
+The most essential endpoint for exploring an application’s Spring context is the /beans
+endpoint.
+
+Properties that we get from /beans actuator :
+
+- bean—The name or ID of the bean in the Spring application context
+■ resource—The location of the physical .class file (often a URL into the built
+JAR file, but this might vary depending on how the application is built and run)
+■ dependencies—A list of bean IDs that this bean is injected with
+■ scope—The bean’s scope (usually singleton, as that is the default scope)
+■ type—The bean’s Java type
+
+
+-- /autoconfig actuator url
+
+
+As mentioned in chapter 2, Spring Boot auto-configuration is built upon Spring
+conditional configuration. It provides several configuration classes with @Conditional
+annotations referencing conditions that decide whether or not beans should be automatically
+configured. The /autoconfig endpoint provides a report of all the conditions
+that are evaluated, grouping them by which conditions passed and which failed.
+
+-- /env
+
+The /env endpoint produces a list of all of the environment properties available to
+the application, whether they’re being used or not.
+
+-- Rest endpoints
+
+It might be helpful to have a list of all of the
+endpoints exposed by the application.
+The /mappings endpoint provides such a list.
+
+
+--- Monitoring and snapshot related actuators
+
+-- /metrics endpoint
+
+Knowing the application’s memory circumstances (available vs. free), for
+instance, might help you decide if you need to give the JVM more or less memory to work
+with. For a web application, it can be helpful knowing at a glance, without scouring web
+server log files, if there are any requests that are failing or taking too long to serve.
+The /metrics endpoint provides a snapshot of various counters and gauges in a
+running application.
+
+-- /trace for tracing web requests
+
+The /trace endpoint reports details of all web requests, including details such as
+the request method, path, timestamp, and request and response headers.
+
+-- /dump for dumping thread activity (like there was a use case in Napses)
+
+The /dump endpoint produces a snapshot of current
+thread activity.
+
+-- /health as the name signifies
+
+-- /shutdown as the name signifies
+
+-- /info to fetch application's runtime information
+
+-- JMX (Java Management Extensions)
+
+JMX (Java Management Extensions) and PM2 are both tools that can be used to manage and monitor applications,
+ but they are used in different contexts and for different purposes.
+
+JMX is a Java technology that provides a standard way to manage and monitor Java applications and services.
+ It allows developers to create managed beans (MBeans) that expose information and operations about their applications or services,
+ and make them available through a management interface. JMX is typically used in enterprise environments
+ to ensure the reliability, performance, and scalability of Java applications.
+
+On the other hand, PM2 is a process manager for Node.js applications that helps you manage and 
+keep your application running continuously. It provides features such as monitoring, logging, clustering, and automatic restarts.
+ PM2 is designed specifically for Node.js applications and is not applicable to Java applications.
+
+In summary, JMX is a technology for managing and monitoring Java applications, while PM2 is a process manager for Node.js applications.
+ While they share some similarities in terms of monitoring and management, they are used in different contexts and for different purposes.
+ 
+ 
+ so, what I feel is JMX with tomcat is what pm2 is for node js.
