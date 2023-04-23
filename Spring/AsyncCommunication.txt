@@ -1,3 +1,191 @@
 --- Async Communication (30 pages) :
 
-Continue : 178
+3 ways that Spring enables Asynchronous processing :
+
+1. JMS (Java Messaging Service)
+2. RabbitMQ & Advanced Message queuing protocol (AMQP)
+3. Kafka
+
+-- JMS (Java Messaging Services)
+
+Spring supports JMS through a template-based abstraction known as JmsTemplate.
+Using JmsTemplate, it’s easy to send messages across queues and topics from the producer
+side and to receive those messages on the consumer side. Spring also supports
+the notion of message-driven POJOs.
+
+To include this dependency :
+
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-activemq</artifactId>
+</dependency>
+
+Note: ActiveMQ is a broker, Artemis is a newer version.
+
+For non-development environment, we need to setup below properties :
+
+spring:
+activemq:
+broker-url: tcp://activemq.tacocloud.com
+user: tacoweb
+password: l3tm31n
+
+ANALOGY : JMS Template is like JDBC Template and ActiveMQ is a broker which is like underlying Relational DB.
+
+-- Sending Message with JMS Template:
+
+Without JmsTemplate,
+you’d need to write code to create a connection and session with the message broker and handle exceptions manually.
+
+there are really only two methods, send() and convertAndSend()
+
+send() - require a MessageCreator to manufacture a Message object
+convertAndSend () - accept an Object and automatically convert that Object into a Message behind the scenes
+
+SIDE NOTE : only functional interfaces can be converted into Lambda.
+
+-- Adding Headers :
+
+following code still uses convertAndSend(), but it also uses a MessagePostProcessor
+to add the X_ORDER_SOURCE header before the message is sent:
+
+jms.convertAndSend("tacocloud.order.queue", order, new MessagePostProcessor() {
+@Override
+public Message postProcessMessage(Message message) throws JMSException {
+message.setStringProperty("X_ORDER_SOURCE", "WEB");
+return message;
+}
+});
+
+-- Receiving JMS message :
+
+It's a "PULL" based model, thread blocks untill it receives a message from the broker.
+
+Note: "PUSH" model doesn't block a thread.
+
+Methods for PULL model :
+
+1. Message receive(Destination destination) throws JmsException;
+
+2. Object receiveAndConvert(String destinationName) throws JmsException;
+
+
+Methods for PUSH Model :
+
+To create a message listener that reacts to JMS messages, you simply must annotate
+a method in a component with @JmsListener.
+
+@JmsListener(destination = "tacocloud.order.queue")
+public void receiveOrder(Order order) {
+ui.displayOrder(order);
+}
+
+The receiveOrder() method is annotated with JmsListener to “listen” for messages
+on the tacocloud.order.queue destination. It doesn’t deal with JmsTemplate, nor is it
+explicitly invoked by your application code. Instead, framework code within Spring
+waits for messages to arrive on the specified destination, and when they arrive, the
+receiveOrder() method is invoked automatically with the message’s Order payload as
+a parameter.
+
+--- RabbitMQ & Advanced Message queuing protocol (AMQP)
+
+RabbitMQ is implementation of AMQP.
+
+JMS is one to one mapping with a queue directly.
+
+Flow of RabbitMQ is as follows :
+
+Producer --(pushes the message)-->Broker(RabbitMQ)--> Receiver (either PULL or PUSH model).
+
+Broker(RabbitMQ) can be divided into following components :
+1. Exchange 
+2. Binding
+3. Queue
+
+
+So, Producer publishes a message to an exchange with message routing key etc.
+
+based on the message routing key, exchange binds or routes the message to a queue.
+
+from that queue, listener listens it.
+
+Common default exchanges :
+1. Default : message key servers as the queue name where exchange redirects the message.
+
+2. Topic : Routes a message to one or more queues where the binding key (which
+			may contain wildcards) matches the message’s routing key.
+
+3. Fanout : Routes messages to all bound queue irrespective of message key.
+
+4. Direct : one to one mapping to the queue like JMS i.e. binding key is same as message routing key.
+
+Note : 
+The most important thing to understand is that messages are sent to exchanges with
+routing keys and they’re consumed from queues. How they get from an exchange to a
+queue depends on the binding definitions and what best suits your use cases.
+
+--- Sending Message with RabbitTemplate
+
+JmsTemplate methods, which only routed messages to a given queue or topic.
+RabbitTemplate methods send messages in terms of exchanges and routing keys.
+
+e.g.
+
+void send(String routingKey, Message message) throws AmqpException;
+void send(String exchange, String routingKey, Message message)
+throws AmqpException;
+
+void convertAndSend(String routingKey, Object message)
+throws AmqpException;
+void convertAndSend(String exchange, String routingKey,
+Object message) throws AmqpException;
+
+--- Receiving message from RabbitMQ
+
+As with JMS, you have two choices:
+ Pulling messages from a queue with RabbitTemplate using receive method
+ Having messages pushed to a @RabbitListener-annotated method
+
+But there are a few obvious differences in the method signatures. First, none of
+these methods take an exchange or routing key as a parameter. That’s because
+exchanges and routing keys are used to route messages to queues, but once the messages
+are in the queue, their next destination is the consumer who pulls them off the
+queue.
+
+That is, a call to receive() will return immediately, potentially with a null value if no
+messages are available. This is a marked difference from how the receive() methods
+behave in JmsTemplate i.e. it is non blocking.
+
+--- Apache Kafka :
+
+Kafka is like any other broker.
+
+Kafka is designed to run in a cluster(i.e. group of topics), affording great scalability. And by partitioning
+its topics across all instances in the cluster, it’s very resilient. Whereas RabbitMQ
+deals primarily with queues in exchanges, Kafka utilizes topics only to offer pub/sub
+messaging.
+
+Unlike the JMS and RabbitMQ options, however, there isn’t a Spring
+Boot starter for Kafka. Have no fear, though; you’ll only need one dependency:
+
+<dependency>
+<groupId>org.springframework.kafka</groupId>
+<artifactId>spring-kafka</artifactId>
+</dependency>
+
+
+When
+sending messages in Kafka, you can specify the following parameters to guide how the
+message is sent:
+ The topic to send the message to (required for send())
+ A partition to write the topic to (optional)
+ A key to send on the record (optional)
+ A timestamp (optional; defaults to System.currentTimeMillis())
+ The payload (required)
+
+
+-- Kafka listeners:
+
+KafkaTemplate differs from JmsTemplate and RabbitTemplate in that it doesn’t offer any
+methods for receiving messages. That means the only way to consume messages from
+a Kafka topic using Spring is to write a message listener.
