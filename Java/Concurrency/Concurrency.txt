@@ -1,0 +1,79 @@
+--- Concurrency (130 pages)
+
+concurrency is basically dividing a task into multiple tasks that may or may not execute at the same time.
+
+
+-- Moore's law :
+
+The number of transistors that can be placed on an IC doubles after every two years.
+
+-- process :
+
+A process is a self-contained program running within its own address space. 
+A multitasking operating system can run more than one process (program) at a time 
+by periodically switching the CPU from one process to another, 
+while making it look as if each process is chugging along on its own.
+
+In contrast, concurrent systems like the one used in Java share resources like memory and I/O, so the fundamental difficulty in writing multithreaded programs 
+is coordinating the use of these resources between different thread-driven tasks, 
+so that they cannot be accessed by more than one task at a time.
+
+Each task executes as a process in its own address space, so there’s no possibility of interference between tasks. 
+More importantly, there’s no need for the tasks to communicate with each other because they’re all completely independent.
+
+-- Java doesn't support creating multiple processes but multiple threads within a process.
+
+Instead of forking external processes in a multitasking operating system, 
+threading creates tasks within the single process represented by the executing program.
+
+Java’s threading is preemptive, which means that a scheduling mechanism provides time slices for each thread, 
+periodically interrupting a thread and context switching to another thread so that each one is given a reasonable amount of time to drive its task.
+
+Using multithreading, each of these independent tasks (also called subtasks) is driven by a thread of execution. 
+
+"A thread is a single sequential flow of control within a process."
+
+A single process can thus have multiple concurrently executing tasks, but you program as if each task has the CPU to itself.
+
+so basically, even multithreaeding guarantees concurrent execution but not simultaneous execution.
+
+
+--- Task :
+
+Task is performed by threads.
+To define a task simply implement Runnable.
+
+Thread.yield() -- signals thread executor to schedule other task which is not mandatory though.
+
+--- Thread class :
+
+Each Thread "registers" itself so there is actually a reference to it someplace, 
+and the garbage collector can’t clean it up until the task exits its run( ) and dies.
+
+RunnableExample runnableExample = new RunnableExample();
+Thread thread = new Thread(runnableExample);
+
+Flow is like below :
+
+1. Create a thread using syntax : Thread t = new Thread();
+
+2. Now, you have to assign a task or critical section that this thread must execute which is defined by Runnable interface's run method.
+
+3. t = new Thread(<Runnable object reference>)
+
+-- native keyword
+
+e.g. private native void start0() 
+
+The native keyword in Java is used in method declarations to indicate that the method is implemented in a platform-dependent way,
+ typically in another programming language like C or C++. When a method is declared as native,
+ it means that the implementation of that method is provided by a non-Java source code, and it must be linked to the Java code at runtime.
+ 
+ 
+ 
+********************* Homework *********************
+
+Understand how threads are created and started : 
+
+basically understand native code thread.start() 
+ 
