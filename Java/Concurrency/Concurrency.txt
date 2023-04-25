@@ -3,6 +3,16 @@
 concurrency is basically dividing a task into multiple tasks that may or may not execute at the same time.
 
 
+********************* Homework *********************
+
+-- Understand how threads are created and started : 
+
+   basically understand native code thread.start() 
+
+-- Understand how Future's get() method behaves, does it block untill all tasks are ready or it blocks untill corresponding future task is ready.
+
+***************************************************
+
 -- Moore's law :
 
 The number of transistors that can be placed on an IC doubles after every two years.
@@ -71,9 +81,73 @@ The native keyword in Java is used in method declarations to indicate that the m
  
  
  
-********************* Homework *********************
 
-Understand how threads are created and started : 
 
-basically understand native code thread.start() 
- 
+
+--- Executors :
+
+Note : It is present in java.util.concurrent package.
+
+Before Executors, client directly manages lifecycle of a thread.
+
+After Executors, client delegates this responsibility to Executor,
+i.e. we can use Executor instead of directly creating threads (It uses command design pattern).
+
+-- FixedThreadPool Executor Service - upfront decide number of threads that is needed.
+Syntax : ExecutorService exec = Executors.newFixedThreadPool(<num of threads>);
+
+-- CachedThreadPool Executor Service - depends on the load underlying library decides the number of threads that needs to be executed.
+Syntax : ExecutorService exec = Executors.newCachedThreadPool();
+
+e.g. this will create 15 threads for CachedThreadPool:
+
+for(int i =0; i<15; i++)
+            executorService.execute(new RunnableExample());
+			
+-- SingleThreadExecutor : It provisions only one thread and it serializes the tasks that is submitted to it and maintain an inherent queue for the same.
+Syntax : ExecutorService exec = Executors.newSingleThreadExecutor();
+
+Note: ExecutorService extends Executor interface and implementation class of execute is ThreadPoolExecutor.
+
+Note : From ThreadPoolExecutor documentation :
+
+		 * If fewer than corePoolSize threads are running, try to
+         * start a new thread with the given command(Runnable object) as its first
+         * task
+		 
+		 For FixedThreadPool, it is defined by number of threads that is passed as parameter in Syntax above.
+		 For CachedThreadPool, it is decided by JVM at runtime based on the maximumPoolSize value.
+		 
+Note : Volatile keyword
+
+In Java, the volatile keyword is used to indicate that a variable's value may be modified asynchronously by multiple threads. 
+When a variable is declared as volatile, the Java memory model ensures that any write to that variable is immediately visible to all other threads 
+that access that variable.	 
+
+--- Producing return values from a task :
+
+A Runnable is a separate task that performs work but it doesn't return a value.
+If we want our task to return a value then we need to implement Callable interface (this is Generic i.e. Callable<Some Type>) rather than Runnable interface.
+
+
+
+***** Creation of thread at OS level ******
+
+The creation of a thread involves several steps:
+
+1. Allocation of resources: The kernel allocates the necessary resources to support a new thread, 
+including a unique thread identifier, a stack, and a register context.
+
+2. Setting up the thread's initial state: The kernel sets up the initial state of the new thread, 
+including setting the program counter to the starting address of the thread's code.
+
+3. Registering the thread with the scheduler: The kernel registers the new thread with the scheduler, 
+which is responsible for determining which thread should be executed next.
+
+4. Scheduling the thread: Once the new thread has been registered with the scheduler, 
+the scheduler determines when to start executing the thread based on a variety of factors, including the priority of the thread and the availability of system resources.
+
+5. Execution: Once the thread is scheduled to run, the kernel sets up the necessary hardware context to allow the thread to execute, 
+and the thread begins executing its code.
+
+ Continue : 830
