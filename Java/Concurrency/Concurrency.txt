@@ -10,6 +10,7 @@ concurrency is basically dividing a task into multiple tasks that may or may not
    basically understand native code thread.start() 
 
 -- Understand how Future's get() method behaves, does it block untill all tasks are ready or it blocks untill corresponding future task is ready.
+ Ans : we call get on a particular future object so it waits untill that particular Future is ready.
 
 ***************************************************
 
@@ -145,9 +146,65 @@ including setting the program counter to the starting address of the thread's co
 which is responsible for determining which thread should be executed next.
 
 4. Scheduling the thread: Once the new thread has been registered with the scheduler, 
-the scheduler determines when to start executing the thread based on a variety of factors, including the priority of the thread and the availability of system resources.
+the scheduler determines when to start executing the thread based on a variety of factors, 
+including the priority of the thread and the availability of system resources.
 
 5. Execution: Once the thread is scheduled to run, the kernel sets up the necessary hardware context to allow the thread to execute, 
 and the thread begins executing its code.
 
- Continue : 830
+--- Sleeping :
+
+Important :
+The call to sleep( ) can throw an InterruptedException, and you can see that this is caught in run( ). 
+Because exceptions won’t propagate across threads back to main( ), 
+you must locally handle any exceptions that arise within a task.
+
+Syntax :
+
+In run() method :
+TimeUnit.MILLISECONDS.sleep(100);
+
+--- Priority :
+
+The priority of a thread conveys the importance of a thread to the scheduler. 
+Although the order in which the CPU runs a set of threads is indeterminate, 
+the scheduler will lean toward running the waiting thread with the highest priority first. 
+However, this doesn’t mean that threads with lower priority aren’t run (so you can’t get deadlocked because of priorities).
+Lower-priority threads just tend to run less often.
+
+Syntax : 
+Thread.currentThread().setPriority(priority);
+
+--- Yield :
+
+When you call yield( ), you are suggesting that other threads of the same priority might be run.
+This is just a hint to scheduler and doesn't guarantee anything.
+
+-- yield() vs sleep() :
+
+sleep : It pauses the thread for specified time during which thread is not scheduled by the scheduler i.e. it isn't active and ready to run during sleep timing.
+yiled : It hints scheduler that it can be context switched with other thread but it will remain active and ready to run.
+
+
+--- Daemon threads :
+
+Daemon thread runs in the background and is active untill the process that spawned this thread is running.
+Syntax :
+Thread thread = new Thread();
+thread.setDaemon(true);
+
+Note :::
+
+You should be aware that daemon threads will terminate their run( ) methods without executing finally clauses.
+
+--- Terminology :
+
+Thread has a task (class that implements Runnable).
+
+--- Joining a thread :
+
+If a thread calls t.join( ) on another thread t, then the calling thread is suspended until the target thread t finishes (when t.isAlive( ) is false). 
+
+--- To make UI non blocking :
+
+use daemon process and put the calculation inside a run( ) method to allow it to be preempted.
