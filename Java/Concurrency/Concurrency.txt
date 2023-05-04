@@ -123,7 +123,9 @@ Note : Volatile keyword
 
 In Java, the volatile keyword is used to indicate that a variable's value may be modified asynchronously by multiple threads. 
 When a variable is declared as volatile, the Java memory model ensures that any write to that variable is immediately visible to all other threads 
-that access that variable.	 
+that access that variable.
+
+Note: It doesn't guarantee thread safe behaviour but synchronized keyword does.	 
 
 --- Producing return values from a task :
 
@@ -230,5 +232,46 @@ Very Important :
 ****************** Homework ****************************
 
 use synchronize keyword to generate odd and even numbers in alternate order.
+solution : we would need wait() and notify() method for it.
 
-continue : 851 (Explicit locks)
+--- Explicit lock objects :
+
+Lock object must be explicitly created, locked and unlocked.
+
+Syntax :
+
+private Lock lock = new ReentrantLock();
+
+lock.lock() ; from this line untill lock.unlock is called, it becomes a critical section and thread safety is ensured.
+lock.unlock()
+
+Important :::
+When you are using Lock objects, it is important to internalize the idiom shown here: Right after the call to lock( ), 
+you must place a try-finally statement with unlock( ) in the finally clause—this is the only way to guarantee that the lock is always released. 
+Note that the return statement must occur inside the try clause to ensure that the unlock( ) doesn’t happen too early and expose the data to a second task.
+
+ReentrantLock can be used to decide whether lock is required or not and also lock can be attained for specific time duration.
+
+--- Atomicity and volatility :
+
+Atomicity : Once operation starts then it can't be interrupted by thread scheduler until it finishes or errored out.
+
+For multiprocessor systems i.e. multi-core(CPU) on a motherboard, visibility can be a problem for atomic operations as CPU's cache can store the result.
+The synchronization mechanism, on the other hand, forces changes by one task on a multiprocessor system to be visible across the application.
+
+Volatile keyword also guarantees this behaviour, it ensures that value is written on memory and read from memory.
+Even synchronization guarantees this behavaiour.
+
+Note : volatile doesn't work when value of a field depends on the previous value (e.g. counter).
+
+Note : javap -c <Java filename> This command can be used to get JVM instructions of Java class. 
+
+--- Atomic Classes :
+
+Examples are AtomicInteger, AtomicLong, AtomicReference etc which provides methods which guarantees atomic methods.
+
+e.g. AtomicInteger atomicInteger = new AtomicInteger(0);
+     atomicInteger.addAndGet(2);
+Above ensures that addition and storage happens atomically.
+
+Continue : 859 (Critical sections).
