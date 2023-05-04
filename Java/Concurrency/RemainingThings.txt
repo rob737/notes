@@ -1,0 +1,3 @@
+Read till page 900.
+
+After that following concepts : Countdown latch, Semaphore, Optimistic locking.

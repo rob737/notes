@@ -208,3 +208,27 @@ If a thread calls t.join( ) on another thread t, then the calling thread is susp
 --- To make UI non blocking :
 
 use daemon process and put the calculation inside a run( ) method to allow it to be preempted.
+
+--- Sharing resources :
+
+Mutex (Mutual Exclusion) : Piece of code that is serialized.
+
+Synchronized : keyword that is put on a method to prevent race condition.
+Note (Important) : All synchronized keyword defined method will be blocked/locked if a thread is currently executing any synchronized method of
+that object within a task.
+
+All objects implicitly contain a single lock which is called a monitor.
+This monitor object is shared across all synchronized methods and that's why only one synchronized method can be executed at a time within a task by a thread. 
+
+Note :: There is also a single separate lock for static members of the class which are synchronized.
+
+Very Important : 
+ If you have more than one method in your class that deals with the critical data, you must synchronize all relevant methods.
+ If you synchronize only one of the methods, then the others are free to ignore the object lock and can be called with impunity. 
+ This is an important point: Every method that accesses a critical shared resource must be synchronized or it won’t work right.
+ 
+****************** Homework ****************************
+
+use synchronize keyword to generate odd and even numbers in alternate order.
+
+continue : 851 (Explicit locks)
