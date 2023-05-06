@@ -274,4 +274,79 @@ e.g. AtomicInteger atomicInteger = new AtomicInteger(0);
      atomicInteger.addAndGet(2);
 Above ensures that addition and storage happens atomically.
 
-Continue : 859 (Critical sections).
+--- Critical Sections :
+
+A part of method instead of complete method can be synchronized using a lock object.
+
+Example :
+
+public void increment() {
+ Pair temp;
+ synchronized(this) {
+  p.incrementX();
+  p.incrementY();
+  temp = getPair();
+ }
+ store(temp);
+}
+
+
+Note: Instead of this, you can use any object.
+Example :
+private Object syncObject = new Object();
+
+
+Doubt : Just like synchronized method, does synchronize block also doesn't allow other synchronize block or methods to be executed simultaneously?
+
+Answer : Yes, other blocks and methods will be blocked as it is using the same object to perform locking mechanism.
+So, if we don't want to block it then we can use locks on different objects.
+
+--- Thread Local Storage :
+
+OS creates a region of memory for each thread in RAM which basically serves as Thread local storage.
+
+Thread local objects are stored as static fields and are accessed only via get() and set() methods of ThreadLocal class.
+
+--- Thread states :
+
+There are 4 stages of a thread :
+
+1. New : state when thread is being created, resources being allocated and is ready for scheduler to pick it up.
+
+2. Runnable : Thread is ready to be executed immediately if scheduler schedules it.
+
+3. Blocked : In blocked state e.g. sleep, even though scheduler tries to schedule it, it will not run.
+
+4. Dead : Either interrupted or completed execution of run() method.
+
+-- Blocked state :
+
+1. using sleep()
+2. using wait() -- thread will remain in blocked state unless notify() or notifyAll() is called.
+3. Thread is waiting for some I/O task to complete.
+4. Thread is waiting on a synchronized method or block to wait.
+
+Note : Verify if thread blocked due to I/O or waiting for acquiring lock can be interrupted or not.
+
+Note : Tasks blocked on ReentrantLock object lock can be interrupted.
+
+
+--- wait(), notify() and notifyAll() :
+
+Above three provides a way to co-ordinate between different threads.
+
+********* Homework ************
+
+Generate even and odd number in alternate order using above methods.
+
+wait() - blocks the execution of current thread unless notified by notify() or notifyAll().
+
+Note: sleep() and yield() doesn't relinquish lock but wait() does.
+
+Basically, wait() can be defined as follows :
+
+"I’ve done all I can right now, so I’m going to wait right here, but I want to allow other synchronized operations to take place if they can."
+
+Note: We can only call wait(), notify() and notifyAll() only within synchronized method or block.
+
+Continue : 880 (program for wait and notify) 
