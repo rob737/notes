@@ -349,4 +349,31 @@ Basically, wait() can be defined as follows :
 
 Note: We can only call wait(), notify() and notifyAll() only within synchronized method or block.
 
-Continue : 880 (program for wait and notify) 
+Note : After wait() is over execution starts after the line where wait was defined. This makes sense as PC would store current instruction address
+       during context switch.
+
+
+--- Synchronized data strucutres :
+
+synchronized queue, which only allows one task at a time to insert or remove an element. 
+This is provided for you in the java.util.concurrent.BlockingQueue interface, 
+which has a number of standard implementations. You’ll usually use the LinkedBlockingQueue, 
+which is an unbounded queue; the ArrayBlockingQueue has a fixed size, so you can only put so many elements in it before it blocks.
+
+Note : Blocking queues can solve a remarkable number of problems in a much simpler and more reliable fashion than wait( ) and notifyAll( ).
+       e.g. Producer/consumer problem can be solved using BlockingQueue.
+
+
+--- Semaphore :
+
+Normal lock only allows one thread at a time to access the synchronized resource but semaphores maintain a count of n objects/threads to access the resource.
+
+Example : connection pool can be implemented using this concept.
+
+Semaphore is available in java.util.concurrency package.
+
+functions : Semaphore semaphore = new Semaphore(size,true);
+			semaphore.acquire(); // to acquire resource
+			semaphore.release(); // to release resource
+			
+continue : 913 (semaphore)			
