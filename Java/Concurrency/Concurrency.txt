@@ -376,4 +376,6 @@ functions : Semaphore semaphore = new Semaphore(size,true);
 			semaphore.acquire(); // to acquire resource
 			semaphore.release(); // to release resource
 			
-continue : 913 (semaphore)			
+--- Optimistic Locking :
+
+Using Atomic classes provided by java e.g. AtomicInteger : compareAndSet.
