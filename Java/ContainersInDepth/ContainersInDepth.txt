@@ -1,2 +1,119 @@
---- Containers in Depth (continue : 589) : around 78 pages.
+--- Containers in Depth :
+
+
+****** Homework ******
+
+1. Implement HashMap : understand buckets, load factor etc.
+
+2. verify lineage of collection, map and set interfaces.
+
+3. Execute WeakHashMap code.
+**********************
+
+
+
+-- ConcurrentMap and ConcurrentHashMap : for multi-threading.
+
+-- Collections and Arrays are utility classes.
+   e.g. Collections.fill() will put same reference at all places.
+   
+-- Collection interface and Map inteface are separate.
+   Collection interface is implmeneted by List and Set interface and then corresponding implementation classes.
+   
+Note : ArrayList, LinkedList, HashSet and HashMap will be used 99% of the times.   
+
+--- UnsupportedOperationException :
+
+Arrays.asList() produces a fixed size array, it makes sense that only supported operations are those that doesn't change the size of this list.
+Hence, removeAll etc will throw UnsupportedOperationException.
+
+Arrays.asList( ) returns a fixed-sized List, whereas Collections.unmodifiableList( ) produces a list that cannot be changed.
+
+--- Set :
+
+Need to maintain some logic around storage of elements to prevent duplicates.
+
+Elements implementing set must define equals() method to check for duplicates.
+
+-- HashSet :
+  Elements must define hashcode() method for fast lookup time.
+  
+-- TreeSet :
+  maintains the order
+
+-- LinkedHashSet :
+  must define hashcode() and elements are placed in LinkedList.
+
+-- SortedSet :
+  to get elements in sorted order.
+
+--- Queues :
+
+LinkedList and PriorityQueue : differentiated only on order of elements while performance is same.
+
+Dequeue is double ended queue where elements can be removed and added from both directions.
+
+--- Maps :
+
+Implementation classes : HashMap, TreeMap, LinkedHashMap, WeakHashMap, ConcurrentHashMap, IdentityHashMap. 
+
+WeakHashMap : Allows objects referred by weak hash map be released.
+
+ConcurrentHashMap : thread safe map which doesn't involve synchronization locking.
+
+LinkedHashMap : It can be used to implement LRU (Least Recently Used) cache.
+
+
+--- Hashing and Hashcodes :
+
+Default Object.equals() compares only the references.
+
+we must override hashCode() and equals() method.
+
+
+--- HashMap performance factors :
+
+capacity : the number of buckets in the array.
+Initial capacity : capacity defined at the time of creation.
+Size: the number of entries
+load factor : %age before rehashing happens. (lookup time is directly proportional to load factor).
+
+--- Making collection or map unmodifiable :
+
+we can use method like : Collections.unmodifiableList(new ArrayList<String>(data)) , similarly for other data structures.
+If client performs any operation that involves modification then it will result in UnsupportedOperationException.
+
+--- Synchronizing a map or collection :
+
+similar to above : Collections.synchronizedList(new ArrayList<String>());
+
+--- Fail fast :
+
+important inbuilt implementation in java which prevents scenarios like following :
+let's say you are iterating through the list and you have already iterated through 4 items but somehow, some program is trying to change 3rd element
+then that would result in ConcurrentModificationException.
+
+Example below :
+
+import java.util.*;
+
+public class FailFast {
+public static void main(String[] args) {
+Collection<String> c = new ArrayList<String>();
+Iterator<String> it = c.iterator();
+c.add("An object");
+try {
+String s = it.next();
+} catch(ConcurrentModificationException e) {
+System.out.println(e);
+}
+}
+}
+
+---- Reference class :
+
+Implementation classes are SoftReference, WeakReference and PhantomReference.
+
+This is useful for large memory intensive objects that is allowed to be garbage collected even though it's being referenced by some reference unlike 
+usual object reference which will never be garbage collected if it is being referenced.
 
