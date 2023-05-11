@@ -6,8 +6,16 @@
 1. Implement HashMap : understand buckets, load factor etc.
 
 2. verify lineage of collection, map and set interfaces.
+   Answer :
+   List extends Collection extends Iterable.
+   Map is a separate lineage, it doesn't fall under collection.   
 
 3. Execute WeakHashMap code.
+
+4. Use case of cloneable interface.
+
+5. Understand lambda and functional interface.
+
 **********************
 
 

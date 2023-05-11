@@ -1,0 +1,50 @@
+/*
+* HashMap extends AbstractMap extends Map.
+* Default initial capacity : 16 () : static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
+* Default load factor : static final float DEFAULT_LOAD_FACTOR = 0.75f;
+* map = new HashMap<>(); initializes map with default load factor and default initial capacity.
+*
+* Understanding map.put :::::
+*
+* it translate to putVal(hash(key), key, val) in HashMap class and some other params which is not applicable right now.
+*
+* hash is calculated using the logic :
+*  (h = key.hashCode()) ^ (h >>> 16)
+* where key.hashCode() is the native method and 16 is used after experimentation.
+* ^ is xor operator and >>> is right shift operator (i.e. division by 2)
+* xor operator is used to reduce number of collisions, it is called hash code rehashing.
+* Internal datastructure of HashMap is below (defined in resize() method) :
+*
+* Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap]; Node class is defined in HashMap
+* newCap is set to Default initial capacity for the first time.
+*
+* All these are defined in resize() method in HashMap.java
+*
+* index to put the element in above node is defined using formula : (n - 1) & hash
+* where n is the size of node array and hash is the hashcode calculated using formula key.hashcode() & (key.hashcode() >>> 16)
+* & operator ensures that it is always within the range.
+*
+* if threshold calculated as load factor * capacity is greater than current size then resize() method in HashMap is called.
+*
+* Task : Understand putVal method in hashMap.java to understand put better.
+* Inshort, it replaces the value for corresponding key if hashcode and key are same.
+* If it is not same then the Node object that we are using which consists of members :
+*
+* {
+* hash,key,value, next
+* }
+* is used to create a new Node and previous last node points to this node provided none of the intermediary nodes
+* have matching hash value and key i.e. it is iterated over the contents of bucket which is basically a list of nodes.
+*
+* ------- Understanding get method :
+*1. It calculates hash = hash(key) using above logic i.e. key.hashcode & (key.hashcode() >>> 16).
+*2. It checks if tab[(n-1) & hash] != null else returns null.
+*3. Rest follows the same logic :
+* 1. it checks the hash and key of argument with hash and key of first element and keep on iterating until it finds the matching hash and key
+* or returns null if it doesn't find any match.
+*
+* logic for iterating since it's a node is while(node.next != null)
+*
+* and this is how get works.
+*
+* */
