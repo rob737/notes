@@ -4,6 +4,7 @@
 ****** Homework ******
 
 1. Implement HashMap : understand buckets, load factor etc.
+   done : Information stored in HashMapInternals
 
 2. verify lineage of collection, map and set interfaces.
    Answer :
