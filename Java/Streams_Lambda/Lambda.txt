@@ -1,0 +1,211 @@
+-- Functional interface :
+
+functional interface is an interface that has a single abstract method.
+Note: We can default methods as well but as long as we have single abstract method in an interface then we can call it a functional interface.
+
+-- Anonymous inner classes :
+
+There can be scenarios where you have to just implement an interface once to get the work done.
+We can use anonymous inner class instead of regular class in that scenarios to save up on the number of files that gets created and stored
+as those classes won't be reused anyways.
+
+Anonymous : As the class doesn't have a name
+inner class : As it is used inside a method.
+
+-- **** Important ****
+
+Anonymous inner classes can be replaced with lambda from java 8 onwards.
+
+lambda expressions are basically objects and can replace anonymous class implementing functional interface.
+
+Example :
+
+
+package lambda;
+
+/*
+* This is functional interface as it has only one abstract method.
+* */
+public interface Printer {
+    public void print(String message);
+}
+
+
+
+package lambda;
+
+public class Pilot {
+    public static void main(String[] args){
+        // This can be replaced with anonymous inner class
+        //printConsole(new ConsolePrinter());
+        // This anonymous class can be changed to lambda expressions
+        /*printConsole(new Printer() {
+            @Override
+            public void print(String message) {
+                System.out.println(message);
+            }
+        });*/
+
+        // Basically, interface Printer is used as functions so it is called functional interface.
+        printConsole((message) ->System.out.println(message));
+        Printer printer = message -> System.out.println(message);
+        printConsole(printer);
+
+    }
+
+    private static void printConsole(Printer consolePrinter) {
+        consolePrinter.print("Printed on console ...");
+    }
+}
+
+
+--- Method Reference :
+It is also applicable only for functional interface.
+
+Syntax for calling methods using method reference technique:
+
+ClassName/ObjectName :: method name.
+
+for calling constructor :
+
+ObjectName::new;
+
+Example :
+
+package lambda;
+
+public class Pilot {
+    public Pilot(String s) {
+        System.out.println("Constructor " + s);
+    }
+
+    private static void something(String message){
+        System.out.println("Integer"+ message);
+    }
+
+    public static void main(String[] args){
+        // This can be replaced with anonymous inner class
+        //printConsole(new ConsolePrinter());
+        // This anonymous class can be changed to lambda expressions
+        /*printConsole(new Printer() {
+            @Override
+            public void print(String message) {
+                System.out.println(message);
+            }
+        });*/
+
+        // Basically, interface Printer is used as functions so it is called functional interface.
+        /*printConsole((message) ->System.out.println(message));
+        Printer printer = message -> System.out.println(message);
+        printConsole(printer);*/
+
+        // Understanding method reference.
+        // printConsole((message) ->System.out.println(message)); can be replaced with below
+        printConsole(System.out::println);
+        // This will be allowed only if function signature is exactly same as functional interface's abstract method.
+        printConsole(Pilot::something);
+        // To call constructor
+        printConsole(Pilot::new);
+        // Basically, method reference is similar to passing method reference in javascript.
+        /*e.g.
+        printConsole(Pilot::print); denotes that static print method of Pilot class' reference
+        is passed on to printConsole as argument.
+        The reason why it works is that signature of method print(considering only args) is exactly same as abstract method in functional
+        interface.
+        Basically, the whole game is about substituting abstract method of functional interface.
+         */
+
+    }
+
+    private static void printConsole(Printer consolePrinter) {
+        consolePrinter.print("Printed on console ...");
+    }
+}
+ 
+ 
+--- Built in functional interfaces :
+ 
+ There are primarily 4 types of pre-built functional interfaces in JAVA.
+ 
+--- Consumer : void consumer(arg) : consumes the argument and doesn't return anyhting.
+ 
+ Example :
+ // Note: Usual for loop is called imperative programming because we are giving exact steps what needs to
+        // be done.
+		
+ // Declarative programming : It just declares what needs to be done.
+        // e.g. below says for each element in the list print it.
+        list.forEach(item->System.out.printf("%d",item));
+        list.forEach(System.out::print);
+
+
+--- Chaining in consumer :
+
+// Consumer chaining
+        List<String> charList = List.of("Robin","Ruchika","Foster");
+        Consumer<String> print = System.out::println;
+        Consumer<String> printUpper = message -> System.out.println(message.toUpperCase());
+        Consumer<String> printLower = message -> System.out.println(message.toLowerCase());
+
+        charList.forEach(print.andThen(printLower).andThen(printUpper));
+
+
+
+
+ 
+--- Supplier : obj supply() : takes no input and returns the object. (to understand you can call it manufacturer)
+ 
+ Example :
+ 
+ package lambda;
+
+import java.util.function.Supplier;
+
+public class SupplierIfDemo {
+    static int x = 10, y =20;
+    public static void main(String[] args) {
+        Supplier<Integer> getToken = () -> Math.min(x,y);
+        System.out.println(getToken.get());
+    }
+}
+
+  
+--- Function :  obj map(obj) : maps a value to a different value. (basically transformer)
+ 
+ package lambda;
+
+import java.util.function.Function;
+
+public class FunctionalIFDemo {
+    public static void main(String[] args) {
+        Function<Integer,String> tranformArg = intArg -> intArg.toString();
+        System.out.println(tranformArg.apply(3));
+    }
+}
+
+
+--- Composing functions :
+
+package lambda;
+
+import java.util.function.Function;
+
+public class FunctionCompositionDemo {
+    public static void main(String[] args) {
+        // Problem : Modify String key:value to {key=value}.
+        Function<String,String> replaceColon = input -> input.replace(':','=');
+        Function<String,String> addBraces = input -> '{' + input + '}';
+
+        Function<String,String> result = addBraces.compose(replaceColon).compose(String::toUpperCase);
+        Function<String,String> andThenResult = replaceColon.andThen(addBraces).andThen(String::toUpperCase);
+		
+		// Note : above order of compose and andthen is reverse.
+       
+        System.out.println(result.apply("key:value"));
+        System.out.println(andThenResult.apply("key:value"));
+    }
+}
+
+ 
+ 
+--- Predicate : bool test(condition) : used to test conditions that can be used for filtering data, tons of use cases in real world application.
