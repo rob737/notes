@@ -379,3 +379,53 @@ functions : Semaphore semaphore = new Semaphore(size,true);
 --- Optimistic Locking :
 
 Using Atomic classes provided by java e.g. AtomicInteger : compareAndSet.
+
+--- LockFree Algorithms for optimistic locking :
+
+Why do we even need Lock free algorithms even though we have locks:
+
+1. Overhead because of context switching as threads wait and that CPU cycle can be used for other operations.
+2. Can result in deadlock
+3. Can result in priority inverion : 
+   UI - higher priority thread
+   documentSaver - lower priority thread
+   if lower priority thread gets interrupted without releasing lock then higher priority thread will not get the access to critical section.
+4. Slow critical section because synchronized block if lock is obtained on the same object blocks access to all synchronized methods so 
+   if any synchronized method is very slow and thread is executing that method then it will lead to overall slowness.   
+
+
+What lock free implementation like AtomicInteger does ?
+
+It utilize kernel functions that are atomic once it gets converted to Instruction Set Architecture 
+e.g. AtomicInteger class uses compare and swap ISA to ensure atomicity.
+     and it stores variable as volatile such that variable is stored directly in common address space in memory and not in individual thread stack.
+	 
+	 It is present in java.util.concurrent.atomic library.
+
+
+Note :  
+
+ If two threads try to update the value of the atomic integer at the same time, 
+ only one of them will succeed, while the other will fail and have to retry the operation.
+ 
+ Note : Understanding compare and swap :
+ 
+ 1. OS reads memory location value from main memory and puts it into register.
+ 
+ 2. It performs some checks and then writes it back to memory location.
+ 
+ When multiple threads try to perform a CAS operation on the same memory location simultaneously, 
+ only one thread will succeed in updating the memory location.
+ 
+ other threads will fail and retry mechanism needs to be introduced.
+ so, ultimately the reason that it is allowing only one thread to perfrom update operation as part of CAS and failing others 
+ ensures that there is no data inconsistency.
+ 
+ Cache coherance is basically following :
+ 1. every CPU(processor) has multiple memory storages like registers, L1/L2 caches etc.
+ 2. when any operation is performed data is read into a cache and it's marked as "shared"
+ 3. if it is modified then it should be avaialble to all other cache and marked as "modified".
+ 4. other CPU seeks permission from this CPU to read data from it's cache as it.
+ 
+ 
+	 

@@ -1,0 +1,88 @@
+--- Stack :
+
+Every thread has it's own stack.
+
+local variables are stored in stack and for objects, references are stored in stack and object is created in heap.
+
+so primitive types are passed by value and object reference are passed by reference.
+
+whenever a block of code is executed, local variables corresponding to that block is popped off from the stack.
+
+Doubt : 
+1. What about the references?
+2. What if reference is present and there are local variables below the reference ? until,
+   reference is collected by GC, local variables on stack won't be relinquished to clear off memory.
+   
+--- Heap :
+
+Heap is a designated memory area in RAM corresponding to a process.
+So, all threads share the heap.
+
+e.g. List<Integer> list = new ArrayList<>();
+
+     list.add(1);
+	 list.add(2);
+
+Above, will have reference called list on the stack and a memory area designated for array list object(identified using new keyword).
+list reference on stack will store the starting address of the heap area where object is created.
+
+list.add(1) is basically within list there will be local references in heap and those internal references will point to new Integer(1) object in heap.
+
+But, if you do int val = list.get(1) then val will be created on thread stack. 	 
+
+--- Values and References :
+
+Primitive values are passed as a copy. (Pass by Value)
+Objects are passed as reference pointer . (Note : This is also pass by value but the difference is reference is passed as value)
+
+-- "final" keyword :
+
+final Customer c = new Customer("Robin"); // This is fine.
+c = new Customer("Ruchika"); // This is an issue as final ensures that reference is not pointed to any new object in heap.
+
+But, we can change the contents of the object that is pointed by reference.
+c.setName("Ruchika"); // This is perfectly fine.
+
+--- Escaping References :
+
+methods that are returning reference(pointer) to private member objects of a class.
+e.g.
+
+Class Customer {
+  private Map<String,String> records;
+  
+  Customer(){
+   records = new HashMap<>();
+  }
+  
+  public Map<String,String> getCustomers(){
+  
+    return this.records; // This is an escaping reference and can be used to modify state of private member records as we have access to original reference.
+  }
+
+Best solution is to make above immutable using utilities present in collection class.
+
+e.g. Collections.unmodifyableMap and Collections.unmodifyableList
+
+so replace above with Collections.unmodifyableMap(this.records);
+
+and then if we try to make some modifications then we would get UnsupportedOperationException.
+
+Basically, it makes the new reference(object of class UnmodifyableList) as final and implements UnmodifyableCollection which implements Iterable and iterator method is overriden to 
+throw UnsupportedOperationException in case we try to call remove() method.
+
+}
+
+
+--- Avoiding Escaping References :
+
+Note : Tangential point on thread safety :
+
+Thread safety: String objects are thread-safe in Java, whereas StringBuilder objects are not. 
+This means that if you need to modify a string in a multi-threaded environment, you should use a StringBuffer instead to avoid race conditions.
+
+Note: Java built in classes(String, Integer, Double, BigInteger) are immutable.
+
+--- Garbage Collection :
+
+-- String pools :
