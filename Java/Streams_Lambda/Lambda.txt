@@ -209,3 +209,24 @@ public class FunctionCompositionDemo {
  
  
 --- Predicate : bool test(condition) : used to test conditions that can be used for filtering data, tons of use cases in real world application.
+
+Example :
+
+package lambda;
+
+import java.util.function.Predicate;
+
+public class PredicateDemo {
+    public static void main(String[] args) {
+        int assertVal = 5;
+        String search = "R";
+        Predicate<String> testLength = input -> input.length() > assertVal;
+        Predicate<String> testContains = input -> input.contains(search);
+
+        Predicate<String> passConditions = testLength.and(testContains);
+        System.out.println(passConditions.test("Robin"));
+        System.out.println(passConditions.test("Ruchika"));
+        System.out.println(passConditions.test("Foster"));
+
+    }
+}

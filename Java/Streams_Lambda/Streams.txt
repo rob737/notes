@@ -1,0 +1,264 @@
+--- Why streams are needed?
+
+Stream is used to perform operations on collections of data.
+Very Important : Data in collection is not modified.
+
+
+--- Imperative vs Declarative programming :
+
+Imperative : How it needs to be done like we write for loop and increment counter etc.
+
+Declarative : What needs to be done and JVM takes care of how e.g. lambda consumer APIs etc.
+
+Best example of Declarative programming is SQL queries, we just write the what needs to be done like select * from customers.
+Here, we haven't mentioned the actual logic that needs to be executed.
+
+Note ::
+
+Streams allow us to process collection of data in a declarative or more accurately functional way.
+Functional programming is a kind of declarative programming with some additional concepts.
+
+Example of stream :
+
+Water is stored in a big container (which is a collection) and we have multiple pipes(called as streams) to flow water from container to different output.
+
+
+package streams;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Pilot {
+    public static void main(String[] args) {
+        List<Integer> movieList = new ArrayList<>();
+        movieList.add(1);
+        movieList.add(4);
+        movieList.add(10);
+
+        long result = movieList.stream().filter(input -> input > 3).count();
+        System.out.println("Result : " + result);
+    }
+}
+
+
+--- Different ways to create a Stream :
+
+Collection class has stream method so every class that inherits from Collection class will have a stream method.
+
+Doubt : What about map?
+Ans : Map doesn't have stream method.
+
+Infinite Stream :
+
+var stream = Stream.generate(() -> Math.random()); // This is lazy evaluation, it is not called unless it is triggered somehow.
+
+stream
+	.limit(3)
+	.forEach(System.out::println);
+	
+--- Mapping Elements :
+
+we use map() and flatMap();
+
+Example of map() :
+
+ List<Movies> moviesList = List.of(new Movies("a",10), new Movies("b",15), new Movies("c",20));
+
+        moviesList.stream()
+                  .map(ele -> ele.getName().toUpperCase())
+                  .forEach(System.out::println);
+
+
+Note : flatMap() is used to combine multiple lists into one list.
+
+Example of flatMap() :
+
+List<List<Integer>> nestedList = List.of(List.of(1,2,3), List.of(4,5,6,7));
+
+        nestedList.stream()
+                  .flatMap(list -> list.stream())
+                  .forEach(System.out::println);
+
+				  
+--- Filtering Elements :
+
+package streams;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Pilot {
+    public static void main(String[] args) {
+        List<Integer> movieList = new ArrayList<>();
+        movieList.add(1);
+        movieList.add(4);
+        movieList.add(10);
+
+        long result = movieList.stream().filter(input -> input > 3).count();
+        System.out.println("Result : " + result);
+    }
+}
+
+	   // Note : we can pass another lambda expression directly
+	   
+	   Predicate<Integer> isPopular = input -> input > 3;
+
+       // long result = movieList.stream().filter(input -> input > 3).count();
+        long result = movieList.stream().filter(isPopular).count();
+
+
+
+-- Intermediate vs Terminal operations :
+
+Intermediate operations return stream e.g. filter, map, flatMap etc
+
+terminal operations are the ending operations like forEach, count etc.
+
+without terminal operations there is no output/closure.				  
+
+-- Stream Slicing :
+
+basically putting some restrictions to stream.
+
+Example :
+
+movieList.stream().limit(2).forEach(System.out::println);
+
+// Above limits taking only 2 streams to output.
+
+there are other methods like TakeWhile, doWhile etc.
+
+Note : takewhile stops if predicate conditions are not met while filter scans entire collection.
+
+-- Sorting Streams :
+
+/*moviesList.stream()
+                  .sorted((movie1, movie2)->movie1.compareTo(movie2))
+                  .forEach(m -> System.out.println(m.getName()));*/
+				  
+        moviesList.stream()
+                .sorted((movie1, movie2) -> new Movies().compare(movie1,movie2))
+                .forEach(m -> System.out.println(m.getName()));
+				
+Note : Movies class needs to implement either comparable or comparator interface.
+
+Note : comparator interface is more flexible(compare method) while comparable(compareTo method) compares with this object.
+
+-- Returning distinct elements :
+
+moviesList.stream()
+                .map(Movies::getLikes)
+                .distinct()
+                .forEach(System.out::println);
+				
+Note : Movies::getLikes even though getLikes is not a static method, we were able to call it by class name.
+
+How? - mostly it is creating object internally.
+
+-- Peeking element:
+
+it's an intermediary pipeline and can be used to look into data.
+difference between forEach and peek is that forEach is terminal operation and we can't chain any other pipeline
+after forEach but we can after peek as peek returns a stream.
+
+
+--- Reducers :
+
+Reducers reduces the stream of collection into a single object.
+
+e.g. count(), findFirst(), findAny(), max(comparator), min(comparator), anyMatch(predicate), allMatch(predicate), noneMatch(predicate);
+
+Note : Reducers are also terminal operations.
+
+
+-- reduce() method :
+
+it is also a form of reducers with more control.
+
+Example :
+
+Optional<Integer> sum = moviesList.stream()
+                .map(m -> m.getLikes())
+                .reduce((m1,m2)->m1+m2);
+
+        // sum.orElse sets up a default value if sum is empty or null
+        System.out.println(sum.orElse(0));
+
+
+
+**** Very Important ***
+
+"Optional" type is used to prevent null pointer exception. 
+
+Example :
+
+import java.util.Optional;
+
+public class Example {
+    public static void main(String[] args) {
+        String name = "John";
+        Optional<String> optionalName = Optional.ofNullable(name);
+
+        if (optionalName.isPresent()) {
+            String greeting = "Hello, " + optionalName.get() + "!";
+            System.out.println(greeting);
+        } else {
+            System.out.println("Hello, stranger!");
+        }
+    }
+}
+In this example, we have a String variable called name that may or may not be null. 
+We create an Optional object called optionalName using the ofNullable() method, 
+which takes a value and returns an Optional that contains the value if it is non-null, or an empty Optional otherwise.
+
+We then use the isPresent() method to check if the optionalName contains a value. 
+If it does, we use the get() method to retrieve the value and concatenate it with a greeting string. 
+If it doesn't, we print a generic greeting.
+
+Using Optional allows us to handle the case where name is null without throwing a NullPointerException. 
+Instead, we can gracefully handle the absence of a value and provide a default behavior.
+
+Note that Optional should not be used as a replacement for null-checks throughout your entire codebase. 
+Rather, it should be used when dealing with methods that may or may not return a value, 
+or when handling user input or external resources that may be missing or incomplete.
+
+
+--- Collectors method :
+
+very useful method :
+
+collect() : it is used for the use cases when we want to collect the results of our intermediary operations on stream into a data structure.
+
+Example:
+
+
+        List<String> collectedMovies = moviesList.stream()
+                .map(Movies::getName)
+                .collect(Collectors.toList());
+        System.out.println(collectedMovies);
+		
+		
+--- Grouping Elements :
+
+we use Collectors.groupingBy functional interface.
+
+Map<Integer, List<Movies>> result = moviesList.stream()
+                .collect(Collectors.groupingBy(Movies::getLikes));
+
+        System.out.println(result);		
+
+
+--- Partitioing Elements :
+
+we use Collectors.partitionBy(predicate)
+
+Example :
+
+Map<Boolean, List<Movies>> result = moviesList.stream()
+                .collect(Collectors.partitioningBy(movie -> movie.getLikes() > 10));
+
+        System.out.println(result);
+
+
+
+
