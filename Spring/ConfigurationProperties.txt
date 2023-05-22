@@ -12,7 +12,7 @@ These are nothing more than properties on beans in the Spring Application contex
 
 -- @Bean over method
 
-an @Bean-annotated
+a @Bean-annotated
 method is likely to both instantiate a bean and then set values to its properties
 
 e.g.
