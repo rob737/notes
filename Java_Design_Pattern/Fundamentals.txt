@@ -9,3 +9,6 @@ EXTENSIONS 			DECORATOR, ITERATOR, VISITOR
 
 
 
+continue : page 27.
+
+Note : proper notes and implementation will be present in design_pattern project in C://projects.
