@@ -1,5 +1,3 @@
 -- UML fundamentals that will be applied :
 
 Notes are present in oneNote as it contains diagrams etc.
-
-continue : page 380.
