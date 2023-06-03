@@ -1,0 +1,102 @@
+--- Chunking
+
+dividing a task into fundamental building blocks that can be used to solve a bigger problem.
+more or less like first principle thinking.
+
+--- How to make chunks :
+
+dividing into multiple components, mastering each component and slowly interrelating each component to solve a bigger solution.
+
+Note: Stress/anger/distraction actually hampers chunking process.
+
+Steps :
+
+1. Make yourself familiar with the building blocks that is needed to solve a problem.
+
+2. Make a roadmap of what you need to do to achieve the results.
+
+--- Actual steps to form chunks :
+
+1. Complete focus pomodoro time without interruption or distraction.
+
+2. Understand the gist of the problem i.e. why of the problem. 
+
+3. Bottom up chunking - basically solving related and unrelated problems to identify the pattern when to use chunk and when not to use it in a
+bigger context.
+
+e.g. Window sliding problem - when to use it and when not to use it.
+
+
+4. Use first principle thinking and feynmann technique.
+
+----- What Satish told ?
+
+1. Read up a little bit, basic concepts and terminologies (basically make yourselves familiar with it).
+2. Do some implementation (some lightweight app, you can code along with your udemy instructor etc)
+
+3. Repeat above step in iteration for first 20 hours or so.
+
+4. Explain it to someone/yourselves or write a blog etc (Basically feynmann technique).
+   This will allow you to identify the gaps in your learning.
+
+5. After step 4, you can say that you have reached intermediate level.
+
+6. Now, to truly master it, create a knowledge map of what to study and what to discard (Basically, Learning by First principles).
+
+7. As a thumb rule, practical and useful things that you can apply to create something valuable must be your element in knowledge map.
+
+8. Execute/code/debug.   
+
+9. have a sense of curiosity.
+
+
+NOTE ::: things will take time so have patience and the only way to know how much time is to test in real world.
+
+--- Illussion of competence :
+
+Just reading material is the worst way of learning anything.
+Instead read for sometime, then recall/apply it.
+
+Just reading material causes illusion of competence that we know the material but instead it is an illusion.
+Feynmann technique to the rescue.
+
+Doing easy stuff creates illusion of competence, it's a mind trick of saving it's energy.
+
+-----------------------
+Deliberate practice, pomodoro technique and pareto principle : That's it.
+-----------------------
+
+
+
+-------------- Seeing the bigger picture or convincing yourself why you are doing it? -------------
+
+3 chemicals :
+
+1. acetycholine : responsible for focus.
+2. dopamine : responsible for motivation/reward and pleasure.
+3. serotonin : it signifies your behaviour socially. e.g. higher risk taking attribute means lower serotonin etc.
+
+
+----- 
+
+Overlearning : Repeating things in the same session can hamper the performance rather than improving it.
+
+Solution : Interleaved learning i.e. time spaced learning (e.g. alternate days of the week etc.)
+That's because you want your diffused mode of learning to come into action and by law of serendipidity create a magic.
+
+
+NOTE :::: Don't jump into the water before learning to swim.
+In your context, don't directly jump into harder/complex problems before having fundamentals strong.
+It takes away more time in the long run.
+
+Solve something with different approach rather than solving too many things.
+
+Interleaving is extra-ordinarily important.
+what is interleaving ?
+Solving problems of different types in a random order rather than moving ahead in sequential form.
+more of like agile process instead of waterfall model.
+
+so just like you do : study two subjects simultaneously.
+
+Einstellung : German word which means with time we dogmatically believe that the way we know is the best way to do that thing.
+This is dangerous.
