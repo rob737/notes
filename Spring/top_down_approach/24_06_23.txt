@@ -1,0 +1,7 @@
+
+Q. What are annotations exactly?
+
+Annotations basically gives additional information or instruction to the compiler or runtime environment.
+
+Q. How Java understands what it needs to do with @Bean annotation? I mean somewhere code needs to be present that tells it 
+that if @Bean is defined, create an object while startup and register it in application context.

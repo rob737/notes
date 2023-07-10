@@ -1,7 +1,7 @@
 
 DB (Database systems books by Gracie) :
 
-Chapter 1 : The Worlds of Databse Systems
+Chapter 1 : The Worlds of Database Systems
 
 Chapter 2 : The Relational model of Data
 
@@ -20,3 +20,23 @@ Chapter 13 : Secondary Storage management
 Chapter 15 : Query Execution
 
 Chapter 16 : Query Compiler
+
+ Transaction processing from other book.
+ 
+ 
+-- Aim to study Db --
+
+1. How data is stored in DB?
+2. How read/write is performed from/on DB?
+3. Why DB operations are costly?
+ 
+ 
+ 
+Continue : Page 52.
+
+Notes are in physical notebook. 
+
+Creating my own db : ()
+
+Steps :
+1. First iteration : Support for DML (read, insert)

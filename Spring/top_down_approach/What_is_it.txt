@@ -1,0 +1,33 @@
+-- Top down approach is basically you start a project and then figure out necessary concepts along the way.
+
+Refine your code and then refactor it as concepts are getting better and better.
+
+It doesn't matter even if you have to read whole book to solve that particular use case.
+
+This way you will be more confident, build real world utilities that are useful for people and also your brain agrees that what
+you are doing is fruitful.
+
+
+---
+
+Focus on BeanDefinitionLoader and AnnotatedBeanDefinitionReader class -- this is the starting point for everything in Spring/Spring Boot.
+
+processCommonDefinitionAnnotations:239, AnnotationConfigUtils (org.springframework.context.annotation)
+processCommonDefinitionAnnotations:234, AnnotationConfigUtils (org.springframework.context.annotation)
+doRegisterBean:263, AnnotatedBeanDefinitionReader (org.springframework.context.annotation)
+registerBean:147, AnnotatedBeanDefinitionReader (org.springframework.context.annotation)
+register:137, AnnotatedBeanDefinitionReader (org.springframework.context.annotation)
+load:171, BeanDefinitionLoader (org.springframework.boot)
+load:146, BeanDefinitionLoader (org.springframework.boot)
+load:139, BeanDefinitionLoader (org.springframework.boot)
+load:676, SpringApplication (org.springframework.boot)
+prepareContext:400, SpringApplication (org.springframework.boot)
+run:306, SpringApplication (org.springframework.boot)
+run:1303, SpringApplication (org.springframework.boot)
+run:1292, SpringApplication (org.springframework.boot)
+main:14, MvcTestingExampleApplication (com.example.springmvc)
+invoke0:-1, NativeMethodAccessorImpl (jdk.internal.reflect)
+invoke:62, NativeMethodAccessorImpl (jdk.internal.reflect)
+invoke:43, DelegatingMethodAccessorImpl (jdk.internal.reflect)
+invoke:566, Method (java.lang.reflect)
+run:49, RestartLauncher (org.springframework.boot.devtools.restart)
