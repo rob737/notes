@@ -1,0 +1,107 @@
+--- Why do we even need docker?
+
+The problems that we face usually in software development/deployment :
+
+1. Different people working with different hardware and OS configuration.
+2. Missed dependencies while deployment.
+3. Different version of software libraries/runtime environment being used e.g. node version etc.
+
+Docker provides a consistent way to prevent above 3 major issues.
+It gives you a compose file where you can mandate software versions and related dependencies needed for smooth running of your application.
+
+-- Doubt : Do we need to ensure that everyone is using the same docker version?
+
+--- What actually is a docker ?
+
+--- How to leverage docker to create something useful in real world for which you will be paid?
+
+
+
+----- Containers vs Virtual Machines :
+
+Virtual Machine :
+
+1. There are couple of them in market : e.g. VirutalBox, VMware etc.
+
+Architecture of VM is :
+
+VM --- talks to ---> Hypervisor (Sort of driver) ---> OS
+
+2. Problem is VM needs a copy of OS and a dedicated section of hardware resource to work.
+i.e. if you have installed 3 VMs then you would have duplicated OS thrice and 3 dedicated hardware area would be allocated to these VMs.
+
+3. Because of point 2, even though it can run applications in isolation, it's extremely slow and resource intensive hence it doesn't work properly.
+
+Containers:
+
+1. Containers also give the same benefit of running in isolation.
+
+2. However, contrary to VMs, they share host OS and hardware.
+
+3. Because of point 2, it is extremely fast and takes less memory.
+
+4. It is definitely an incrememnt over VM but it has kicked off very well because of resource sharing.
+
+
+---- Docker Architecture :
+
+Note : Kernel manages all processes and hardware/CPU.
+	   Every OS has a separate kernel and that's why we can't run Mac app on linux and vice versa like we had issue during compilation of c program.
+	   However, from Windows 10 onwards, windows provides both windows and linux kernel, so we can run linux app as well.	
+
+Docker basically is a client server architecture interacted via REST API.
+
+Docker server which is also called docker engine runs in the background and responds to rest calls from docker client.
+
+Doubt : Is docker-compose docker client ?
+
+Docker container is just a process like any other processes.
+containers talk to kernel of OS instead of duplicating whole copy of OS like VM.
+
+
+Docker Desktop : The App that we install is combination of docker engine/server and couple of other applications.
+
+Docker Server/Engine is the daemon process that keeps on running in the background.
+
+Doubt : What actually happens when we do docker ps? is it a rest call to docker server with param ps ?
+
+---- Sample Docker use case illustration :
+
+let's say you have created a simple node application and you want to run it on different system.
+
+Steps involved without docker would be :
+
+1. Have a basic understanding of underlying OS of the new system.
+2. Install node in that system.
+3. copy your app's code in that system.
+4. Manually install all related dependencies if any.
+5. After following above 4 steps, then you can run your node app.
+
+This is where docker comes handy, we can write above instructions in docker file (called Dockerfile) and let docker takes care of all those steps,
+we would just need to start/stop/remove docker.
+
+Note : If you want to use base image, then refer to https://hub.docker.com/_/node/ (e.g. node) to see if any image is already 
+	   present or not.
+	   
+	   
+--- Important : Refer C:\cygwin64\home\robin\hello-docker to actually see the Dockerfile.
+
+Command to build Dockerfile :
+
+docker build -t any_tag_name_to_identify_docker directory_where_docker_file_is_present
+
+
+Doubt : Figure out how docker stores it's images after we do docker build.
+
+Command to list all images :
+
+docker images or docker image ls.
+
+Now, deployment is basically transferring docker image from one computer to another.
+
+Command to run docker image :
+docker run image_name
+
+Doubt : difference between docker start and docker run ?
+
+We can publish created image to docker hub and then any one can download and run it using docker pull command.
