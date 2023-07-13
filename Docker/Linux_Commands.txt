@@ -1,0 +1,75 @@
+--- Linux Distributions or distros :
+
+Since, linux is open source so many communities and individuals have built distributions on top of original linux which is called as distros.
+
+e.g. ubuntu, fedora, unix, debian, alpine etc.
+
+Note : we will use ubuntu distribution.
+
+-- TO download ubuntu image :
+
+https://hub.docker.com/_/ubuntu
+
+Commands : Note : ubuntu is the image name
+
+1. To pull and run image :
+   
+   docker run image_tag
+   e.g. docker run ubuntu
+   
+   Doubt : What is meant by running an image ? is it like we are starting a process executing the steps mentioned in the image?
+   
+2. To start the container in interactive mode :
+
+	docker run -it ubuntu
+	
+Note : It starts a shell, shell is a program that takes our command (anything that we type on terminal) and passes it to OS for execution.	
+
+Note : root@2cfdd3ca87db:/# represents shell prompt where root denotes root user, 2cfdd3ca87db denotes machine name, / denotes top level path 
+	   and # denotes that we have logged in as root user otherwise it would have been $.
+
+Note : Linux is a case sensitive OS.
+
+3. history : this command gives us the list of commands that we have executed so far.
+   
+   !<command_number_from_list> will execute the corresponding command.
+   
+   Example :
+   
+   root@2cfdd3ca87db:/# history
+    1  ls -lrt
+    2  whoami
+    3  echo $0
+    4  history
+root@2cfdd3ca87db:/# !3
+echo $0
+/bin/bash
+
+4. Package manager like npm.
+   In ubuntu, we have apt. (Advanced packaged tool)
+   
+   apt is basically like a repository which has packages present.
+   
+   apt list will show all the packages available and also the ones that are installed.
+   
+   apt install <package_name> will install the package but will install only the ones that are present in that package repository.
+   
+   apt update : It will update the package repository with newer packages which is downloaded from different predefined repos.
+   
+   apt remove <package_name> : It will unistall corresponding package.
+   
+Note : In linux, everything is a file including devices, network sockets, directories and so on.
+
+There are couple of fixed directories at top level which are as following : ls /
+
+1. bin : Binaries for programs
+2. boot : All the files related to system booting.
+3. dev : It represents devices so files that are needed to access devices are stored in this directory.
+4. etc : Editable Text Configuration - this is where we have configuration files.
+5. home : home directories for different users are stored.
+6. root : home directory of root user.
+7. lib : keeping library files like software library dependencies etc.
+8. var : for keeping files that are updated frequently like block files,application data and so on.
+9. proc : files that represent running processes since everything in linux is a file.
+10. opt : directory to store manually installed softwares.	
+11. usr : directory that stores system needed softwares.
