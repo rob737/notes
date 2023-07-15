@@ -73,3 +73,58 @@ There are couple of fixed directories at top level which are as following : ls /
 9. proc : files that represent running processes since everything in linux is a file.
 10. opt : directory to store manually installed softwares.	
 11. usr : directory that stores system needed softwares.
+
+--- Navigating file system :
+
+Note : Whatever commands we execute in terminal are the programs or binaries in the bin directory.
+e.g. echo or pwd, search for it in /bin directory.
+
+mv : can be used to move or rename if we are moving in the same directory.
+
+touch : to create new empty file.
+
+more : command to list content of file in pages, pressing enter will load more contents and so on.
+
+head : head -n 5 file.txt will display first 5 lines of supplied file.
+
+tail : tail -n 5 file.txt will display last 5 lines of supplied file.
+
+--- Redirection :
+
+By default, standard input is keyboard and standard output is screen.
+
+
+">" : cat file1 > file2, it reads content of file1 and write it to file2 instead of standard output file2.
+
+we can use redirection operator with any command.
+
+--- Searching for text in files :
+
+grep <case_sensitive_term> <file_path/file_name>
+
+Note: everything in linux is case sensitive.
+
+grep -i : it will make the search case insensitive.
+
+
+grep can be used to search in multiple files.
+
+e.g. grep hello file1.txt file2.txt
+
+Doubt : can we search in whole directory as well?
+ Yes, we need to use extra parameter -r .
+ Example : grep -i -r host /etc : It will search the word host in all files of etc directory.
+ 
+
+--- Finding files and directories :
+
+find : find <path_name> -name <search_string>
+to make it case insensitive, use -iname instead of -name.
+
+if path_name is not given then it would search in current directory.
+if search_string is not given then it just lists all the files in the supplied directory.
+
+if we want to see only directories then we pass -type d as params.
+e.g. find <path_name> -type d
+
+to search only for use -type f
