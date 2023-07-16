@@ -96,6 +96,10 @@ By default, standard input is keyboard and standard output is screen.
 
 ">" : cat file1 > file2, it reads content of file1 and write it to file2 instead of standard output file2.
 
+Above will overwrite existing file.
+
+However, if we use ">>" instead of ">" then it will append it to the file.
+
 we can use redirection operator with any command.
 
 --- Searching for text in files :
@@ -128,3 +132,150 @@ if we want to see only directories then we pass -type d as params.
 e.g. find <path_name> -type d
 
 to search only for use -type f
+
+find <search_string * > : to search for all files starting with word search_string.
+
+e.g. find -type f -name "host*"
+
+--- Chaining Commands :
+
+";" : Semi colon is used to chain commands.
+
+e.g. command1 ; command2 ; command3
+
+if any command in above fails then also other commands would execute.
+
+If we need to prevent that then we can use & operator instead of ;
+
+e.g. command1 & command2 & command3
+
+
+OR operator :
+
+command1 || echo "command 1 failed"
+
+echo command will only be executed if command1 fails.
+
+Pipe operator :
+
+command1 | command 2 : ouput of command 1 goes as input to command 2
+
+
+Note ::: if we put \ and then enter then we will go to the next line and then we can continue writing rest of the commands here.
+
+
+---- Environment Variables :
+
+printenv : see all the environment variables in this machine.
+
+
+Note : OS looks only in the directories specified by PATH variable.
+
+echo $env_variable_name  : to see the value of environment variable.
+
+
+export <variable_name>=<variable_value> : to set environment variable in the current session.
+
+Note :::::
+
+
+.bashrc : It is the user's personal startup file i.e. everytime a user logs in, linux loads the command from this file.
+
+If we write export commands in this file then it will be available across sessions for that particular user.
+
+
+docker start -i <container_id> : To star a container in interactive session.
+
+source : command to execute anything in our current session.
+e.g. source ~.bashrc will reload the bashrc file in the current session i.e. it will read the contents of the file and perform operations
+as per the contents of bashrc file in the current session.
+
+
+
+----------- Managing processes :
+
+A process is an instance of a running program i.e. a running application is identified by process.
+
+-- To see all the running processes :
+
+ps : list all the running processes.
+
+bash is the interactive shell that we are writing our commands into, it takes our typed word as commands and sends it to OS kernel for execution. 
+
+Result of ps command :
+
+1. pid : process id of the command.
+
+2. TTY : Terminal Type.
+   one of the values of TTY is pts/0 : It means pseudo terminal 0 , the terminal that we interact with is called pseudo terminal.
+   
+3. Time : Amount of CPU time that the process consumed.
+
+4. command : the actual command that is represented as process.
+
+Note : To start any process as daemon process, append & at the end.
+
+Note : To kill any process, use kill <pid> command.
+
+
+-------- Managing users :
+
+useradd -m <user_name> : command to create a new user with user_name and a directory in home folder.
+
+Note: we also have adduser command which gives us the facility to set password as well.
+
+All users are stored in /etc/passwd file : name is misleading, it stores users and not passwords.
+
+Entry is stored in the format (e.g. useradd -m robin) :
+
+robin:x:1000:1000::/home/robin:/bin/sh
+
+robin : user name
+x : password location
+1000 : first one is user id
+1000 : second one separated by colon is group id
+/home/robin : home directory path 
+/bin/sh : shell command that was used to create user, since, everything in OS is file.
+
+If we want to modify the shell for a user : usermod -s /bin/bash robin
+Now, it will use bash shell instead of sh shell.
+
+Similarly, we have userdel command to delete the user.
+
+
+Note : passwords are stored in the file /etc/shadow
+
+docker exec -it <container_id> bash : to login to a conatiner with a bash shell  
+
+docker exec -it -u robin af454 bash : to login as user robin
+
+
+----- Managing groups :
+
+Similar to managing users, we have groupadd, groupmod and groupdel commands.
+
+e.g. groupadd developers
+
+why do we even need groups ??
+
+all users in the same group can have same kind of permissions.
+That's why when you added your docker user to a particular group then you didn't have to use sudo command.
+
+All the groups are written in file /etc/group
+
+developers:x:1002 : id of developers group is 1002
+
+
+There are two types of groups : Primary and secondary.
+
+primary group is only one that is created by default with the same name as user 
+
+secondary group can be 0 or many for that user.
+
+so, whenever we create a file, the group permissions that is set by default is the primary group.
+
+Command to add supplementary group (developers) to user (robin) : usermod -G developers robin
+
+you can execute usermod command to see the list of available parameters.
+
+groups robin : to see which all groups is user robin associated with.
