@@ -279,3 +279,41 @@ Command to add supplementary group (developers) to user (robin) : usermod -G dev
 you can execute usermod command to see the list of available parameters.
 
 groups robin : to see which all groups is user robin associated with.
+
+
+---- File Permissions :
+
+- --- --- --- : every file permission has 10 placeholders represented by dash.
+
+first - if left blank represents a file and if it's directory then instead of -, it would be d.
+
+next 3 dashes, represents permissions for the owner of the file.
+
+next 3 dashes (after offset of 4 dashes) represents permissions for the primary group that the user belongs to.
+
+last 3 dashes represents permissions for everyone else.
+
+rwx : 421 are the file permissions and are represented by it's combinations.
+
+Execute permission is basically to execute any command on the corresponding file/directory.
+e.g. cd <dir_name> is basically that we are executing cd command on dir_name.
+
+Example : 
+
+-rw-r--r-- 1 root  root    11 Jul 16 09:11 deploy.sh
+
+file deploy.sh is a file.
+
+It's owner represented by owner name root has read and write permissions (rw-)
+root belongs to group root (by default, primary group is created with same name as user) which has only read permission (r--).
+
+everyone else also only read permission (r--).
+
+we can change permission using chmod command.
+
+e.g. chmod u+x deploy.sh -- set execute permission for file owner.
+							Similarly, we can use u-x to remove permission and g+x to set permission for group and o+x to set permission for others.
+							We can combine permissions also like chmod og+x+w-r deploy.sh (it is granting execute and write permission for others and group 
+							and removing read permission)	
+							
+Note : To execute any file, we do :  ./<file_name.sh> where . represents the current directory.						
