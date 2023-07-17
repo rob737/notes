@@ -1,0 +1,13 @@
+#Note: Dockerfile is to clearly document our deployment process.
+
+#It says use base image node from docker hub for linux distribution alpine.
+FROM node:alpine
+#Copy all source code from current directory into app directory of image.
+COPY . /app
+#Set current directory as /app in the container
+WORKDIR /app
+#execute below command in the container.
+#CMD node /app/app.js
+CMD node app.js
+#This image will contain node, alpine linux and our application code.
+#Now, deployment is basically transferring docker image from one computer to another.

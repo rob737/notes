@@ -1,0 +1,34 @@
+----
+
+What is an image technically ?
+
+An image includes everything that an application needs to run.
+It consists of following and many more :
+1. A cut-down OS.
+2. Third-party libraries
+3. Application files/code
+4. Environment variables and so on.....
+
+What is a container technically ?
+
+A container is basically a "special" type of process that provides isolated runtime environment to execute image.
+It is a special type of process because it has it's own file system that is provided by the image.
+
+We can spin up multiple containers from the same image but it is an isolated environment so files created in one container
+will be exclusive to that container.
+
+--- Docker file :
+
+It contains instructions for building an image (check Sample_Dockerfile.txt)
+
+Main commands in Dockerfile :
+
+1. FROM : to import from base image.
+2. WORKDIR : to setup current working directory (similar to cd in linux).
+3. COPY/ADD : To copy files from your source code to docker image.
+4. RUN : To execute any OS commands once the image has an associated container and these commands run in isolation within container's filesystem.
+5. ENV : to set environment variables.
+6. EXPOSE : To tell docker that our container would be starting on a particular port.
+7. USER : For specifying the owner or the user that should run the application.
+8. CMD/ENTRYPOINT : To specify the commands that should be executed when container is started.
+					Difference between CMD/ENTRYPOINT and RUN is that CMD commands are executed only once when container is starting.
