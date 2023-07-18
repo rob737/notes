@@ -1,0 +1,13 @@
+--- Threads :
+
+Threads share process' memory but each thread has it's own program counter, stack and local variables.
+Multiple threads within the same process can be scheduled on different processors simultaneously.
+
+Most modern OS treats thread and not process for scheduling.
+Since, threads share the same memory space of process, all threads share the variables and objects created.
+
+Note: Garbage collector usually runs in one or more dedicated threads.
+
+Since the basic unit of scheduling is thread, a single threaded application can run on atmost one processor at a time.
+
+Doubt : Is scheduler common across all processors?
