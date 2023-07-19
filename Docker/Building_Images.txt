@@ -32,3 +32,16 @@ Main commands in Dockerfile :
 7. USER : For specifying the owner or the user that should run the application.
 8. CMD/ENTRYPOINT : To specify the commands that should be executed when container is started.
 					Difference between CMD/ENTRYPOINT and RUN is that CMD commands are executed only once when container is starting.
+					
+--- Choosing the right base image :
+
+docker build -t <tag_name> <path_of_Dockerfile>
+
+Note : The path that we give in docker build command sets up a docker context which is sent to docker engine, docker engine 
+       executes the docker file commands on that docker context and hence it has access only to those files that 
+	   are present in path that is given in docker build command.
+	   
+	   docker context contains everything that needs to be sent to docker engine i.e. code etc.
+
+docker run -it <image_name> <shell_name> : This command is to run docker image.
+				
