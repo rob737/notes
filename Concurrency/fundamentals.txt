@@ -12,4 +12,13 @@ Since the basic unit of scheduling is thread, a single threaded application can 
 
 Doubt : Is scheduler common across all processors?
 
-continue : page 3
+Doubt : What actually we refer to when we say multiple processors ? Is it multiple microprocessors or multiple CPUs including separate registries, cache etc.
+
+Doubt : Revisit microprocessor once again.
+
+Doubt : 1 clock cycle is Fetch-Decode-Execute or 1 clock cycle is either of fetch, decode, execute.
+
+
+---
+
+We have both blocking and non-blocking I/O but non-blocking I/O is much more error prone and non-deterministic.

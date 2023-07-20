@@ -54,4 +54,44 @@ Doubt : Difference between docker start and docker run ?
 ENV <name>=<value>
 
 --- Exposing ports : 
-				
+
+We would need a way to map port on host OS to port on container filesystem.
+
+--- Setting up the user :
+
+By default, docker runs with root user.
+we would need to setup specific users to mitigate security risks.
+
+# -S denotes system user and -G denotes primary group.
+RUN addgroup robin && adduser -S -G robin robin
+# sets the current user to mentioned user and all the following commands
+# will be executed with this user.
+USER robin
+
+
+--- Defining entry points :
+
+Note : we can give commands while starting docker command :
+  example :  docker run react-app npm start
+
+# whenever container is started, below command would be executed.
+# There can be only one command instruction, if there are multiple defined 
+# then only the latest one would execute.
+# This is called shell form as it spins up a new shell and execute the command, 
+# we shouldn't use it.
+# CMD npm start
+
+# we should use this EXEC form
+CMD ["npm","start"]
+
+
+Note : RUN is build time instruction i.e. commands mentioned with RUN are executed during build time.
+	   CMD is runtime instruction i.e. it gets executed when container is started.	
+	   
+Similarly, we have entrypoint command with same syntax as CMD.
+
+--- Speeding up builds :
+
+An image is a collection of layers.
+
+A layer is basically a small filesystem that only includes modified files.
