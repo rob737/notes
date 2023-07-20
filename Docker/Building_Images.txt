@@ -43,5 +43,15 @@ Note : The path that we give in docker build command sets up a docker context wh
 	   
 	   docker context contains everything that needs to be sent to docker engine i.e. code etc.
 
-docker run -it <image_name> <shell_name> : This command is to run docker image.
+docker run -it <image_name> <shell_name> : This command is to run newly created docker image.
+
+--- Running commands within docker container :
+
+Doubt : Difference between docker start and docker run ?
+
+--- Setting Environment variables :
+
+ENV <name>=<value>
+
+--- Exposing ports : 
 				

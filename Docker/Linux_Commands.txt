@@ -168,6 +168,8 @@ Note ::: if we put \ and then enter then we will go to the next line and then we
 
 printenv : see all the environment variables in this machine.
 
+printenv <env_variable_name> : to print value of particular environment variable.
+
 
 Note : OS looks only in the directories specified by PATH variable.
 
