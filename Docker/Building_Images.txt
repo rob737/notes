@@ -95,3 +95,95 @@ Similarly, we have entrypoint command with same syntax as CMD.
 An image is a collection of layers.
 
 A layer is basically a small filesystem that only includes modified files.
+
+Every instruction is executed in a new layer which contains the files that are modified after running that instruction.
+
+e.g.  There will be 3 different layers in docker image each for an instruction which contains only the modified files 
+(since everything in linux is a file).
+
+
+FROM node:14.21.3-alpine3.16
+
+RUN addgroup robin && adduser -S -G robin robin
+
+USER robin
+
+
+Command to see all layers of an image :
+
+docker history <image_name>
+
+optimization that can be done while building docker image is for each layer it can be checked if there is any changes from previous build,
+if there is no change then it could be reused from cache otherwise layer would need to be updated.
+
+Important : Once any layer is re-built all the following layers needs to be re-built.
+So, as a thumbrule, instructions that change frequently must be at the bottom of Dockerfile and instructions that rarely change 
+must be at top to prevent rebuilding layers unneccessary.
+
+---- Removing images :
+
+docker image prune  : It will remove all dangling images (i.e. images with no tag and repository mentioned on running docker images command.)
+Dangling images occur because a new layer is created on re-building images.
+
+docker container prune : To remove all stopped containers.
+
+
+docker image and then press enter : This will give you list of all commands that can be used with images.
+
+e.g. docker image rm <image_name or image_id>
+
+---- Tagging images :
+
+Important : latest tag (if you run docker images command) is just a placeholder, it doesn't guarantee that it is considering latest image from docker hub.
+
+So, always use explicit tag to identify which version is intended to be used.
+
+command to give image a tag during build time :
+
+docker build -t <image_name:tag_number> .
+
+To remove a tag :
+
+docker image rm <image_name:tag_name>
+
+
+Command to create tag at runtime :
+
+docker image tag react-app:latest react-app:1
+
+Note : instead of react-app:latest, we could use image id as well.
+
+Same command can be used to manually point latest to most recent tag.
+
+e.g. docker image tag <latest_image_id> react-app:latest
+
+Note: A single image can have multiple tags and that's why we are not getting any error.
+
+---- Sharing images :
+
+Steps :
+1. create a new account if not already present on https://hub.docker.com/
+2. Create repository e.g. rob737/react-app (rob737 is the username and react-app is the repository name)
+3. Create a tag with same name as above : docker image tag 9652 rob737/react-app:2
+4. Login using command docker login
+5. To push a new tag to the repository : docker push rob737/react-app:tagname
+
+Note: After step 5, docker will push each layer individually
+
+
+---- Saving and loading images :
+
+This is needed if without publishing our image to docker hub, we want to share the image to run it on another machine.
+
+Command to see the syntax : docker image save --help
+
+e.g. docker image save --o react-app.tar react-app:3
+
+Above command will create a tar file out of image react-app:3
+
+Basically, save command is to saving the image into a file.
+
+Command to load image back from saved file :
+
+docker image load -i react-app.tar
+
