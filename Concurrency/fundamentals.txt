@@ -22,3 +22,13 @@ Doubt : 1 clock cycle is Fetch-Decode-Execute or 1 clock cycle is either of fetc
 ---
 
 We have both blocking and non-blocking I/O but non-blocking I/O is much more error prone and non-deterministic.
+
+--- Tangential from YT video (https://www.youtube.com/watch?v=I0-izyq6q5s)
+
+IC circuits is composed of chips and chips are basically made up of constituent logic gates.
+AND, OR, NOT, NOR, XOR, NAND etc.
+Use these combinations, many combinations are made over the years by many people and that is what we denote as processor.
+
+And the bit is finally stored in a transistor.
+
+With each clock signal whether high or low, processor performs one smallest unit which is called task.
