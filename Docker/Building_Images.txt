@@ -45,6 +45,7 @@ Note : The path that we give in docker build command sets up a docker context wh
 
 docker run -it <image_name> <shell_name> : This command is to run newly created docker image.
 
+Doubt : Does docker build performs two operations ? one is doing symantic analysis and  other is sending context to docker engine to get executed ?
 --- Running commands within docker container :
 
 Doubt : Difference between docker start and docker run ?
