@@ -1,0 +1,17 @@
+-------------------------------------------- This is dedicated doubt section -------------------------------------------------------------------------------------
+1. How do we verify how much memory our application/process is taking to fulfill incoming requests?
+2. What are the instruction sets that are not related to fetching something from memory/disk?
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------XXXXX-------------------------------------------------------------------------------
+
+
