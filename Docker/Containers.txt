@@ -1,0 +1,41 @@
+---- Starting containers :
+
+container is a special type of process with it's own filesystem that is provided by the image.
+
+docker run <image_name> : create and run a new container
+
+docker start <container_id or image_name> : runs an existing container. It will not contain new changes in image if image is rebuilt.
+
+TO run the container in detached mode i.e. in the background :
+
+docker run -d <image_name>
+
+Detached mode means, now container would run in background and not log anything on the console.
+
+By default, docker gives container a random name, we can however give it a custom name while starting it.
+
+e.g. docker run -d --name c1 react-app
+
+Doubt : How to know the port at which container process is running as we are able to start multiple containers with the same image?
+
+--- Viewing the logs :
+
+docker logs <container_id>
+
+docker logs -f <container_id> : This would keep generating new logs
+
+
+--- Publishing ports :
+
+Use case : map react-app running inside container to outside world otherwise we won't be able to access react-app.
+
+Doubt : How do i interact with detached container like we used docker start -i
+
+
+docker run -d -p <host_port>:<container_port> <image_id or image_name>
+
+Above command is mapping host port (visible to outside world) to container port which is called port forwarding (verify this).  
+
+If you do docker ps, you would see PORT column with entry ::
+
+0.0.0.0:3001->3000/tcp, :::3001->3000/tcp  it means host port 3001 is mapped to container port 3000. (or 3001 is forwarded to 3000)
