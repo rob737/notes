@@ -39,3 +39,31 @@ Above command is mapping host port (visible to outside world) to container port 
 If you do docker ps, you would see PORT column with entry ::
 
 0.0.0.0:3001->3000/tcp, :::3001->3000/tcp  it means host port 3001 is mapped to container port 3000. (or 3001 is forwarded to 3000)
+
+i.e. if you do localhost:3001 then this request is redirected to container port 3000.
+
+---- Executing commands in running containers :
+
+docker exec <container_id or container_name> <command to execute>
+e.g. docker exec b00 ls
+
+command to connect to container in interactive mode with shell command :
+
+docker exec -it <container_id or container_name> sh
+
+---- Stopping and starting containers :
+
+docker stop/start <container_id or container_name>
+
+---- Removing containers :
+
+docker rm <container_id or container_name> : To remove stopped container
+
+docker rm -f <container_id or container_name> : To remove container forcefully.
+
+---- Container file system :
+
+Each container has it's own file system that is invisible to other containers.
+
+Note : We should never store our data in container's filesystem as if removed, all data would be lost.
+instead use volumes.
