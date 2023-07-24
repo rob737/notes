@@ -1,8 +1,9 @@
 -------------------------------------------- This is dedicated doubt section -------------------------------------------------------------------------------------
 1. How do we verify how much memory our application/process is taking to fulfill incoming requests?
 2. What are the instruction sets that are not related to fetching something from memory/disk?
-
-
+3. What is exactly meant by multi-core or multi-processor machines ? is it like we have registers for each core or registers like main memory is also shared?
+4. When we say CPU, what exactly are we referring to ?
+5. What is the difference between thread scheduling and process scheduling?
 
 
 
@@ -15,3 +16,22 @@
 -------------------------------------------------------------------------------XXXXX-------------------------------------------------------------------------------
 
 
+---- Process fundamentals :
+
+1. Process is basically just a set of instructions that need CPU time to get executed.
+   your application code is basically a process because it has a set of instructions that needs to be computed by CPU.
+   
+2. Each Process has a separate area in main memory, so no two processes can override each other memory locations.
+
+3. Each process since everything is a file in linux is also a file which is idenitfied by process id which i assume would be file descriptor.
+
+4. Process gets scheduled in the CPU.
+
+Note : If there are any tasks that needs I/O or any other form of fetching from memory then it is kicked out of CPU and other process gets CPU execution slot.
+
+---- Thread fundamentals :
+
+1. It is basically a lightweight process (LWP) that is spawned from parent process and shares the memory locations.
+2. It is also nothing but set of instructions.
+3. Since, it is technically a lightweight process so it also has id.
+4. Also, gets scheduled in the CPU.
