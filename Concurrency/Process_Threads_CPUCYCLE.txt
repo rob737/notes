@@ -4,7 +4,8 @@
 3. What is exactly meant by multi-core or multi-processor machines ? is it like we have registers for each core or registers like main memory is also shared?
 4. When we say CPU, what exactly are we referring to ?
 5. What is the difference between thread scheduling and process scheduling?
-
+6. Let's say a process or thread gets kicked out of one core and gets re-scheduled on different core in sometime 
+   then how core knows till which instruction process is already executed?
 
 
 
@@ -34,4 +35,33 @@ Note : If there are any tasks that needs I/O or any other form of fetching from 
 1. It is basically a lightweight process (LWP) that is spawned from parent process and shares the memory locations.
 2. It is also nothing but set of instructions.
 3. Since, it is technically a lightweight process so it also has id.
-4. Also, gets scheduled in the CPU.
+4. Also, it gets scheduled in the CPU.
+
+
+---- Ways of Designing backend Systems :
+
+--- Single Threaded : Like node js etc.
+
+--- Multiple processes :
+
+Example : Nginx/Postgres uses this architecture.
+
+1. App has multiple processes.
+
+2. Each process has it's own dedicated memory space.
+
+3. There is also one extra shared memory space shared among all the processes.
+
+4. Take advantage of multiple cores as different process can execute on different core simultaneously.
+
+5. Under the hood, it uses kernel's fork method to create different processes with a separate memory.
+
+Note : Redis uses Copy On Write to maintain consitency while taking backup from in-memory to disk (Read about it).
+
+--- Multithreaded :
+
+1. One process but multiple threads (lighweight child process).
+2. Since, memory of process is shared so there is a competition between threads.
+3. There will be race conditions.
+
+Example : Apache, Envoy, SQL server.
