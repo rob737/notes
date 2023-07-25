@@ -66,4 +66,39 @@ docker rm -f <container_id or container_name> : To remove container forcefully.
 Each container has it's own file system that is invisible to other containers.
 
 Note : We should never store our data in container's filesystem as if removed, all data would be lost.
-instead use volumes.
+Instead, use volumes.
+
+---- Persisting data using volumes :
+
+A volume is a storage outside of containers.
+It can be directory on the host or somewhere on the cloud.
+
+Command to create volume :
+
+docker volume create <volume_name>
+
+Command to inspect data :
+
+docker volume inspect <created_volume_data>
+
+Doubt : what is meant by mounting a file ?
+
+
+Command to attach volume to our container :
+
+docker run -d -p 4000:3000 -v <volume_name>:<absolute_path_in_container> <image_name>
+
+e.g. docker run -d -p 4000:3000 -v app-data:/app/data react-app
+
+Note: We need not have pre-created volume_name and absolute_path_in_container, docker engine will create it on the fly if not already present.
+
+Note : We can also share the volume among multiple containers.
+
+
+---- Copy files between host and container :
+
+docker cp <source:absolute_path_of_file_to_copy>:<target:absolute_path_to_copy>
+
+e.g. docker cp b1d1:/app/log.txt .
+above is copying file log.txt in /app directory from container b1d1 to host current directory.
+
