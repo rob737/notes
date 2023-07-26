@@ -1,13 +1,17 @@
 -------------------------------------------- This is dedicated doubt section -------------------------------------------------------------------------------------
 1. How do we verify how much memory our application/process is taking to fulfill incoming requests?
 2. What are the instruction sets that are not related to fetching something from memory/disk?
+
 3. What is exactly meant by multi-core or multi-processor machines ? is it like we have registers for each core or registers like main memory is also shared?
+Answer : Each core has its own ALU, registers, l1 chache, program counter and control unit, which enables it to execute instructions and perform calculations independently of other cores.
+
 4. When we say CPU, what exactly are we referring to ?
+Answer : ALU, regsiters, Control Units, Data bus, Program counter, Instruction Fetch and Decode unit, memory controller, caches,  clock.
+
 5. What is the difference between thread scheduling and process scheduling?
+
 6. Let's say a process or thread gets kicked out of one core and gets re-scheduled on different core in sometime 
    then how core knows till which instruction process is already executed?
-
-
 
 
 
@@ -29,6 +33,7 @@
 4. Process gets scheduled in the CPU.
 
 Note : If there are any tasks that needs I/O or any other form of fetching from memory then it is kicked out of CPU and other process gets CPU execution slot.
+Same is the case with thread.
 
 ---- Thread fundamentals :
 
@@ -65,3 +70,128 @@ Note : Redis uses Copy On Write to maintain consitency while taking backup from 
 3. There will be race conditions.
 
 Example : Apache, Envoy, SQL server.
+
+
+Follow this rule of thumb :
+
+Number of threads/processes must be equal to number of cores.
+
+if there are more then context switching would slow things down.
+
+Schdeuler is an engineering marvel.
+
+
+
+------ Doubt Queries -----
+
+In a multi-core CPU architecture, multiple CPU cores share certain components, while other components are unique to each core. The exact architecture can vary depending on the specific CPU design and manufacturer, but here's a general overview of the components that are typically shared and those that are unique to each core:
+
+Components shared by multiple cores:
+
+1. CPU Cache: The CPU cache is a high-speed memory used to store frequently accessed data and instructions to reduce memory access times. In multi-core CPUs, the cache is often shared among the cores. This shared cache allows cores to access frequently used data and instructions faster and improves overall performance.
+
+2. Memory Controller: The memory controller handles communication between the CPU and the main memory (RAM). In multi-core CPUs, there is usually a single memory controller that is shared by all the cores. This controller manages the memory access requests from different cores and ensures efficient memory access.
+
+3. Bus Interface: The bus interface allows the CPU to communicate with other components of the computer system, such as the motherboard, peripheral devices, and expansion cards. In multi-core CPUs, the bus interface is typically shared among the cores.
+
+4. Instruction Fetch and Decode Units: The instruction fetch and decode units are responsible for fetching instructions from memory, decoding them, and preparing them for execution. In multi-core CPUs, these units are often shared among the cores.
+
+5. System Resources: Some system resources, such as the system clock, voltage regulators, and power management circuits, are shared among all the cores on the CPU chip.
+
+Components unique to each core:
+
+1. Arithmetic Logic Unit (ALU): The ALU is responsible for performing arithmetic and logical operations on data. In a multi-core CPU, each core has its own ALU, which allows each core to execute instructions independently.
+
+2. Control Unit: The control unit manages the flow of data and instructions within the core. Like the ALU, each core has its own control unit, enabling each core to execute instructions independently.
+
+3. Registers: Registers are small, fast storage locations within the CPU used for temporary data storage during processing. Each core has its own set of registers.
+
+4. Pipeline Stages: Each core has its own pipeline stages for executing instructions in parallel, enabling concurrent processing within the core.
+
+5. L1 Cache: In addition to the shared cache, each core often has its own dedicated L1 cache, which provides a small, fast cache closer to the core for even quicker access to frequently used data and instructions.
+
+In summary, in a multi-core CPU architecture, components such as the CPU cache, memory controller, bus interface, instruction fetch, and decode units are typically shared among the cores, while each core has its own ALU, control unit, registers, pipeline stages, and often a dedicated L1 cache. This division of shared and unique components allows the cores to work independently and concurrently, enhancing the overall performance and efficiency of the CPU.
+
+
+
+
+Answer to Question 6 ------------
+
+When a process or thread is rescheduled to run on a different core in a multi-core CPU, the new core needs to have access to the current state of the process or thread. To achieve this, the state of the process or thread is saved during a context switch, and this saved state includes information about the point of execution, among other things.
+
+The key components of the process or thread state that are saved during a context switch include:
+
+1. Program Counter (PC): The program counter holds the memory address of the next instruction to be executed. During a context switch, the PC is saved so that when the process or thread is resumed on a different core, it can continue execution from the same point.
+
+2. Register Values: The values of various CPU registers (such as general-purpose registers and control registers) are saved during the context switch. These register values hold important data and variables used by the process or thread.
+
+3. Stack Pointer (SP): The stack pointer indicates the current location in the process's or thread's stack. The stack contains local variables and function call information. The stack pointer is saved during the context switch to ensure the process or thread can continue using the same stack when rescheduled on another core.
+
+4. Other Process-Specific Data: Depending on the operating system and CPU architecture, additional process-specific data may be saved during the context switch to ensure a seamless transition between cores.
+
+When the process or thread is rescheduled on a different core, the saved state is restored from the context switch information, allowing the process or thread to continue execution from where it left off. The core executing the context switch ensures that the state is correctly saved and restored, ensuring the process or thread continues to run as expected on the new core.
+
+Context switching is a fundamental mechanism in modern operating systems that enables multitasking and allows the CPU to efficiently switch between different processes and threads, ensuring that each gets its fair share of CPU time while maintaining the illusion of concurrent execution for the user or application.
+
+
+Answer to Question 7 ----------
+
+
+The information required for a context switch, such as the process or thread state, is stored in a data structure known as the "Process Control Block" (PCB) or "Thread Control Block" (TCB), depending on whether it's a process or thread being managed by the operating system.
+
+The PCB or TCB is a data structure maintained by the operating system for each active process or thread in the system. It contains essential information about the process or thread, including its current execution state, register values, program counter, stack pointer, process ID (PID), scheduling information, and more.
+
+When a context switch occurs, the operating system saves the current state of the running process or thread into its associated PCB or TCB. This process is typically performed by the operating system's scheduler, which is responsible for managing the execution of processes and threads on the CPU.
+
+The PCB or TCB is typically stored in the system's memory. The exact location and structure of the PCB or TCB depend on the operating system's design and implementation. In some operating systems, the PCB or TCB is stored in a dedicated kernel data structure, while in others, it may be part of the process's or thread's user-space memory.
+
+When a process or thread is scheduled to run again, the scheduler retrieves the relevant PCB or TCB from memory and restores the saved state, including the program counter, register values, and other information, allowing the process or thread to continue execution from where it left off.
+
+Overall, the PCB or TCB serves as a crucial data structure that facilitates context switching and enables the operating system to efficiently manage and switch between different processes and threads in a multi-tasking environment.
+
+Answer to Question 2 -------------
+
+Instruction sets in a computer architecture can be broadly categorized into two main types: load/store instructions and non-load/store instructions.
+
+1. Load/Store Instructions:
+Load and store instructions are related to fetching data from memory or disk and storing data back to memory or disk. These instructions are used to move data between the CPU's registers and memory. Examples of load and store instructions include:
+
+- Load: These instructions fetch data from memory and load it into a CPU register.
+- Store: These instructions take data from a CPU register and store it back into memory.
+
+Load and store instructions are essential for data manipulation, as they allow the CPU to access data stored in memory, perform calculations on it, and store the results back into memory.
+
+2. Non-Load/Store Instructions:
+Non-load/store instructions encompass all other types of instructions that are not directly related to fetching data from memory or disk. These instructions perform various computational, logical, and control tasks. Some examples of non-load/store instructions include:
+
+- Arithmetic instructions: These instructions perform arithmetic operations such as addition, subtraction, multiplication, and division on data stored in registers.
+
+- Logical instructions: These instructions perform logical operations such as AND, OR, NOT, and bitwise shifts on data in registers.
+
+- Control flow instructions: These instructions control the flow of program execution. Examples include branch instructions (e.g., conditional jumps) and function call/return instructions.
+
+- SIMD (Single Instruction, Multiple Data) instructions: These instructions perform parallel processing on multiple data elements simultaneously, which is particularly useful for multimedia and vector processing.
+
+- Vector instructions: These instructions operate on arrays or vectors of data elements and allow for efficient data processing.
+
+- Floating-point instructions: These instructions perform floating-point arithmetic operations on floating-point data.
+
+Non-load/store instructions are the core computational instructions that execute the logic and algorithmic steps of a program. They are responsible for performing calculations, comparisons, and control operations on data that has been previously loaded into CPU registers using load instructions or generated within the CPU during program execution.
+
+In summary, non-load/store instructions in a computer's instruction set encompass a wide range of computational, logical, and control operations, and they are responsible for performing various tasks in the CPU, independent of data retrieval from memory or disk.
+
+
+Answer to Question 5 ------------
+
+
+Yes, in most modern operating systems, there are separate schedulers for threads and processes. The distinction between the two arises from the fact that threads and processes are different units of execution within the operating system, and they have different scheduling needs and characteristics.
+
+1. Process Scheduler:
+The process scheduler is responsible for managing the execution of processes. A process is an independent unit of execution that contains its own memory space, code, data, and system resources. Each process may consist of one or more threads. The process scheduler decides which process should run on the CPU and allocates CPU time to each process. It is responsible for context switching between processes and ensuring that each process gets its fair share of CPU time.
+
+2. Thread Scheduler:
+The thread scheduler, on the other hand, is responsible for managing the execution of threads within a process. A thread is a smaller unit of execution that exists within a process and shares the same memory space and resources with other threads in the same process. Since threads within a process share resources, they can communicate with each other more efficiently than processes can. The thread scheduler determines which thread should run on the CPU and allocates CPU time to each thread.
+
+In some operating systems, the thread scheduler may be implemented as part of the process scheduler, especially in systems where processes and threads are tightly coupled, and the scheduling of threads is performed within the context of process scheduling.
+
+The separation of thread and process scheduling allows the operating system to manage the execution of both processes and threads more efficiently. It also provides flexibility in handling different types of workloads and improves multitasking capabilities. For example, if a process contains multiple threads with different priorities or execution characteristics, the thread scheduler can make fine-grained decisions about which thread should run on the CPU at any given time, allowing for better resource utilization and responsiveness.
