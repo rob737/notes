@@ -1,0 +1,13 @@
+---- what is docker compose and why do we even need it?
+
+To manage multiple containers.
+For example : let's say you want one container to only be up when some other container is up i.e. you have depedency of
+container A on container B and so on.
+
+If we are not using docker-compose then we would need to manually check above constraint.
+
+docker compose is built on top of docker engine.
+
+Note: we can use $(command) to execute the command dynamically and in conjunction with other commands.
+
+Example : docker image rm $(docker image ls -q) : It will remove all images.
