@@ -102,3 +102,21 @@ docker cp <source:absolute_path_of_file_to_copy>:<target:absolute_path_to_copy>
 e.g. docker cp b1d1:/app/log.txt .
 above is copying file log.txt in /app directory from container b1d1 to host current directory.
 
+---- Sharing source code with container :
+
+For development :
+It is needed to prevent re-building images everytime.
+
+For Production :
+We must always re-build images even if there is a minor change.
+
+Note: The way to achieve it is we create a binding between a directory on the host to directory on the container.
+
+docker run -d -p 5001:3000 -v $(pwd):/app 
+
+$(pwd) is the path on host
+/app is the root path on container.
+
+above command will create a binding between a directory on host to container such that changes are reflected immediately.
+
+Doubt : What is hot reloading and how it works? -- It is used in react.
