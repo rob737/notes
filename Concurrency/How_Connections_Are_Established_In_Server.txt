@@ -1,0 +1,48 @@
+----------- Doubt section ----------------------
+1. Why do we even need 3 way handshake?
+2. What are the other layer 4 protocols that http leverages?
+3. Why do we even have so many layers in OSI model?
+4. Why does OSI model even exist?
+5. what SYN from client to server actually denotes?
+6. Why TCP is stateful and what is meant by stateful in the first place?
+7. Why do we have public and private IP addresses?
+8. What is the difference between router and NIC (Network Interface Card) ?
+9. Do we have multiple NICs in the system?
+10. what actually port represents? Can same port be used by two processes?
+11. can we use same port provided we give different NIC address?
+12. If point 11 holds good then listen(8080): does it bind port 8080 on all interfaces and that's why we get address already in use error?
+13. How from client request can kernel know that it is for particular APP? 
+
+
+
+
+
+
+
+-------------------------------------------- XXXXXXXXXX ---------------------------------------------------------------------------------------------------
+
+
+
+--- There are many ways but most ubiquitos is TCP (layer 4) under http (layer 7).
+
+TCP basically performs 3 way handshake :
+1. client sends SYN packet to server.
+2. Server responds with it's SYN packet and ACK to acknowledge client syn request.
+3. Client sends back it's ACK to acknowledge server's SYN.
+
+
+Note: Each NIC (Netwrok interface card) has an IP address.
+
+backend listens to the combination of address:port
+
+Note : it is extremely bad practice to just do listen:8080, it signifies that it is accepting requests from all NICs be it public or private and 
+may cause security issues.
+
+Client connect to the combination of address and port.
+address denotes NIC and port represents the running process.
+
+
+-------- When we get connection request from client.
+
+app notifies kernel that it is listening to corresponding address:port combination.
+and then kernel creates socket file and establish 3 way handshake provided TCP is layer 4 protocol.
