@@ -11,3 +11,27 @@ docker compose is built on top of docker engine.
 Note: we can use $(command) to execute the command dynamically and in conjunction with other commands.
 
 Example : docker image rm $(docker image ls -q) : It will remove all images.
+
+--- 
+
+cd to directory where docker-compose.yml is present and do docker-compose up to start all the necessary containers.
+
+
+---- JSON and YAML formats :
+
+List are represented as separated rows using hyphen. 
+
+e.g. 
+in json, "tags" : [a,b]
+
+in yml,
+	tags :
+		- a
+		- b
+		
+Note : parsing yml file is slower than parsing JSON as every value in yml is considered string and then it is type casted to correct datatype.		
+
+
+---- Understanding docker compose files :
+
+Only  Supported filenames: docker-compose.yml, docker-compose.yaml, compose.yml, compose.yaml		
