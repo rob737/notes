@@ -34,4 +34,45 @@ Note : parsing yml file is slower than parsing JSON as every value in yml is con
 
 ---- Understanding docker compose files :
 
-Only  Supported filenames: docker-compose.yml, docker-compose.yaml, compose.yml, compose.yaml		
+Only  Supported filenames: docker-compose.yml, docker-compose.yaml, compose.yml, compose.yaml
+
+#This version must comply with docker engine as suggested by docker docs.
+version: "3.8"
+#services are the fundamental building blocks (represented as unique containers) of our app like db, elastic search, frontend, backend etc.
+#Note: names are arbitrary and can be given anything
+services:
+  web:
+    #we would need to define properties inside each service that would be used to build images and serve as input while running containers. In this way, we would need not execute the commands manually from terminal as we were doing it earlier.
+    #Note : docker compose will take care of starting the container under the hood and we need not execute docker run command manually.
+    #build parameter expects path of individual services dockerfile to build image and run container
+    build: ./frontend
+    #ports is an array of port mapping from host to container
+    ports:
+      - 3000:3000
+  backend:
+    build: ./backend
+    ports:
+      - 3001:3001
+    #environment to define environment variables
+    #Note: when we using docker compose then under the hood network is created with number of hosts equal to number of services defined and host address is identified by service name and hence, we were able to use db in mongo connection string below as hostname and vidly is database name.
+    environment:
+      #instead of list, we can use normal notation as well.
+      #- DB_URL=mongodb://db/vidly
+      DB_URL: mongodb://db/vidly
+  database:
+    #image property allows us to download image from docker hub directly.
+    image: mongo:4.0-xenial
+    ports:
+      - 27017:27017
+    #volumes is to create one or more volume mappings. <volume_on_host>:<mapped_to_directory_in_container>
+    #So, whatever would be written in /data/db will be mapped to vidly. Since, we have defined volume we would need to define it in this file as property (e.g. volumes property is at the same level as services property).
+    volumes:
+      - vidly:/data/db
+#This is just to define volume vidly and only then we can use it, mostly like concept of variable
+volumes:
+  vidly:
+
+
+---- Building images using docker-compose :
+
+docker-compose build --no-cache
