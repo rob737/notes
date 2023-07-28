@@ -12,8 +12,8 @@
 11. can we use same port provided we give different NIC address?
 12. If point 11 holds good then listen(8080): does it bind port 8080 on all interfaces and that's why we get address already in use error?
 13. How from client request can kernel know that it is for particular APP? 
-
-
+14. What property in the request inform kernel about the address of the client?
+15. When backend process connects with DB then also it follows 3 way handshake again?
 
 
 
@@ -46,3 +46,21 @@ address denotes NIC and port represents the running process.
 
 app notifies kernel that it is listening to corresponding address:port combination.
 and then kernel creates socket file and establish 3 way handshake provided TCP is layer 4 protocol.
+
+Only after above step, backend process accepts the connection by moving it to it's own memory space from kernel's memory space.
+
+---- Connection Establishment :
+
+After listen api is executed to listen on address:port combination, kernel does the following things :
+
+1. Kernel creates a socket and creates a SYN and ACCEPT queue.
+2. It stores clients SYN request into SYN queue, SYN request contains source IP, source port, destination IP and destination port details.
+3. kernel responds with a SYN-ACK to the client.
+4. Client sends the ACK 
+5. After receiving ACK from the client, kernel moves SYN request to ACCEPT queue and remove it from SYN Queue.
+6. Kernel creates a file descriptor to uniquely represent this connection from client.
+7. Now, connection is said to be established.
+
+Note: Each new connection from the client follows above process.
+
+Now, Backend process calls accept method which removes the connection (entry in accept queue) from accept queue and brings it in it's allocated memory.
