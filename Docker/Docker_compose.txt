@@ -57,8 +57,8 @@ services:
     #Note: when we using docker compose then under the hood network is created with number of hosts equal to number of services defined and host address is identified by service name and hence, we were able to use db in mongo connection string below as hostname and vidly is database name.
     environment:
       #instead of list, we can use normal notation as well.
-      #- DB_URL=mongodb://db/vidly
-      DB_URL: mongodb://db/vidly
+      #- DB_URL=mongodb://database/vidly
+      DB_URL: mongodb://database/vidly
   database:
     #image property allows us to download image from docker hub directly.
     image: mongo:4.0-xenial
@@ -76,3 +76,13 @@ volumes:
 ---- Building images using docker-compose :
 
 docker-compose build --no-cache
+
+---- Starting and Stopping the application :
+
+docker-compose up to run all the images defined in docker-compose file.
+
+docker-compose ps to list all the running containers.
+
+Note: docker-compose commands gets executed to each of the services defined in docker-compose file and not to individual service.
+
+docker-compose down will stop and remove the containers but images will still be there.
