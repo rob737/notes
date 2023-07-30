@@ -4,7 +4,7 @@
 3. Why do we even have so many layers in OSI model?
 4. Why does OSI model even exist?
 5. what SYN from client to server actually denotes?
-6. Why TCP is stateful and what is meant by stateful in the first place?
+6. Why TCP is stateful and what is meant by stateful in the first place? -- It maintains connection request in the queue.
 7. Why do we have public and private IP addresses?
 8. What is the difference between router and NIC (Network Interface Card) ?
 9. Do we have multiple NICs in the system?
@@ -14,8 +14,10 @@
 13. How from client request can kernel know that it is for particular APP? 
 14. What property in the request inform kernel about the address of the client?
 15. When backend process connects with DB then also it follows 3 way handshake again?
-
-
+16. Difference between MAC address and IP address ?
+17. what is the difference between a frame and an IP packet?
+18. How to take TCP dump and how to see if SYNACKS are not being sent from the kernel?
+19. How to get number of connections currently at accept and syn queue?
 
 
 
@@ -64,3 +66,9 @@ After listen api is executed to listen on address:port combination, kernel does 
 Note: Each new connection from the client follows above process.
 
 Now, Backend process calls accept method which removes the connection (entry in accept queue) from accept queue and brings it in it's allocated memory.
+
+removed entry is given a file descriptor which uniquely identifies client connections.
+
+Note :
+1. NIC just forwards the frame to kernel.
+2. Kernel parses the packet and TCP handshake is performed by the kernel.
