@@ -119,3 +119,13 @@ docker logs <container_id>
 such that we need not rebuild the images everytime even for small changes
     volumes:
       - ./backend:/app
+	  
+------ Migrating the database :	
+
+Similar to flyway or sequelize.
+
+    # It will override the default command in our docker file.
+    #wait-for is a third party library and is useful to check if dependent service is ready or not
+    # before executing further commands.
+    #In below example, we are waiting to receive traffic on port 27017 for service db.
+    command: ./wait-for db:27017 && npm run db:up &&npm start  
