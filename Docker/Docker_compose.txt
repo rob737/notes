@@ -86,3 +86,36 @@ docker-compose ps to list all the running containers.
 Note: docker-compose commands gets executed to each of the services defined in docker-compose file and not to individual service.
 
 docker-compose down will stop and remove the containers but images will still be there.
+
+
+----- Docker Networking :
+
+when running application with docker compose, it creates a network of all defined containers in docker-compose.yml file.
+For our use case (defined above in docker-compose.yml file), we have 3 containers (database, backend, frontend) in a default network 
+created by docker.
+
+Every container has an associated IP address.
+
+Docker engine has inbuilt DNS server and each container has embedded DNS resolver which communicates with DNS server to find the IP of 
+other container to connect to.
+
+e.g. API container would need to connect to DB container etc.
+
+Note: 
+
+you can sh to one container and from there you can refer other container using service name defined in docker-compose.yml file.
+
+command to see all networks : docker network ls
+
+----- Viewing logs :
+
+docker-compose logs : will give logs for all services.
+
+docker logs <container_id>
+
+------ Publishing changes :
+
+#same (volume) property is also used to create symlink between our directory/files and container's files/directory 
+such that we need not rebuild the images everytime even for small changes
+    volumes:
+      - ./backend:/app
