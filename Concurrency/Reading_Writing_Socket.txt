@@ -1,0 +1,40 @@
+-----------------------------------------------------------  Doubt Section --------------------------------------------------------------------------------------------
+1. Does Receive and Send queue also belongs to socket or is it specific to client file descriptor?
+2. Understand epoll that helps in async copy and non-blocking read from receive buffer.
+3. What is Ethernet used for?
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------XXXX-------------------------------------------------------------------------------------------------
+
+
+There are in total 4 data structures per socket file :
+
+SYN queue, ACCEPT queue, RECEIVE & SEND Queue.
+
+1. After connection is created (i.e. when backend process has popped up entry from accept queue), 
+   Client data sent is put to RECEIVE Queue by kernel without backend process asking for it.
+
+2. If receive buffer is full then kernel would drop the forthcoming packages or else it would send Ack to client.
+
+3. App calls read to copy data from receive buffer into it's memory. (This copying is expensive)
+
+Note: TLS (decryption/encryption) is done by the backend process and not the kernel.
+
+
+read() is also a blocking call if receive buffer is empty.
+
+
+--- SEND Buffers :
+
+Backend process wants to send data to the client.
+
+It does it by putting data into send queue.
+
+
+
