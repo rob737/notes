@@ -1,0 +1,38 @@
+------------ Doubt  -------
+
+1. Does git bash have different file system from windows? Is it like a separate virtual machine?
+Ans : No, it just a provides a BASH shell and executes those commands on underlying windows file system.
+
+
+
+------------------------ XXXX ----------------------
+
+
+--- Deployment Options :
+
+1. Single host deployment :
+
+2. Cluster deployment : Deploying it to group of servers.
+
+Note : To run clusters, we would need orchestration tools like Docker Swarm, Kubernetes etc.
+
+Note : In this course, we would focus on Single host deployment.
+
+--- Getting a virtual private server (VPS) :
+
+There are many options of VPS :
+
+1. AWS
+2. GCP
+3. Azure
+4. Digital ocean etc.
+
+
+Digital Ocean is used for this course.
+
+--- Installing docker machine :
+
+We would need a tool called "docker machine" that would send our commands to docker server/engine of remote host from our localhost.
+
+--- Provisioning a host :
+
