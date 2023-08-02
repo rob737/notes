@@ -3,7 +3,12 @@
 1. Does git bash have different file system from windows? Is it like a separate virtual machine?
 Ans : No, it just a provides a BASH shell and executes those commands on underlying windows file system.
 
+2. What eval command does?
 
+
+3. We had defined node image as well in docker-compose file so how does it make using nginx useful?
+
+Answer :
 
 ------------------------ XXXX ----------------------
 
@@ -35,4 +40,51 @@ Digital Ocean is used for this course.
 We would need a tool called "docker machine" that would send our commands to docker server/engine of remote host from our localhost.
 
 --- Provisioning a host :
+
+Using docker-machine, we can provision a host with docker engine installed on it.
+Once above process is done, using docker-machine client, we can execute commands on remote provisioned host.
+
+Note: Commands vary according to cloud platform so research when you are deploying something.
+
+Basically, on remote host, we are installing docker engine and starting a process for it.
+
+Note : SSH is used to connect to remote machines.
+
+Note: For production docker-compose file, we must set attribute for restart to be one of values defined in documentation (always etc) for each service defined.
+
+
+--- Reducing the image size :
+
+For react apps, we must use npm run build command to create optimized bundle for production.
+
+We have something similar for all libraries/frameworks.
+
+Note: We can have single CMD instruction in a docker file.
+
+To optimize, we can do following steps :
+
+1. Instead of using node and installing npm/node etc, we can build the image that would create optimized build locally.
+2. We can use nginx image as webserver and copy above build bundle into this server to start a process.
+
+
+Note : we must create separate docker file for each environment.
+while building we can tell which docker file to be used using -f option.
+
+e.g. docker build -t <image_name> -f <corresponding_docker_file> <directory_where_docker_file_is_present>
+
+
+--- Deploying the application :
+
+Note: using chown command, we can change the owner of file in linux.
+
+So, basically deployment is nothing but what we do locally to start our application process,
+
+we would need to do the same things by connecting it to remote host using SSH, many libraries does the same under the hood so we think it's some magic.
+
+After connecting to remote host, we execute commands on that host.
+This gives the impression that we are executing commands locally but actually the commands are getting executed on the server.
+
+Note: image property in docker-compose file can be used to create image name and tag combination.
+
+---- Sample Optimized Docker file for production :
 
