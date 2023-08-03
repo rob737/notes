@@ -1,0 +1,45 @@
+--- Participants :
+Focus is only on the backend and infrastructure :
+
+1. Java
+2. Spring / Spring boot
+3. Mysql/Postgres
+4. Hibernate
+5. AWS
+6. Deployment
+7. Docker
+8. Algorithm
+9. Bash Scripting
+10. Linux commands
+11. Design pattern
+12. Queue based system
+13. Pub/Sub
+14. HTTP and TCP.
+15. Message formats like protobuff, JSON, XML etc.
+16. SSH connection
+17. Cache. (Redis)
+18. Memory management and Garbage collection.
+19. Multi-Threading.
+20. Build concepts of maven.
+21. Performance enhancement in Java.
+22. SSL and TLS and certificate.
+23. Schedulers.
+24. DB queries and it's optimizations.
+25. Asynchronous I/O in JAVA.
+26. Load balancer, Server like Nginx, DNS, VPC Networking.
+27. Db design.
+28. System design.
+29. People management.
+30. TDD
+31. Kubernetes.
+32. CI/CD.
+33. Spring Security.
+34. Circuit Breaker and Rate limiter.
+
+--- Fundamentals that needs to be mastered to leverage first principle.
+
+1. Tool to identify performance bottleneck.
+2. Hussein naseer's fundamental course.
+3. Tool to montitor Garbage collection, heap dump and make sense of it.
+
+Tomorrow, list down important concepts in all the above components.

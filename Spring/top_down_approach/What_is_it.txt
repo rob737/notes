@@ -31,3 +31,15 @@ invoke:62, NativeMethodAccessorImpl (jdk.internal.reflect)
 invoke:43, DelegatingMethodAccessorImpl (jdk.internal.reflect)
 invoke:566, Method (java.lang.reflect)
 run:49, RestartLauncher (org.springframework.boot.devtools.restart)
+
+
+
+
+metadata = {StandardAnnotationMetadata@2974} "com.example.springmvc.MvcTestingExampleApplication"
+ mergedAnnotations = {TypeMappedAnnotations@3682} 
+ nestedAnnotationsAsMap = true
+ annotationTypes = {Collections$UnmodifiableSet@3683}  size = 1
+  0 = "org.springframework.boot.autoconfigure.SpringBootApplication"
+ introspectedClass = {Class@1579} "class com.example.springmvc.MvcTestingExampleApplication"
+ 
+ 

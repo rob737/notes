@@ -88,3 +88,24 @@ Note: image property in docker-compose file can be used to create image name and
 
 ---- Sample Optimized Docker file for production :
 
+#In docker file we can have multiple stages e.g. build stage and production stage.
+#Step 1 : Build stage
+FROM node:14.16.0-alpine3.13 AS build-stage
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+#To create optimized bundle
+RUN npm run build
+
+#Step 2 : Deploying created bundle in Step 1 to separate server.
+FROM nginx:1.12-alpine
+RUN addgroup app && adduser -S -G app app
+USER app
+#This will copy the optimized bundle from folder /app/build in container to nginx's directory.
+COPY --from=build-stage /app/build /usr/share/nginx/html
+EXPOSE 80
+ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
+
+# Note : Above is optimized because image bundle is optimized and we are also using lightweight server.
+#Earlier, we were not optimizing image bundle and also i'm assuming that express js server is relatively more memory intensive than nginx.
