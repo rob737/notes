@@ -43,3 +43,273 @@ Focus is only on the backend and infrastructure :
 3. Tool to montitor Garbage collection, heap dump and make sense of it.
 
 Tomorrow, list down important concepts in all the above components.
+
+---- First Iteration concepts that needs to be mastered in first iteration :
+
+----------- JAVA :
+
+- Collections :
+	- LinkedList, HashMap, Array, Concurrent HashMap, Thread Safe, non-thread safe, Unmodifiable Collection, HashSet.
+
+- OOPs
+
+- Bit manipulation	
+
+- Iterators
+
+- Comparator vs Comparable
+
+- Lambda and Streams
+
+- Concurrency
+  - Thread & Process.
+  - Executor Service Future objects.
+  - Callable vs Runnable.
+  
+- Generics.
+
+- Annotation and Reflection.
+
+- Exception Handling.
+
+- Debugging multi-threaded application.
+
+- I/O reading/writing.
+
+
+----------- Spring & Spring Boot :
+
+- Architecture of Spring/Spring boot i.e. fundamental building blocks. (https://docs.spring.io/spring-framework/reference/core.html)
+
+- Under the hood working of @SpringBootApplication, @Repository, @RestController, @Service, @Data, @Bean, @Configuration, @Compoent, @Autowired.
+
+- Memory dump and thread dump.
+
+- @Transactional annotations with isolation levels and rollback.
+
+- What if DB query raises some exception within transaction?
+
+- JWT authentication.
+
+- Spring Security sample program.
+
+----------- Mysql/Postgres (SQL DB) :
+
+- Writing queries.
+
+- How joins work under the hood.
+
+- How unions work under the hood.
+
+- Cursor and Stored procedure.
+
+- ACID properties and it's implementation.
+
+- Isolation levels and it's implementations.
+
+- Practice using EXPLAIN command.
+
+- DB design.
+
+- Indexes and B+ tree implementation.
+
+- Why DB I/O is slow.
+
+----------- Hibernate :
+
+- Writing many to many, many to one, one to one mappings.
+
+- Writing big custom queries with JPA (interface) and hibernate (implementation).
+
+- Eager and lazy loading.
+
+- Cascading effects.
+
+----------- AWS :
+
+- Understand AWS networking.
+
+- Security groups.
+
+- EC2.
+
+- Lambda.
+
+- API gateway/ Load balancing.
+
+- IAM roles and policies.
+
+- S3.
+
+
+----------- Deployment:
+
+- Understanding what happens under the hood when you say deployment.
+
+- Deploying java/spring boot application on cloud.
+
+----------- Docker :
+
+- Dockerize java app.
+
+- Dockerize Spring boot app.
+
+----------- Algorithm :
+
+- Balance out learning and revising.
+
+----------- Bash Scripting :
+
+- Write a bash script to deploy something.
+
+----------- Linux Commands :
+
+- Just google it whatever you need.
+
+----------- Design pattern :
+
+- Implement Fundamentals of backend using design pattern.
+
+- Create a UML diagram of any one problem in logicmojo for LLD and implement it using design pattern.
+
+----------- Queue based/ Pub Sub/ Streaming :
+
+- Understand the architecture.
+
+- Implement activemq, redis pub/sub and kafka for streaming in java.
+
+----------- Http and TCP and DNS :
+
+- Use pure java to understand how HTTP and TCP protocol is leveraged to create connection.
+
+- Just understand the workings of DNS.
+
+----------- Message formats Protobuff/Json/Xml :
+
+- Write a simple java program to understand it's use.
+
+----------- SSH connection :
+
+- Practice SSH commands to connect to Ec2 instance.
+
+- Deploy a simple hello world java program to EC2 and execute it.
+
+----------- Cache (Redis) :
+
+- Understand the architecure/fundamentals of Cache.
+
+- Implement Redis cache in java.
+
+----------- Memory management and Garbage collection :
+
+- Understand memory model.
+
+- understand garbage collection.
+
+- Understand reading thread/memory dump.
+
+- Understand tuning JVM for performance.
+
+- Understand how to leverage garbage collection for real world use case.
+
+----------- Concurrency :
+
+- Understand mutex, locks and semaphores.
+
+- java-concurrency-in-practice book, read it end to end.
+
+----------- Maven :
+
+- Dependency, build profile, modules.
+
+- Dependency exclusion.
+
+- plugins.
+
+- How exactly group id, artifact id and version is leveraged in real world.
+
+----------- Performance enhancement in java :
+
+- Understand tuning JVM 
+
+- Closing connections in case of exceptions.
+
+- Hikari connection pool
+
+- Figuring out contents of SYN, ACCEPT, READ and Write Queues.
+
+- Figuring out how much memory is consumed by each request.
+
+- Optimization at build level like optimization done by npm run build.
+
+----------- SSL/TLS and certificate :
+
+- understand the fundamentals.
+
+- try to create it for localhost.
+
+- practice SSH tunnelling and port forwarding.
+
+----------- Schedulers :
+
+- try to run a cron scheduler locally in java.
+
+----------- DB queries and optimization :
+
+- Deeply understanding what explain does under the hood for Mysql/Postgres.
+
+- understand each parameter of EXPLAIN output and figure out how to leverage it in real world use case.
+
+----------- Asynchronous I/O in Java :
+
+- Figure out library which gives us this provision.
+
+- Understand how it works under the hood.
+
+----------- Load Balancer/Nginx/DNS :
+
+- Spin up a docker container of nginx.
+
+- write a small program to do load balancing.
+
+----------- DB design :
+
+- Practice designing systems.
+
+- Understand the right way to do it.
+
+- SQL vs No SQL architecture level understanding.
+
+----------- System Design :
+
+- Implement fundamental building blocks in Java from NH & AB.
+
+- Understand DB internals.
+
+- Read OS book by galvin end to end.
+
+----------- TDD :
+
+- Write a small test case for your java code by mocking dependencies.
+
+----------- Kubernetes :
+
+- Understand why it is needed.
+
+- practice to deploy one docker app in kubernetes.
+
+----------- CI/CD pipelines :
+
+- Try to trigger a bare minimum CI/CD pipeline for spring boot app.
+
+- Run test cases in it.
+
+- Run DB migrations.
+
+----------- Microservice :
+
+- Understand Saga pattern 
+
+- Understand circuit breaker
+
+- Understand rate limiter.

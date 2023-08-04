@@ -1,0 +1,3 @@
+Fundamental unit of I/O in disk is page and not bytes while in RAM it is at bytes level.
+
+Database optimization is simply reducing disk I/O.
