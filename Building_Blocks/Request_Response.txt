@@ -1,0 +1,47 @@
+------------------------------------------------------ Doubts --------------------------------------------------------------------------------------------------------
+1. Constituents of Request and Response?
+2. What exactly is serialization and de-serialization?
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------ XXXXXXX -------------------------------------------------------------------------------------------------------
+
+Parsing of JSON is faster than XML and parsing of proto buff is faster than JSON.
+
+----- Places where request/response model is used
+
+-- Web. Http, DNS, SSH.
+-- RPC (Remote Procedure Call)
+-- SQL and DB protocols.
+-- APIs (REST/SOAP/GraphQL).
+
+
+
+Note: As a rule of thumb, don't pre-optimize things. Optimize it only if needed.
+
+----- Anatomy of request/response :
+
+Client/Server needs to agree upon a structure in which they would communicate.
+Above constraint is validated by http library.
+
+-- Request structure :
+
+GET / HTTP/1.1
+Headers
+<CRLF>
+BODY
+
+----- Places where request/response model doesn't work 
+
+1. Notification Service.
+2. Chatting Application.
+3. Very Long requests.
+
