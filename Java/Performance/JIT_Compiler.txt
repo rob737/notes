@@ -1,0 +1,34 @@
+----------------------------------------------- Doubts ---------------------------------------------------------------------------------------------------
+1. Is Java Compiler part of JVM ?
+2. What all JVM consists of and what are the responsibilities of JVM?
+
+
+
+
+
+----------------------------------------------- XXXXXXX -------------------------------------------------------------------------------------------------
+
+
+
+
+--- Fundamentals Of JVM :
+
+JVM doesn't execute java code but bytecode.
+
+Byte code is basically .class file.
+
+JVM reads this bytecode and converts it into underlying hardware specific Instruction Set which machine can understand.
+
+This is how it achieves WORA (Write Once, Run Anywhere).
+
+So, any language that is compiled into bytecode can leverage JVM to convert code into underlying machine code.
+
+--- JIT (Just In Time) Compilation :
+
+Basically, what interpreter does is it converts each line of the code "one-by-one" to hardware specific instruction set.
+
+Compilation in C/C++ is converting high level language directly to machine Instruction Sets.
+
+However, In Java, first program gets compiled to bytecode.
+Now, at runtime, JVM compiles this bytecode into machine dependent Instruction Set.
+
