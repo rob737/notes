@@ -45,3 +45,7 @@ BODY
 2. Chatting Application.
 3. Very Long requests.
 
+Note : First thing that we get in response is the header and then the response body.
+       Verify it using curl command.
+	   
+All contents are not received at once, it is received in chunks or stream of bytes.	   
