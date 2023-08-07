@@ -1,0 +1,26 @@
+---------------------------------------------- Doubt ------------------------------------------------------------------------
+
+1. How interthread communication happens ? Specially how does main thread knows that it's spawned thread has completed it's work?
+
+
+
+--------------------------------------- XXXXXXXXX ----------------------------------------------------------------------------
+
+
+
+
+---- Synchronous I/O :
+
+Note: If process does any I/O work then it is moved to store back area as read in the morning.
+Once device controller sends interrupt to CPU via driver that I/O is complete and data is available in memory via DMA (Direct Memory Access) 
+then the process is put into ready queue and ultimately scheduled by the scheduler for CPU clock cycle. 
+
+
+----- Asynchronous I/O :
+
+
+epoll : It is basically what we call event driven i.e. it hands over the tasks to kernel and then gets notified once it is ready.
+
+poll : It is basically continuously checking whether tasks have completed execution or not by polling it.
+
+io_uring : Receiver calls back when it's done as it places the completed tasks in a queue from where caller can read it.
