@@ -1,7 +1,9 @@
 ---------------------------------------------- Doubt ------------------------------------------------------------------------
 
 1. How interthread communication happens ? Specially how does main thread knows that it's spawned thread has completed it's work?
-
+2. How callbacks exactly work ? More specifically how receiver knows which handler method to call once things are ready? or other way round - how does 
+   caller knows when submitted tasks has completed execution?
+3. How do you convert buffer into human readable String or form ?   
 
 
 --------------------------------------- XXXXXXXXX ----------------------------------------------------------------------------
@@ -24,3 +26,33 @@ epoll : It is basically what we call event driven i.e. it hands over the tasks t
 poll : It is basically continuously checking whether tasks have completed execution or not by polling it.
 
 io_uring : Receiver calls back when it's done as it places the completed tasks in a queue from where caller can read it.
+
+Request is put into queue.
+
+Future or Promise works like this only, caller sends a request and receiver puts the request into a queue and returns immediately with a Future object.
+
+Now, when process is completed and it is put into ready queue then corresponding client process is called once picked up by the CPU. 
+
+
+Note : WAL (Write Ahead Log) is a journal of changes. 
+Example : let's say a DB transaction contains 10 steps, each step would be first recorded into WAL and then it would be put into disk pages via I/O.
+
+page is a fixed block of memory that was introduced to minimize fragmentation.
+
+So DB commit is basically flushing WAL changes to persistent storage and that's why once transaction is committed then we are confident that 
+changes would be present even if server crashes.
+
+However, pages can still be in memory when commit happens.
+
+Similarly, durability is also guaranteed, if server crashes then once up it would just read up the WAL and load corresponding pages into memory.
+
+DB engine skips putting WAL changes to OS cache and directly puts it into disk.
+
+
+---- Writing into DB or any file system :
+
+When we write a file in OS then it doesn't go to disk immediately, it stays in OS file system cache (e.g. MTFS etc) i.e. in memory.
+
+When there are enough pages to write to disk then OS flushes those pages to disk.
+
+We can leverage fsync property to bypass OS cache.
