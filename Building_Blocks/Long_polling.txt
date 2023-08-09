@@ -1,0 +1,5 @@
+---
+
+It is the alternative of short polling to remove too many network calls.
+
+Kafka uses long polling.
