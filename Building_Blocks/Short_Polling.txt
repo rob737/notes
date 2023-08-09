@@ -1,0 +1,40 @@
+--------------------------------------- Doubt --------------------------------
+
+1. In short polling, does it perform 3 way handshake everytime it polls or does it re-use underlying connection after creating it for the first time ?
+
+Answer : It creates a new connection.
+
+---------------------------------------- ******** -------------------------------------------------------
+
+
+--- Short polling :
+
+It is used in cases where async processing is being done and client intermittently checks if the submitted task is completed or not.
+
+As a thumb rule, when request takes a long time to process.
+
+
+--- Steps in short polling :
+
+1. Client sends a request to server.
+
+2. Server returns immediately with a handle/jobId/taskId which will be used by client to check for the status of task.
+
+3. Server either queues the request or start processing it.
+
+4. Multiple "short" request/response as polls is being made by client using handle as identifier to check for the status.
+
+
+--- PROS :
+
+1. Simple to implement.
+2. Good for long running tasks.
+3. Client can disconnect.
+
+--- CONS :
+
+1. Too chatty as too many requests are made.
+
+2. Wasted network bandwidth as each poll creates TCP connection.
+
+3. Wasted backend resources as kernel would perform tasks and then backend will have to execute the logic whether task is ready or not.
