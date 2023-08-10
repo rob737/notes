@@ -1,0 +1,31 @@
+------------------------------------- Doubt -------------------------------------
+1. When we start a server and deploy our backend bundle to it then effectively are we starting two processes?
+   one for server where conenction request is listened on and other is for backend instruction execution? 	 
+   e.g. in node, we were creating clusters with multiple process which reads up the same queues for faster execution.
+
+
+------------------------ XXXXX -------------------------------
+
+
+-- Listener :
+ Thread or process that calls listen and pass in the port and address.
+ basically, this process listens to client requests.
+ 
+-- Acceptor :
+ Thread or process that calls accept method on a particular socket filedescriptor to get client connection/filedescriptor.
+
+-- Reader :
+ Thread or process that calls read to read from read buffer after connection is created by picking entry from accept queue.
+ 
+Note : There can be multiple ways to design it, either a single process or thread can do the job of all 3 (listener, acceptor, reader/writer)
+	   or we can distribute it among multithreads or multiprocess.	
+ 
+
+---- Single Listener / Single Worker Thread :
+
+We have a single process that listens, accepts and read connections.
+
+Node follows the same principle and so in case of many connections single thread of a process may lead to congestion in accept queue.
+
+One optimization that node does is clustering i.e. basically it spins up a new process that listens/accepts/reads to the same socket queues.
+Thus, effectively increasing the throughput. 
