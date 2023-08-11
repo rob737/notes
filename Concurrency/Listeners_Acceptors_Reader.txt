@@ -2,6 +2,10 @@
 1. When we start a server and deploy our backend bundle to it then effectively are we starting two processes?
    one for server where conenction request is listened on and other is for backend instruction execution? 	 
    e.g. in node, we were creating clusters with multiple process which reads up the same queues for faster execution.
+   
+2. What is the difference between a connection and a request ?   
+
+3. What actually is the significance of a port ?
 
 
 ------------------------ XXXXX -------------------------------
@@ -29,3 +33,59 @@ Node follows the same principle and so in case of many connections single thread
 
 One optimization that node does is clustering i.e. basically it spins up a new process that listens/accepts/reads to the same socket queues.
 Thus, effectively increasing the throughput. 
+
+
+---- Single Listener / Multiple Worker Threads :
+
+By Worker, we mean Reader.
+
+Note : MemCacheD has this architecture.
+
+Single process and multiple threads.
+
+That process is the listener and the acceptor.
+
+Multiple threads are the readers.
+
+Process has the socket and is listening for the connections, once kernel puts the connection in the accept queue then this process
+can pick it up and puts it it's memory space and then spawn threads to complete the execution as fast as possible.
+or process can assign each thread a connection.
+
+Note : These threads are dealing directly with connection, there can be other threads that deals with processing the requests.
+
+Note: The issue with this design is that one thread can be over consumed all the time doing all the hefty things and other thread is free most of the time.
+
+---- Single Listener / Multiple worker threads but with load balancing :
+
+Single process itself listens and accepts connection like previous.
+However, instead of passing connection itself to the readers, same process reads the connection and passes on the request to multiple threads for processing
+business logic.
+
+Note : RAMCloud has this architecture.
+
+Note : Socket Sharding is the technique using which multiple processes can listen to the same socket. Now, my doubt is clear about how 
+a cluster with multiple processes work.
+
+We can have multiple processes doing the listening, accepting and reading connections and then threads can do all the business processing tasks.
+
+
+---- Multiple Acceptor threads on a Single Socket :
+
+Note: Nginx leverages this concept.
+
+So, basically the concept is that single process would listen to the socket.
+
+Now, multiple threads guarded by mutex as socket is critical section would accept and read the connections and then process it.
+
+Technically, each thread owns the connection.
+
+
+Informally, flow would be like this :
+
+A process is identified by a port so there are technically a separate kernel process and a process for our server.
+
+Now, after kernel is done with 3 way handhsake with client, it puts it into socket's accept queue and somehow inform server process that it has done it.
+
+or may be socket process does polling which is effectively called listening.
+
+Now, if it finds a connection then it instructs a thread to accept it and read it to perform business logic.
