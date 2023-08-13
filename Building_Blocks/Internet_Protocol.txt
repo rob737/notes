@@ -1,0 +1,64 @@
+---------------------------------------------- Doubts -------------------------------------------------------------------------------------
+1. Read about DHCP 
+2. Difference between MAC address and IP address ?
+   I think MAC address is to identify the device within the same subnet while IP address is for broader network.
+
+3. Does NIC has IP/MAC address or is there any other hardware in our computer that is assigned the IP/MAC address?
+
+4. Difference between a switch and a router?
+
+--------------------------------------------- XXXXX ---------------------------------------------------------------------------------------
+
+-- IP packets deal only with source and destination IP addresses i.e. it is layer 3 protocol.
+
+-- It doesn't care about information from other layers like port from Layer 4 etc.
+
+----- IP address :
+
+It can be set automatically or statically.
+
+IPv4 is 4 bytes i.e. 32 bits.
+
+IP address has network and host portion.
+
+e.g. a.b.c.d/x where x represents the number of bits that represents the network and d represents the host in the network.
+
+e.g. 192.168.254.0/24 , we can have 2^24 networks and 2^8 hosts in each network.
+
+These hosts are also called subnet as in subnetworks within a larger network.
+
+----- Subnet Mask :
+
+It is used to determine whether an IP is in same subnet or another subnet.
+
+It's value is 255.255.255.0
+
+e.g. 192.156.234.5 and 192.234.123.12 are not in the same subnet as 255.255.255.0 & 192.156.234.5 and 255.255.255.0 & 192.234.123.12 are 
+not same.
+
+Note: & operation with 255 will effectively give the same number as result. (Why?)
+
+2^8 is 256 but 0 is the loopback address which is reserved so with 8 bits we can have 2^8 -1 combinations which is basically all 1's which equates to 255.
+
+------ Default Gateway :
+
+If hosts are in same subnet then they can interact with each other using MAC addresses.
+
+However, if they are not in the same subnet then source host need to talk to gateway which in turn will forward the packet to destination host or another 
+gateway accordingly.
+
+Default gateway also has an assigned IP address. Technically, this is what we call a Router.
+
+Hmm, Interestingly default gateway can have number of IP addresses equal to the number of subnet it connects to.
+
+
+------- Anatomy of IP Packet :
+
+Ip packet has headers and data sections.
+
+headers are usually 20 bytes while data section can go upto 65536 bytes (i.e. 2^16).
+
+Note: headers with some configurations can go upto 60 bytes.
+
+MTU : Maximum Transmission Unit i.e. maximum number of bytes that can be sent over in a packet.
+It's way less than what data section allows.
