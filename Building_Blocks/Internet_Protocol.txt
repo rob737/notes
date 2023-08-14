@@ -7,6 +7,10 @@
 
 4. Difference between a switch and a router?
 
+5. Messages like ping, traceroute etc are sent through ICMP protocol. Read about it. Also, ICMP is used to send acknowledgements etc.
+
+6. Difference between ISP and default gateway ?
+
 --------------------------------------------- XXXXX ---------------------------------------------------------------------------------------
 
 -- IP packets deal only with source and destination IP addresses i.e. it is layer 3 protocol.
@@ -62,3 +66,40 @@ Note: headers with some configurations can go upto 60 bytes.
 
 MTU : Maximum Transmission Unit i.e. maximum number of bytes that can be sent over in a packet.
 It's way less than what data section allows.
+
+Best case scenario is that IP packet fits perfectly into MTU (Maximum Transmission Unit) also called as frames.
+
+However, if IP Packet doesn't fit into one MTU or one frame then either we can fragment and send our IP packet into multiple frames
+or router would drop the package if fragment header is not set in IP packet.
+
+If fragmentation is enabled then receiver host must have some sort of aggregation logic for aggregating frames of same packet
+because frames would not be received in order.
+
+Below list explains the different header flags that is present in IP packet :
+
+-- Version : Spreads over 4 bits which represents either IPv4 or IPv6 currently. However, it can represent upto 2^4-1 versions.
+
+-- IHL (Internet Header Length) : Defines how long the options block would be in header, by default header is 20 bytes excluding options.
+	we can configure IHL flag to expand header size by using options block. However, all routes doesn't support this.
+
+-- Total Length : 8 bit flag that represents total size of the packet i.e. including data + header + options.
+
+-- flags : one of the values is set to decide whether fragmentation is needed or not.
+
+-- Time To Live : A number that represents how many hops can this packet survive? It is of size 8 bits so we can represent 2^8 hops.
+
+Note: IP protocol is stateless.
+
+-- Protocol : It tells us which protocol is inside data i.e. layer 4 is showed into layer 3 and so we would need someway to identify which layer 4 protocol 
+	is our packet carrying.
+	e.g. TCP, UDP, ICMP  etc.
+	
+-- Source and Destination IP : 4 bytes each representing source and destination host IP addresses.
+
+Note : Spoofing is basically changing source IP address to something else to impersonate as someone else.
+
+Note : ISP is basically the default gateway or the first gateway that packet from our laptop goes through to the internet.
+
+-- ECN : Explicit Congestion Notification : Congestion is basically when router is flooded with packets and it has started dropping packets.
+	Router puts packet in memory (effectively called buffer) and once the buffer fills up, it starts dropping packages.
+	
