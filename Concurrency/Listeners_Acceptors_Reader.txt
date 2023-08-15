@@ -89,3 +89,43 @@ Now, after kernel is done with 3 way handhsake with client, it puts it into sock
 or may be socket process does polling which is effectively called listening.
 
 Now, if it finds a connection then it instructs a thread to accept it and read it to perform business logic.
+
+
+---- Multiple Listener process on the same port :
+
+Concept of socket sharding is what allows multiple process to listen to on the same port in the same machine/IP.
+
+While creating socket, we can leverage SO_REUSEPORT to enable sharing socket with multiple processes.
+
+OS creates multiple queues (SYN,ACCEPT,READ,WRITE) for each process and does load balancing to allocate connections to each process.
+
+Note: This is almost the default in all proxies. (Nginx, HAProxy, envoy etc).
+
+
+---- Backend Idempotency : 
+
+How do I avoid executing the same request twice.
+
+Idempotency is basically resending the same request without affecting the backend.
+
+what do you mean by "without affecting the backend" ?
+
+Let's imagine you are doing payment and due to some circumstances, your payment request has reached backend and is processed but somehow 
+client crashed and didn't register that it was successfully completed.
+
+Client may give you an option to retry the payment, in which case it may lead to duplicate payments which is troublesome.
+
+
+Example of backend API which is not idempotent :
+
+let's say we do POST /comment so everytime this API is called it would insert a new row with the comment.
+However, there is a possibility like mentioned above that client may retry under some circumstances which may lead to duplicate entries being 
+stored using comment. 
+
+This is an important factor to consider as sometimes layer 7 proxies does retry which is totally out of control.
+
+upsert can help in these cases.
+
+Note: Browser and proxies treat GET as idempotent and retry by default so never use GET request to update something.
+
+CDNs are basically reverse proxies.
