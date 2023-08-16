@@ -11,6 +11,18 @@
 
 6. Difference between ISP and default gateway ?
 
+7. What is black hole TCP connection ?
+
+8. Which library ensures that IP packets are following the constraints of MTU and not getting dropped ? is it axios ?
+
+9. Is MTU same as Layer 2 frames?
+
+10. Relation between Internet Protocol, ICMP and utilities like ping?
+
+Answer : Ping is just an IP packet that has ICMP defined as protocol.
+
+
+
 --------------------------------------------- XXXXX ---------------------------------------------------------------------------------------
 
 -- IP packets deal only with source and destination IP addresses i.e. it is layer 3 protocol.
@@ -103,3 +115,25 @@ Note : ISP is basically the default gateway or the first gateway that packet fro
 -- ECN : Explicit Congestion Notification : Congestion is basically when router is flooded with packets and it has started dropping packets.
 	Router puts packet in memory (effectively called buffer) and once the buffer fills up, it starts dropping packages.
 	
+	ECN flag is leveraged to identify if any router in the path is experiencing congestion.
+	Let's say at hop3 ECN bit was set by some router then at next hop, receiver/router will somehow notify the client that congestion is there in the 
+	network. This congestion control is managed by TCP.
+	
+
+---- ICMP (Internet Control Message Protocol)
+
+This is the most critical protocol that lives in layer 3.	
+
+It is designed for informational messages like Host unreachable, port unreachable, fragmentation needed, packet expired etc.
+
+Note: It doesn't need port or listeners to be opened as it is layer 3 protocol which deals only with IP.
+
+ICMP can be used if it is allowed by host.
+
+Just to understand, a protocol is the language and packet is the actual unit in which communication is carried out.
+So, some constituent of packet will tell us in which language is the communication happening.
+
+So, IP packet is the unit of communication in Layer 3 which will tell us which language it belongs to like ICMP, TCP etc.
+
+
+Note: Some firewalls either block or timeout ICMP packets.
