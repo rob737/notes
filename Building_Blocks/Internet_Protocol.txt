@@ -137,3 +137,4 @@ So, IP packet is the unit of communication in Layer 3 which will tell us which l
 
 
 Note: Some firewalls either block or timeout ICMP packets.
+
