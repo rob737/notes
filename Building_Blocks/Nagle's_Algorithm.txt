@@ -1,0 +1,25 @@
+------------------------------------- Doubt ---------------------------
+1. Since, Nagle's algorithm is applicable only if client expects an acknowledgement so it will not be leveraged when Http is on UDP instead of TCP?
+
+
+--------------------------------- XXXXXXXXXXXXXXX ---------------------
+
+
+
+
+--- This algorithm is one of the primary reasons for delay between client/server communication even though network is good.
+
+This is mostly related to client side delays.
+
+Basically, the gist is that TCP deals in segments.
+
+let's say segment is of size 20 bytes and you are just trying to send 1 byte over the network.
+
+Now, the client O.S. would wait till the segment is full or covering majority of segment until it sends the byte over the network.
+
+MSS is what defines the segment size.
+
+Note: Nagle's algorithm ensures this restriction only if client is expecting any form of acknowledgement from the server.
+
+
+Note: Most clients today disable Nagle's algorithm by using TCP_NODELAY flag.
