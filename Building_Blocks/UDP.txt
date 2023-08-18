@@ -1,0 +1,91 @@
+------------------------------------------- Doubt -----------------------------------------------------
+1. Understand what netcat utility is (nc) that was used to connect to UDP server socket.
+
+
+------------------------------------------- XXXX  -----------------------------------------------------
+
+UDP (User Datagram Protocol) :
+
+It's called user datagram because client sets a fixed size message into underlying IP packet.
+
+i.e. datagram or message has start and end unlike TCP which is a stream of bytes.
+
+It is layer 4 protocol which deals in source and destination port.
+
+Simple protocol to send and receive data. However, delivery of data is not guaranteed unlike TCP.
+
+It's a stateless protocol i.e. every request must contain the data that is needed for effective processing of the request.
+Basically, we don't store any data required for processing on server side.
+
+It's header is of size 8 bytes.
+
+
+---- UDP use cases :
+
+-- Video Streaming
+
+-- VPN
+
+-- DNS
+
+-- WebRTC : It is a protocol which uses Http over UDP.
+
+
+Let's say we want to send data of multiple client processes to same server.
+
+Client would multiplex different port information into a single IP packet containing UDP message.
+
+Now, server would de-multiplex it and route UDP message to their corresponding application identified by port.
+
+
+
+---- Anatomy of UDP datagram :
+
+UDP header if we are using IPv4 is 8 bytes.
+
+Ports are 16 bit i.e. 0 to 65535.
+
+it contains following flags :
+
+-- Source port of 2 bytes.
+
+-- Destination port of 2 bytes.
+
+-- Length of 2 bytes denotes the length of the data that is being sent.
+
+-- Checksum of 2 bytes
+
+-- data : user data that client wants to send to server.
+
+
+----- Pros of UDP :
+
+Uses less bandwidth as datagram is small so I think in MTU, we can send more data.
+
+Low latency as unlike TCP, there is no handshake between client and server.
+
+
+
+
+
+
+
+
+
+----- Cons of UDP :
+
+There is no order, re-transmission and delivery of packets guarantee.
+
+No acknowledgement whether packet is delivered to server or not.
+
+Since, UDP is stateless as well as connectionless it can be used to flood routers or DNS.
+
+OS has to process all incoming UDP datagrams so it may lead to all sort of resource wastage etc.
+
+No flow control and No congestion control.
+
+Flow control is basically how much server can process packets.
+
+congestion control is basically how much router can process packets.
+
+
