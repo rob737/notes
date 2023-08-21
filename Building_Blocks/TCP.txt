@@ -1,0 +1,136 @@
+--------------------------------- Doubts -------------------------------------------------
+
+1. What actually happens in the case of connection leak in case it is not properly closed?
+
+2. How is SSE more performant than websockets ? In both the cases TCP connection would be established.
+
+3. Explore netstat utility.
+
+4. So persistent connection is basically that client/server is storing session information which would consume memory.
+
+--------------------------------- XXXX ----------------------------------------------------
+
+
+
+---- Transmission Control Protocol (TCP) :
+
+Kernel handles the implementation of TCP, it is part of OS.
+
+It is just a stream of bytes chunked into segments.
+Hmm, that's why we need readbuffer etc in Java code to make sense of the incoming data.
+
+
+- Layer 4 protocol
+
+- Requires 3 way handshake (SYN, SYNACK, ACK)
+
+- 3 way handshake is basically creating connection and the way it does is client OS stores information about server and server OS stores
+  information about client.
+  Hence, it is stateful.
+
+- 20 bytes of header is needed (can go upto 60 bytes).
+
+
+---- Use cases :
+
+- Reliable communication.
+
+- Remote shell.
+
+- Database connections.
+
+- Web communications.
+
+- Any bidirectional communication (This is important)
+
+Connection is based on 2 pair of properties :
+
+1. Source IP - Source Port.
+2. Destination IP - Destination Port.
+
+O.S. hashes the combination of these properties and store it in a lookup.
+Now, when TCP segment arrives then it looks for above combination and matches the hash value.
+
+
+Socket or file descriptor representing the socket is session 5 concept as it represents the session or connection.
+
+- TCP segments are sequenced and ordered.
+However, they can arrive at receiver out of order because they are shoved into IP packets which can arrive in random order.
+Hence, we would need some sort of aggregator at receiver end to order the packets as per their sequence number belonging to a particular session.
+
+Session is nothing but a client-server active TCP connection.
+
+- Segments are acknowledged.
+
+However, client sends many segments even if ack is not received from the server.
+Number would depend on the congestion at router and flow control at server.
+
+If server has sent acknowledgement for higher number segment then it's guaranteed that lower segments are successfully processed.
+
+
+- Lost segments are retransmitted by the respective kernel (either client or server).   
+  
+Session is saved at layer 5 after 3 way handshake is done and this information is contained in file descriptor.  
+  
+  
+In TCP also, multiple requests from different ports may be multiplexed into one segment which is going to the same IP address.
+After reaching at the receiver, receiver demultiplexes the request and forwards request to corresponding port process.
+
+  
+------- Closing the connection :
+
+It is a 4 way handshake.
+
+let's assume server wants to close the connection.
+
+server sends FIN segment to client.
+
+Client ACKS FIN segment.
+
+Now, client sends FIN segment to Server.
+
+Once Server ACKS it then the connection is closed.
+
+Connection closing technically means destroying the file descriptor and closing the socket and probably removing all the associated queues.
+
+
+--- Anatomy of TCP segment :
+
+TCP segments slide into an IP packet as data.
+
+source port : 2 bytes
+
+destination port : 2 bytes
+
+Sequence number : 4 bytes
+
+Every segment being a stream has a sequence number corresponding to a connection.
+
+Acknowledgement number : 4 bytes.
+
+receiver sends back acknowledgement if ACK bit is set in the header.
+
+Window Size : Flow control window size : 2 bytes.
+
+It tells technically total size of segments a server can process at max at a time.
+I think this is what the buffer size is.
+
+ECE : Communication bit that informs sender that there is a possibility of congestion.
+
+--- Maximum Segment Size (MSS) :
+
+Maximum segment size denotes how much data can be put in one segment.
+
+Technically, it depends on MTU size (Layer 2 frame) which is around 1500 bytes so MSS can't be larger than that anyways.
+
+Note : listen() system call is what performs 3 way handshake.
+
+Very Important : 
+
+Building a TCP or UDP server basically is denoted by the flag while creating socket.
+
+e.g. (server_fd = socket(AF_INET,SOCK_STREAM,0)
+
+SOCK_STREAM denotes stream (of bytes) based socket whose example is TCP.
+
+
