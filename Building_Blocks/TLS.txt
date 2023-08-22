@@ -1,0 +1,73 @@
+------------------------------------ Doubt -----------------------------------------------------
+
+
+
+------------------------------------ XXXXXX ----------------------------------------------------
+
+"Getting better at your craft is the reward".
+
+"Aim is to focus mental resources totally on the moment and the task at hand".
+
+
+---- TLS (Transport Layer Security) :
+
+It is in a way layer 5 construct as it involves securing connections.
+
+HTTPS is basically Http over TLS.
+
+Note: TLS can be leveraged to encrypt any layer 7 protocol and not just Http.
+
+
+Steps in TLS handshake or Https :
+
+Note : It takes place after TCP handshake is done and connection must be open for this to take place.
+
+Step 1 : Handshake is established basically to share symmetric key between client and server.
+		 This key would be used by client to encrypt data and by the server to decrypt data.
+		 
+
+Step 2 : Client encrypts the request and then sends it to server over TCP.
+
+Note: We are considering symmetric key algorithm instead of asymmetric key algorithm for discussion as symmetric key algorithm is pretty fast.
+      Symmetric key algorithm uses xor to verify the contents.
+	  Whereas asymmetry algorithm has separate keys to encrypt and decrypt but symmetric key algorithm has the same key.
+	  
+	  Certificate is basically encryption using public key and then if the receiver has the private key to decrypt the contents of the certificate
+	  then we would say that receiver is authenticated.
+	  
+
+---- TLS 1.2 :
+
+It is based on asymmetric encryption i.e. concept of public/private keys.
+
+Public key can be shared while private key cannot be shared.
+
+Certificate contains the public key.	  
+
+Note: There are two algorithms leveraged : one to exchange the key and one to encrypt the data (usually symmetric).
+
+Steps :
+
+1. Client sends TLS hello to server and notifies to use RSA (most popular asymmetric key exchange algorithm) to initiate TLS between client & server.
+
+2. Server sends back certificate and public key asking client for the private symmetric key that will be used to decrypt client data.
+
+3. Client uses public key from server in step above to encrypt the "private" symmetric key, note here that client is encrypting the symmetric key 
+   that needs to be shared with the server which will be used by server later on to decrypt the data.
+
+ Note : If you go down the rabbit hole then you would understand that client doesn't send the private key itself but an input that can be used to
+		generate symmetric private key.
+		
+4. Now, if someone gets the symmetric key then also they can't do any harm as only private key can be used which is present in server to decrypt the contents
+   that is encrypted by it's public key.
+
+So, to clear out the air. There are three keys : public, private and symmetric key.
+
+Public / Private keys are used for exchanging symmetric key.
+
+Public key is used to encrypt the symmetric key and send it back to server. (Step 2 & 3 above)
+
+Let's say someone snoops at this stage while encrypted symmetric key is being shared over the wire then since private key 
+is with server only, the attacker will not be able to make sense of encrypted symmetric key as private key is the only 
+key that can decrypt the encrypted symmetric key.
+
