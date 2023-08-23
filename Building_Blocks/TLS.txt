@@ -71,3 +71,73 @@ Let's say someone snoops at this stage while encrypted symmetric key is being sh
 is with server only, the attacker will not be able to make sense of encrypted symmetric key as private key is the only 
 key that can decrypt the encrypted symmetric key.
 
+5. Client sends Cipher Fin to denote that it has send the symmetric key.
+
+6. Server sends back Cipher Fin to denote that it has received the key. It sends it after decrypting it with private key.
+
+7. Now, client can encrypt the data and send it to the server.
+
+So, techincally TLS is also a 4 way handshake but this trade off is necessary for security.
+
+client -> server (TLS hello)
+
+Server -> Client (Public key + certificate)
+
+Client -> Server ( Change Cipher Fin (flag) + Encrypted Symmetric key)
+
+Server -> Client (Change Cipher Fin (flag))
+
+
+Note : SSH uses private/public key encryption.
+
+Note: OpenSSL is the library that is used for TLS1.2 implementation.
+
+
+---- Diffie Hellman :
+
+Better key exchanger than RSA.
+
+The problem with TLS1.2 was that because of a bug in OpenSSL, people were able to retrieve private key from the server.
+Hence, entire communication was compromised.
+
+A key is techincally a number (I think hexadecimal).
+Even certificate is a number.
+
+Concept is that there will be two private keys (one for client and one for server) and a public key.
+
+Combination of public + either of private key is shared which is mumbo jumbo so no one could figure out what is it exactly.
+
+Now, let's say public key is represented by g, private keys are x and y.
+
+The combination that is sent over the network is basically this :
+
+g^x % n where n is the prime number.
+
+hence, the number(key) that is being sent over the wire is mumbo jumbo because of this operation.
+
+Now, let's say we have to get the symmetric key that would be used to encrypt/decrypt data.
+
+we can do (g^x % n)^y = g^xy % n which is the symmetric key.
+
+Hence, Diffie Hellman solved the problem of leaked private key as it is sending mumbo jumbo number over the wire.
+
+Obviously, if both private keys are leaked then there is no way to be secured.
+
+
+---- TLS 1.3 :
+
+It leverages Diffie hellman algorithm with 2 way handshake instead of 4 like we had in TLS1.2
+
+Step 1 : Client sends public key + (public (g) + client private key (x)) to server with client hello / fin flag.
+
+Processing step : Server uses it's private key (y) and computes the symmetric key using formaula (g^xy % n) which gives the symmetric key.
+
+Step 2 : Server sends it's private key (y) + public key (g) combination to client with server hello / fin flag.
+
+Processing step : Now, client would use the same formula (g ^ xy % n) which would result in the same symmetric key.
+
+hence, two way handshake instead of four .
+
+After this client can enrypt the data and server can decrypt the data as both of them has the keys.
+
+
