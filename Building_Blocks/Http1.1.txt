@@ -1,0 +1,87 @@
+------------------------------------------ Doubt ------------------------------------------------
+1. What exactly a referer parameter in header conveys?
+
+
+
+------------------------------------------ XXXXX -------------------------------------------------
+
+
+"Getting better at your craft is the reward"
+
+"Aim is to focus completely on the moment and the task at hand"
+
+
+--- Anatomy of Http 1.1 request 
+
+
+method :
+
+GET, PUT, POST, DELETE
+
+path : <any_string_after_first_slash> or "/" if only domain name is present.
+
+e.g. <domain_name>/<any_string_after_first_slash>
+
+
+protocol :
+
+whether it is Http1.1/1.2/1.3 or any other .
+
+headers :
+
+collection of key-value pairs representing the header.
+
+e.g. cookie, referer, host etc
+
+body : It is the payload.
+
+
+Note: user agent is basically the client who has made the request.
+
+
+
+--- Anatomy of Http1.1 Response :
+
+
+Protocol : same as above
+
+code : Like 200, 304, 404 etc.
+
+Code Text : some sort of description of code.
+
+Headers : same as above
+
+Body : The actual response whose length/size is defined by the Content-Length header.
+
+
+Note: Http is layer 7 protocol.
+
+
+Note: Nginx is Http 1.1
+
+
+
+---- Http1.0 vs Http1.1
+
+
+-- Http1.0 
+
+- New TCP connection everytime i.e. let's say a webpage has to download 6 images then each image will have it's new connection.
+  Thus, overhead of TCP handshake is multiplied.
+  
+- Slow
+
+- Buffering didn't exist (transfer-encoding:chunked didn't exist)
+
+  i.e. all response must be sent at once.
+
+-- Http1.1
+
+- It has keep-alive: true/false header which can let TCP connection be active across multiple requests.
+
+That's why we can have persisted connections. It is called persisted because connection states are persisted in both client and server memory.
+
+- Because of persistent connection, it has lower latency and lower CPU usage as there is no overhead of 3 way handhshake again and again.
+
+
+  
