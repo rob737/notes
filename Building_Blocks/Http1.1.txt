@@ -83,5 +83,41 @@ That's why we can have persisted connections. It is called persisted because con
 
 - Because of persistent connection, it has lower latency and lower CPU usage as there is no overhead of 3 way handhshake again and again.
 
+- Streaming with chunked transfer.
+
+- Pipelining (disabled by default) : Pipelining is basically client can send multiple requests at a time instead of waiting for an ack from 
+  previous request.
+  However, there is a caveat with this.
+  
+  Let's say we sent 3 requests at a time without waiting for their responses.
+  
+  Let's say request1 is taking too long but request 2 and 3 finishes first and is ready to send back response.
+  
+  Now, request two and three will be blocked until request1 is completed.
+  
+  According to me, this happens because all responses are put into a send queue and if first element is not being sent then following requests will also be blocked
+  in the send queue.
+  
+
+---- Protocol Ossification :
+
+The problem which it solves is of backward compatibility.
+
+There are plethora of routers in between through which packets traverse.
+
+let's say our packet was not encrypted then the way some "legacy" routers are implemented is that it looks at the contents of the packet
+and decide based on protocol whether it supports it or not.
+
+However, let's say we want to send our packets via different upgraded protocol (e.g. Http2 instead of Http1) then it would drop the packets.
+
+However, if we encrypt the data or use tunnelling then it would allow it to pass through.
+
+This is basically called protocol ossification.
+
+
+Note : QUIC is basically UDP with congestion control. 
+  
+  
+
 
   
