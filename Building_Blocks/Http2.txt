@@ -1,0 +1,60 @@
+--------------------------------- Doubts -------------------------------------
+
+
+
+
+--------------------------------- XXXXXX -------------------------------------
+
+
+Difference between Http2 and Http1 is basically of multiplexing.
+
+Let's understand it using the below scenario :
+
+In Http1.1
+
+1. Client establishes a TCP connection with the server.
+2. Now, let's say there are 3 requests that client wants to send to server to download image, js and rest api call.
+
+3. Now, client will send request to download image on the underlying connection and wait for the response.
+
+4. Once, the client gets the response from the server then it sends another request to get the js file on the same connection.
+
+In short, the underlying connection is being used to send only "one" request at a time.
+However, multiple connections can be created to send request concurrently. 
+
+
+In Http2
+
+Step 1 and 2 will be same as above.
+
+Now, in Step3, instead of sending one request at a time over the connection, the client can multiplex all three requests 
+at once and send it over the connection.
+
+Thus, it increases throughput and reduces latency.
+
+Note: Each request when multiplexed is assigned a unique stream number i.e. request to download image will have a stream number, 
+	  request to download js will have a unique stream number and so on.
+	  
+	  
+-- Pros :
+
+1. Saves resources as same connection can be used to send multiple requests.
+
+2. Compressed both headers and data while Http1.1 didn't have provision to compress headers.
+
+3. Secure by default to leverage protocol ossification (refer to Http1.1 notes to revisit protol ossification concepts).
+
+
+-- Cons :
+
+1. TCP head of line blocking is basically because of the fundamental property of TCP to guarantee packet ordering.
+   Now, in Http2, we can send multiple streams of data (In this case, each stream is representing different connection) which are mutually
+   exclusive and so ideally we are okay with getting request in any order from the server as long as it is of different request.
+   
+   But, since TCP guarantees ordering of underlying segments then even though requests are mutually exclusive, there may be a 
+   possibility that requests from client has come in a particular order and so TCP would ensure that response gets delivered in that order.
+   
+2. High CPU usage to manage streams, ordering, flow control of stream (In this case, each stream is representing different connection) etc.
+
+3.    
+
