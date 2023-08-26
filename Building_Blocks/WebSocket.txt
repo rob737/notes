@@ -1,0 +1,75 @@
+------------------------------- Doubts ----------------------------------
+1. What exactly is the difference between Websocket and SSE ? Both would leverage TCP connection right?
+   Why can't we have bi-directional communication in SSE as both have underlying persisted TCP connection?	
+   
+   SSE is basically like establishing a very long request which server can send the events to without closing the connection.
+   Hence, overhead of websocket handshake is saved plus extra processing to maintain states.
+
+
+
+------------------------------- XXXXX  ----------------------------------
+
+
+Websocket sits on top of Http.
+
+It provides bi-directional communication between client and server.
+
+
+First step is that client initiates websocket handshake with server which is basically a HTTP request to ask server to 
+start communication in websocket protocol.
+
+Once, server replies on the above handshake request then client and server can communicate (bi-directionally) over websocket protocol.
+
+Note: It will work only with Htt1.1 as we need to keep the connection alive.
+
+
+---- Websocket handhsake :
+
+ws:// or wss:// (wss is basically secured websocket).
+
+
+Steps :
+
+1. Client initiates GET 1.1 Upgrade request to server.
+
+2. Server responds with 101 - Switching Protocol response.
+
+Now, after step 2 , client-server communication is websocket enabled.
+
+Upgrade header is a special header that is understood by server.
+
+
+---- Websocket use cases :
+
+- Chatting
+
+- Live Feed
+
+- Multiplayer Gaming
+
+- Anything that needs to be real time or chatting.
+
+
+---- Pros :
+
+- Full duplex so no polling is required.
+
+- Http Compatible
+
+- It is Firewall friendly because it is Http compatible.
+
+
+---- Cons :
+
+- Proxying is tricky as they would need to read incoming data from client and pass that data to server by creating new websocket connection 
+  between client and server.
+
+- L7 LB timeouts may happen as websocket is long living connections.
+
+- Stateful and hence it is relatively difficult to horizontally scale as states need to be maintained on every host.
+
+
+If bi-directional communication is not needed frquently then it's better to use Long Polling or SSE.
+
+
+
