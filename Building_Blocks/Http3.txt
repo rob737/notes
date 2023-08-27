@@ -1,0 +1,47 @@
+--------------------------------------- Doubts -----------------------------------------------
+
+
+
+--------------------------------------- XXXXX  -----------------------------------------------
+
+
+Http3 is basically Http over Quic instead of TCP.
+
+Quic however is built on top of UDP.
+
+It is still a streaming protocol just like TCP though barring overheads of TCP like Head of Line blocking,
+Flow Control, Congestion control etc. (Well, Beautiful !!!)
+
+In short Http3 is multiplexed stream based on Quic which internally is based on UDP so we don't have inherent TCP bottlenecks.
+
+
+---- How quick solves TCP head of line blocking problem?
+
+Request is identified in terms of streams and quic manages how many streams are representing a particular request.
+
+So, as soon as all streams representing a request is received by the server and kernel processes it then instantly it sends
+
+acknowledgement back to client instead of checking if all streams of earlier received request are successfully processed or not.
+
+Thus, there is no head of line blocking phenomenon.
+
+
+--- Pros :
+
+Apart from Streams, it has following benefits :
+
+Note : Quic even though is built on top of UDP has connection concept. It sort of creates virtual connection between client and server.
+
+1. Quic creates connection + TLS handhsake in one handshake i.e. in one round trip.
+   TCP would take 3 (TCP) + 4 (TLS) = 7 way handshake. 	
+   
+2. It has congestion control at stream level.
+
+3. Since, UDP is stateless and Quic creates a virtual connection so it has to send connectionId with every datagram to identify the 
+   corresponding connection the packet belongs to.
+
+
+--- Cons :
+
+1. Takes a lot of CPU resource as it has lots of processing to do like Stream congestion control, flow control, managing connection Ids etc.   
+   
