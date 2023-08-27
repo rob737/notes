@@ -43,5 +43,9 @@ Note : Quic even though is built on top of UDP has connection concept. It sort o
 
 --- Cons :
 
-1. Takes a lot of CPU resource as it has lots of processing to do like Stream congestion control, flow control, managing connection Ids etc.   
+1. Takes a lot of CPU resource as it has lots of processing to do like Stream congestion control, flow control, managing connection Ids etc.
+
+2. UDP could be blocked. (Some of the proxies block it).
+
+3.    
    
