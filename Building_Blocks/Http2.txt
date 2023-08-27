@@ -35,6 +35,8 @@ Thus, it increases throughput and reduces latency.
 Note: Each request when multiplexed is assigned a unique stream number i.e. request to download image will have a stream number, 
 	  request to download js will have a unique stream number and so on.
 	  
+Note: Each stream will only have "one" request at a time.	  
+	  
 	  
 -- Pros :
 
@@ -55,6 +57,4 @@ Note: Each request when multiplexed is assigned a unique stream number i.e. requ
    possibility that requests from client has come in a particular order and so TCP would ensure that response gets delivered in that order.
    
 2. High CPU usage to manage streams, ordering, flow control of stream (In this case, each stream is representing different connection) etc.
-
-3.    
 
