@@ -1,0 +1,88 @@
+--------------------------------------------- Doubts ----------------------------------------------
+1. VPN vs Forward Proxy ?
+- Forward Proxy terminates TLS and look at the contents whereas VPN doesnot.
+- VPN operate at IP level (layer 3) whereas proxy operates at layer 4 and above.
+
+
+
+
+--------------------------------------------- XXXXX  ----------------------------------------------
+
+
+---- Forward Proxy :
+
+
+Dataflow is like below :
+
+Client -> Forward Proxy -> Destination Server.
+
+So, client initiates TCP connection with Forward Proxy and Forward Proxy in turn initiates connection with Destination Server.
+
+Hence, Destination Server's request source is Forward Proxy and not the client itself.
+
+
+
+From Layer 4, destination server is only aware of the proxy.
+
+However, from layer 7, if we are using Http then we can enable X-Forwarded-For flags which would let destination server know about client.
+
+
+-- Forward Proxy use cases :
+
+-- Client Anonymity
+
+-- Logging and Tracing of Client requests
+
+-- caching 
+
+-- Blocking Website
+
+-- Service Mesh uses the idea of Forward proxy to be aware of all the services.
+
+
+Note: Fiddler (popular debugging tool) is actually a forward proxy.
+
+
+
+---- Reverse Proxy :
+
+Dataflow is like below :
+
+Client -> Reverse Proxy -> Destination Server.
+
+Dataflow looks similar to forward proxy but reverse proxy basically hides the existence of destination server.
+Hence, in Reverse Proxy client is not aware of actual destination server but of Reverse Proxy and 
+in Forward Proxy, server is not aware of actual client but the forward proxy.
+
+
+Client initiates connection with Reverse Proxy i.e. DNS resolution of (say google.com) will return IP address of reverse proxy which 
+
+internally will create connections with actual google.com destination servers.
+
+Sometimes, Reverse proxy is also called Edge Servers.
+
+In Reverse proxy, both from layer 4 and layer 7 perspective of client, reverse proxy is the final destination. 
+
+--- Use cases of reverse proxy :
+
+- Load balancer
+
+- API Gateway
+
+- CDN
+
+- Canary deployment or Blue-Green deployment : Deploy latest code in one of the servers and route 10% of the traffic to this newly created server
+											   to test if everything is working fine.
+											   
+- Nginx, HAProxy all are reverse proxies.
+
+
+
+--- Http Tunneling or SSH Tunneling :
+
+Client sends request to Forward Proxy and Forward proxy forwards it as it is to Destination server.
+Hence, if there forward proxy is allowed to create connection with Destination server then effectively we can use SSH/Http tunneling to
+interact with destination server.
+
+In simple words, Forward proxy provides a tunnel between client and destination server.
+
