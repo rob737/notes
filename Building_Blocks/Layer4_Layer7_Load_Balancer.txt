@@ -1,0 +1,93 @@
+------------------------------------ Doubt ------------------------------------------
+1. Understand what NAT is?
+
+
+------------------------------------ XXXXX ------------------------------------------
+
+
+---- Layer 4 load balancer :
+
+-- It deals with only ports and IP addresses.
+
+-- Hence, unit of action is segments (assuming TCP protocol).
+
+-- Request from client will be forwarded to "only one connection" i.e. only one port.
+
+Effectively, there are 2 TCP connections formed, one from client to reverse proxy and from reverse proxy to destination server.
+
+Hence, connection is effectively used to know about client and server as one connection will correspond to one request otherwise 
+TCP order of delivery cannot be guaranteed i.e. all segments of a request must be passed through one connection.
+
+It is what is called a "Sticky Connection".
+
+
+Since, layer 4 is not aware of any higher level protocols, we can use this to support any protocol as per our wish.
+
+
+
+---- Pros of Layer 4 load balancer :
+
+- Simple load balancer that deals with PORT, IP Address and Connection.
+
+- Efficient as no actual data lookup is required.
+
+- More secure as it need not read the actual content of the request.
+
+- Works with any protocol (layer 7 protocol).
+
+- It can work with one TCP connection in NAT configuration. 
+
+
+---- Cons of Layer 4 load balancer :
+
+- No smart load balancing decision can be made as we can't lookup the contents of request.
+
+- Sticky per connection i.e. one connection once established cannot be used by another client.
+
+- Being protocol unaware can be dangerous as it can be used to bypass rules.
+
+
+---- Layer 7 Load Balancer :
+
+- It decrypts and understands the content of request.
+
+- It buffers the content of request.
+
+- A request is basically a complete message ( i.e. one message with all components of Http like protocol, path, header, body etc)
+  Check Http Anatomy notes for actual components of Http Message.
+  
+- certificate needs to live in layer 7 as it decrypts the content.
+
+
+
+---- Pros of Layer 7 load balancer :
+
+- Smart load balancing can happen as we can read the contents of the request.
+  Example : routing based on the url path.
+
+- Caching is possible.
+
+- API gateway logic
+
+- Authentication logic 
+
+
+Basically, the fact that Layer 7 load balancer can lookup the contents of the request gives it an upper hand to 
+do many precomputations.
+
+
+---- Cons of Layer 7 load balancer :
+
+- Expensive/Overhead of computing request data.
+
+- Overhead of decryption (terminate TLS) : Layer 7 load balancer must do it.
+
+- Two TCP connections as there is a way that Layer 4 can use one connection (Read about NAT and understand this point).
+
+- Must share TLS certificate i.e. TLS certificate must reside at reverse proxy.
+
+- Needs to buffer the request to understand it's contents.
+
+- Needs to understand protocol. Since, it does layer 7 load balancing which is effectively understanding the content/protocol .
+
+
