@@ -1,0 +1,90 @@
+--------------------------------------- Doubt --------------------------------------
+
+
+
+
+--------------------------------------- XXXXX --------------------------------------
+
+
+
+---- Stack :
+
+Java Application process is divided into 3 memory segments called stack, heap and metaspace.
+
+
+Every thread will have it's own stack so data of one thread is not accessible by another thread.
+
+Stack is managed by JVM.
+
+Below is the sample code with comments explaining working of stack :
+
+
+public class StackWorking {
+    /*
+    * Each line execution would put required arguments on stack
+    * */
+    public static void main(String[] args) {
+        int value = 7;
+        value = calculate(value);
+    }
+
+    /*
+    * Once, this method returns all it's variables and arguments will be popped out from stack.
+    * As a thumb rule, when program execution goes out of scope then memory allocated for variables
+    * owing to execution within that block on stack is cleared out.
+    *
+    * JVM creates all local primitive variables on stack and then erases it's memory when block execution is done.
+    * application developers need not worry about these things.
+    * */
+    private static int calculate(int value) {
+        int tempValue = value + 3;
+        int newValue = tempValue * 2;
+        return newValue;
+    }
+}
+
+
+---- Heap :
+
+As a thumb rule, stack stores primitive values and heap stores object or other complex datastructures.
+
+Heap is shared by all the threads.
+
+All objects i.e. String, Integer etc are also stored in heap but it's variable reference is stored on the stack.
+
+e.g. Integer a = new Integer(5);
+
+a will be stored on stack but the value 5 will be stored at heap.
+
+To be honest, stack and heap are both on memory.
+
+It's just that how java developers have decided to use it.
+
+
+So, data on stack is either primitive value or a reference that points to data in heap.
+
+In Java, we don't have any way to view the actual memory address (the hexadecimal string).
+
+
+Note: Chapter 4 (Lecture 20) is very important to understand fundamental of stack and heap and how it works.
+
+
+Garbage collection is basically freeing up heap memory.
+
+
+---- Pass by Value :
+
+Just understand when variables are stored in stack and how new variables are stored in stack.
+
+There is no need to differentiate pass by value/reference, the fundamental concept that need to be understood is how variables are created/stored/manipulated on stack and pass by value/reference would automatically be clear.
+
+Just for communication sake, pass by value is basically we are passing copy of variable value and pass by reference is basically we are passing copy of reference.
+
+This is because thread puts variables/arguments on stack and execution is basically using those variables.
+
+So, technically java only has pass by value where "value" will either be variable value or heap reference.
+
+Note: using final modifier may have an improvement in performance as JVM need not lookup memory for variable's value and instead after first lookup
+it can just reuse this value.
+
+However, be very careful while using final with references as reference can't point to another value but it's value can be changed.

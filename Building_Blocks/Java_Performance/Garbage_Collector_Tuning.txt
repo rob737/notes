@@ -1,0 +1,145 @@
+----------------------------------------- Doubt --------------------------------------------
+
+
+
+
+---------------------------------------- XXXXX ---------------------------------------------
+
+
+--- Monitoring Garbage Collections :
+
+There are different kind of algorithms that Java can use and they are known as Garbage Collectors.
+
+By default, JVM based on hardware's configuration deploy a particular algorithm.
+
+However, we can change garbage collection algorithm using runtime argument.
+
+-verbose:gc is the runtime argument to check how many times our application had to be garbage collected.
+
+Sample output of above command :
+
+[0.002s][info][gc] Using G1
+[0.069s][info][gc] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 4M->1M(10M) 3.230ms
+
+By seeing above logs, we can deduct that minor garbage collection has happened.
+
+4M->1M(10M) : This denotes size of the heap before and after garbage collector has executed.
+
+left side of arrow denotes before and right side denotes after and in bracket it denotes total heap size.
+
+3.230ms : Amount of time it took place for garbage collection process to run.
+
+
+--- Turning off automated heap allocation sizing :
+
+-XX:-UseAdaptiveSizePolicy : This flag is to disable automatic allocation of sizes to different segments of heap (Eden,s0,s1, old) by JVM.
+
+
+--- Tuning Garbage Collection - old and young allocation :
+
+One way of optimization is to minimize full garbage collection i.e. garbage collection on entire heap :
+
+-XX:NewRatio=n : Significance of this VM arg is to tune how many times bigger the old generation must be compared to the young generation.
+
+e.g. -XX:NewRatio=4 then old generation would be 4 times bigger than young generation. i.e. in 10 MB heap, 8 MB would be old generation heap and
+					2 MB would be young generation heap.
+
+	via this argument, we can control the frequency of GC as it would decide how often young generation and old generation is getting full.
+	
+	default value Checked on my laptop using jinfo :				
+
+	robin@robin-Latitude-5420:~/java_projects/performance$ jinfo -flag NewRatio 22475
+	-XX:NewRatio=2
+
+
+
+--- Tuning Garbage Collection - Survivor Space allocation :
+
+-XX:SurvivorRatio=n : How much of the young generation should be taken up by survivor spaces s0 and s1.
+
+robin@robin-Latitude-5420:~/java_projects/performance$ jinfo -flag SurvivorRatio 15548
+-XX:SurvivorRatio=8
+
+
+Above means that s0 and s1 "each" must be 1/8th of the young generation.	
+Hence, Eden would be 6/8th of the Eden space.
+
+
+However, JVM has veto power over these configurations if it somehow calculates that application would perform 
+more optimally without these changes.
+
+
+--- Tuning Garbage Collection - Generations needed to become old :
+
+-XX:MaxTenuringThreshold=n will denote the number of GC (Generations) an object has to survive before it can be moved to old generation.
+
+By generations, we mean movement from one survivor region to another.
+
+Hence, 2 generations means object moved to and fro within s0 and s1 twice.
+
+
+robin@robin-Latitude-5420:~/java_projects/performance$ jinfo -flag MaxTenuringThreshold 15548
+-XX:MaxTenuringThreshold=15
+
+
+By default, it is 15 and it is the maximum limit.
+
+
+--- Selecting a garbage collector :
+
+Types of collector :
+
+1. Serial : It uses single thread to perform all of the GC work.
+
+   VM arg is -XX:+UseSerialGC
+
+
+2. Parallel : This will perform Garbage Collection on the young generation (Minor Generation) in parallel i.e. multiple threads.
+   Sometimes, all called throughput collector.
+
+   VM arg is -XX:+UseParallelGC
+
+
+3. Mostly concurrent : Closes to real time garbage collection i.e. application is not paused when garbage collection happens.
+   In this collector, mostly what happens is that pauses the collector during marking phase but resumes the application during 
+   sweep phase.
+
+   There are two collectors within this :
+
+   Mark and Sweep collector : -XX:+UseConcMarkSweepGC
+
+   G1 collector 			: -XX:+UseG1GC (THis is the deafult garbage collector from Java 10 onwards)
+
+
+
+
+---- G1 Garbage Collector :
+
+Heap is distributed into different regions (2048 is the default).
+
+Initially some of the regions are allocated to different parts of the heap.
+e.g. some region belongs to eden, some to s0/s1, some to old and so on...
+
+
+If JVM does garbage collection in Young generation then it computes number of regions needed and allocate accordingly.
+
+When JVM does full garbage collection i.e. in old generation then JVM figures out which among the old generations are mostly garbage 
+and it will collect the garbage from those regions first.
+
+Hence, it is called G1 (Garbage first collector)
+
+I think it saves on the compaction part by dividing regions as per the page sizes.
+
+
+---- Tuning the G1 garbage collector :
+
+-XX:ConcGCThreads=n : To denote the number of threads deployed for Garbage collection of regions.
+
+-XX:InitiatingHeapOccupancyPercent=n : G1 collection starts once heap starts a certain level of fullness. By default, it is 45%.
+
+Unlike, earlier GC's which used to run when either eden or survivor space gets full.
+
+G1 runs when entire heap (for the process) is 45% full. 
+
+
+-XX:UseStringDeDuplication : Enables String pool (Only for G1 collector).

@@ -1,0 +1,93 @@
+
+---- How the String Pool is implemented ?
+
+It is implemented as a hash map.
+
+so, String can be referenced in String Pool by finding the right index.
+
+Note: Two identical objects will always have the same hashcode.
+
+
+---- Understanding the size and density of the String pool :
+
+-XX:+PrintStringTableStatistics will give us information about the String Pool (We need to refer to StringTable statistics and not the SymbolTable statistics) :
+
+StringTable statistics:
+
+StringTable statistics:
+Number of buckets       :     65536 =    524288 bytes, each 8
+Number of entries       :   1000089 =  16001424 bytes, each 16
+Number of literals      :   1000089 =  48006560 bytes, avg  48.002
+Total footprsize_t         :           =  64532272 bytes
+Average bucket size     :    15.260
+Variance of bucket size :    80.825
+Std. dev. of bucket size:     8.990
+Maximum bucket size     :        42
+
+Process finished with exit code 0
+
+
+
+Note: Unlike regular HashMap, Number of buckets are not resized.
+
+bucket is nothing but array index.
+
+
+---- Tuning the size of the String Pool :
+
+
+We can use the flag 
+
+-XX:StringTableSize=<any_prime_number_greater_than_default_bucket_size>
+
+
+Note: Total footprsize_t is the amount of memory required in bytes to run the program.
+
+Note: Higher bucket size will most probably would reduce collission and hence inserting and retrieval time would reduce.
+
+
+Note: As a rough rule, if average bucket size is more than 50 then play around by modifying the size of the bucket.
+
+
+---- Tuning the size of the heap :
+
+String pool lives in the heap.
+
+Execute below command to get all information related to JVM :
+
+
+java -XX:+UnlockDiagnosticVMOptions -XX:+PrintFlagsFinal 
+
+
+we will get following flags giving corresponding information about the heap:
+
+size_t MinHeapSize                              = 8388608
+
+size_t MaxHeapSize                              = 4034920448
+
+size_t InitialHeapSize                          = 253755392
+
+
+Above information is in bytes.
+
+So MaxHeapSize is roughly around 4 GB.
+
+
+
+Note: Above values are default values as per our machine.
+
+we can change above configuration using flag : -XX:MaxHeapSize=  and -XX:InitialHeapSize=
+
+Shortcut for :
+
+-XX:MaxHeapSize is -Xmx
+
+-XX:InitialHeapSize is -Xms
+
+i.e. Syntax for setting Initial Heap size in shortcut notation would be -Xms1g
+
+Note: we don't use "=" sign in shortcut notation and put the value after the flag.
+
+
+
+

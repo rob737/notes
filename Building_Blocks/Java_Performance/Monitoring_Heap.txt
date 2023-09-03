@@ -1,0 +1,33 @@
+
+
+---- What is a soft leak?
+
+Note: Visual VM is the tool to visualize how much heap is being utilized currently.
+
+Soft leaks is not an official term but it refers to objects that remains referenced even when it is no longer needed.
+
+It may be due to bad practices in coding or due to some third party library.
+
+This is a real possibility in a web server.
+
+
+
+J Visual VM allows us to view stack and the heap.
+
+We would need to download it separately for open JDK but it's present in oracle JDK.
+
+I have installed it : 
+
+execute visualvm command to open it.
+
+Commands to install on ubuntu 20.04 :
+
+1. sudo apt update
+
+
+2. sudo apt install visualvm
+
+
+3. jvisualvm
+
+

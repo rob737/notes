@@ -1,0 +1,71 @@
+-------------------------------------- Doubt --------------------------
+1. In which format is data transferred from client to server? ASCII or utf8 ?
+
+2. What exactly is a MAC address and what is it used for?
+
+-------------------- XXXXXX ------------------------------------------
+
+
+
+There are following properties that needs to be looked at to decide the protocol that can be used :
+
+
+1. Data format :
+
+	- Text Based (plain text, JSON, XML).
+	- Binary (protobuf, h2, h3, RESP)
+
+	Note: Text Based contents will be converted into UTF-8 format before sending it over to network.
+		  UTF-8 is the encoding to represent text characters in binary.
+
+2. Transfer Mode : 
+	
+	- Message Based : UDP, HTTP as each message has a start and an end i.e. each request has a start and an end.
+
+	- Stream Based : TCP, WebRTC i.e. just stream of data. There is no start or end but a stream of bytes over the network.
+
+	I think that's why we have BufferedReader in Java to buffer these stream of bytes and then convert utf8 to corresponding character.
+
+	Important : Since HTTP is over TCP so client/server has to parse stream of bytes and bifurcate fixed sized messages to send over the internet.
+				This would take up CPU time and has overhead.
+
+3. Addressing System :
+
+   Client and Server addresses and their representation.
+
+   e.g. DNS name, IP, MAC(Media Access Control).
+
+4. Directionality :
+
+   - Bidirectional : TCP
+
+   - Unidirectional : Http
+
+   - Full/Half Duplex : Full duplex is both the devices can send the message at the same time.
+
+
+5. State :
+
+	- Stateful (TCP, gRPC)
+
+	- Stateless (UDP, Http)
+
+
+6. Routing :
+
+	- How does it behave when it needs to pass through proxies and load balancers.
+
+
+7. Flow and Congestion control :	
+	
+	- TCP (Flow and Congestion)
+
+	- UDP (No Control)
+
+8. Error Management 
+
+	- Error code
+
+	- Retries and timeouts
+		
+

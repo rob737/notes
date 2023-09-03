@@ -1,0 +1,171 @@
+---------------------------------------------------- Doubts ---------------------------------------------------------------------------------------
+1. Javac compiles and converts java source code to bytecode and then JVM interprets or JIT compiles bytecode to hardware specific instruction?
+
+2. What actually is a code cache? Is it Cache dedicated only to JVM process?
+
+
+--------------------------------------------------- XXXXXXX ---------------------------------------------------------------------------------------
+
+
+
+-- Java code is compiled by java compiler into bytecode.
+
+   i.e. .class file is basically java bytecode.
+
+
+-- when we run .class file using java command then JVM converts bytecode instructions into hardware specific instruction set, thus 
+   giving WORA functionality. (Write Once Run Anywhere)
+
+-- JVM interprets/JIT the bytecode at runtime.
+
+-- So, basically JVM is the one that executes our program.
+
+-- Any JVM compatible bytecode can be executed by JVM.
+
+I think bytecode is basically set of instructions that JVM understands and then JVM interprets it into hardware specific instructions for the COU.
+
+
+
+------- Just in time compilation :
+
+
+So, usually java is compiled to bytecode which in turn is converted into machine instructions by JVM.
+
+
+native code is basically instructions that underlying OS understands e.g. linux instructions/apis would be different from windows/mac.
+
+JVM maintains heuristics which keeps track of most executed code snippet or instructions in bytecode.
+
+Going forward, JIT compiler "at runtime" converts bytecode instructions directly into native instructions
+thus reducing overhead of converting bytecode to native instructions for those instructions in subsequent executions.
+
+
+Very important to note here : compiling in JIT is not compiling source code to bytecode but rather bytecode instructions are replaced directly 
+
+to native code i.e. bytecode consists of bytecode instructions as well as direct native instructions.
+
+That's why longer running app can perform better over time.
+
+
+It runs as a part of separate thread.
+
+
+------
+
+You can provide runtime arguments to java code by doing edit -> Run configuration.
+
+
+---- JVM configuration parameters :
+
+-XX:+PrintCompilation
+
+format is -XX: to represent special argument.
+
++ sign denotes turn on particular JVM flag identified by the word after + sign (e.g. PrintCompilation).
+
+- sign would indicate to turn off the flag.
+
+Note: All flags are case sensitive.
+
+Note: To add VM arguments in intellij, use VM arguments section under "Run configurations".
+
+
+
+----- Understanding -XX:+PrintCompilation 
+
+Sample output is :
+
+12    1       3       java.util.concurrent.ConcurrentHashMap::tabAt (22 bytes)
+
+First column denotes number of ms since JVM started.
+
+Second column denotes order in which method or code block was compiled/executed till completion.
+It is in random order because code completion can take time depending on many factors like context switching etc.
+
+Third column will have characters like following (not exhaustive list) :
+
+n : denotes native method execution, this goes into code cache because it is already in machine instruction format.
+
+s : denotes synchronized method
+
+% : denotes most optimal way and that particular method is placed into code cache.
+
+! : denotes some exception handling is going on
+
+
+Fourth column is a number that denotes the type of compilation that took place :
+
+0 : It denotes no compilation but corresponding method was interpreted.
+
+1-4 : This range denotes that it was JIT compiled and the higher the number (it is also called tier), the more optimal it is.
+
+
+Fifth column is the actual method that is executed/compiled/interpreted.
+
+Note: Code cache is basically inherent cache in JVM.
+
+
+------ JVM C1 and C2 compilers :
+
+When we refer compiler in this course, it basically refers to 2nd level of compilation at runtime to convert bytecode to machine instruction.
+Either bytecode is interpreted or JIT compiled.
+
+Code profiling is basically JVM performed optimizations.
+
+Fourth column in above output is the result of C1 and C2 compilers.
+
+if C1 compiles then the number would be among 1-3 and if C2 compiles it would be 4.
+
+Higher number denotes higher level of optimization.
+
+
+------- -XX:+UnlockDiagnosticVMOptions -XX:+LogCompilation
+
+This can be helpful to get compilation diagnostic into a log file.
+
+Note : we can give multiple VM arguments like this (separated by space) : -XX:+UnlockDiagnosticVMOptions -XX:+LogCompilation
+
+It would create a .log file in the current directory.
+
+e.g. hotspot_pid23301.log
+
+
+------- Code Cache :
+
+-XX:+PrintCodeCache is the flag to know the size of the code cache.
+
+codecache depends on the JDK version so consult official documentation.
+
+We can change the size of code cache with 3 different flags :
+
+InitialCodeCacheSize : Code cache size when the application starts.
+
+ReservedCodeCacheSize : Maximum size that code cache can grow upto.
+
+CodeCacheExpansionSize : It dictates how quickly the code cache must grow i.e. if it gets full then how much should it grow henceforth.
+
+To set these :
+
+use -XX:ReservedCodeCacheSize=28M 
+M : MB
+K : KB
+B : B
+
+
+------- JConsole :
+
+JConsole comes with JDK and is used to monitor code cache for application running on remote servers.
+
+It's at path $JDK/bin
+
+e.g. /usr/lib/jvm/java-1.11.0-openjdk-amd64/bin/jconsole
+
+
+When java programs run, they store their data in a particular folder and JConsole monitors that data.
+
+To identify your application process, check for the filename and folder name in Jconsole.
+
+e.g. org.example.App would be visible in Jconsole.
+
+Note: Using Jconsole to capture metrics of our program leads to higher memory consumption as JVM also performs operation to 
+      communicate with Jconsole.

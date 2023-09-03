@@ -1,0 +1,52 @@
+------------------------------------------- Doubt ------------------------------------------
+
+1. WHat is a short lived object?
+I think it has to do with local references.
+
+
+------------------------------------------- XXXXX ------------------------------------------
+
+
+
+--- What is it and why is it a problem?
+
+Basically escaping references are references that are "un-intentionally" passed to calling code.
+
+This un-intentional passed reference can be used to modify the state of object.
+
+
+e.g. let's say :
+
+private List<Integer> result = new ArrayList();
+
+
+public void add(int num){
+	
+	result.add(num);
+
+}
+
+// This is escaping reference as reference of private field is passed to the caller.
+// Using this reference, state of private field can be modified directly.
+
+public List<Integer> retrieve(){
+	return result;
+}
+
+
+---- Strategies to prevent escaping references :
+
+1. Using iterator : However, this is not entirely correct solution as iterator has remove method that can be used to change state.
+
+2. Duplicating collections : Creating a new collection, copying data of original collection into this new collection and returning it.
+							 However, we are wasting memory by duplicating the contents.	
+
+
+3. Using Immutable collections : For every datastructure, there is an unmodifiable collection. For map, we can Use Collections.unmodifiableMap() and similarly for other datastrcutures or Map.copyOf(originalMap);
+
+It will throw exception (UnsupportedOperationException) if we will try to modify any element in the collection.
+
+
+
+
+

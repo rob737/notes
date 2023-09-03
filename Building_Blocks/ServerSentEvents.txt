@@ -1,0 +1,43 @@
+------------------------------- Doubt ----------------------------------
+
+1. What is the difference between SSE and Http ? Is Http a protocol and SSE is a design pattern built using HTTP?
+   like spring is a framework built using java ?
+
+2. Difference between SSE and Websocket ?   
+
+3. Can SSE be used only with Http1.1 ?
+
+----------------------------- XXXXXXX ----------------------------------
+
+
+--- Server Sent Events :
+
+Client establishes a connection over Http and then server can keep on sending data unless client closes the connection via TCP FIN flag.
+
+SSE is over HTTP so it's support range is very high, we need not have explicit protocol support like we need for websocket.
+
+Response is basically a stream of chunks sent whenever there is something to be sent.
+
+Client parses the stream data and processes events.
+
+Note : Http 1.0 doesn't support streaming.
+
+SSE content-type header let's us identify it uniquely. (content-type : text/event-stream)
+
+
+Pros  :
+
+- Real time
+- Compatible with Http.
+
+Cons :
+
+- Clients must be online
+
+- Clients might not be able to handle the load as server just sends the data when it has some data.
+
+- Polling is preferred for light clients.
+
+- Http/1.1 problem (6 TCP connections limit for simultaneous connection to a particular domain) -- THis is specific for chrome but almost all browsers follow it.
+
+- Events or response must start with keyword "data" and must end with 2 new lines.

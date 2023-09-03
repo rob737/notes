@@ -1,0 +1,13 @@
+---------------------------------- Doubt ----------------------------------
+
+
+
+---------------------------------- XXXXX ----------------------------------
+
+
+JMH is Java Microbenching Harness
+
+
+This is not needed as we can use K6 for this.
+
+JMH takes a long time to run.

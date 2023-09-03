@@ -1,0 +1,34 @@
+-- Sidecar pattern :
+
+Every protocol needs a library e.g. Http library in Java creates/maintains Http connections.
+
+There must be a library in client side code and server code to initiate and understand communication.
+
+
+Note : Check out CCNA by Imran rafai on youtube for in-depth netwroking concepts.
+
+
+Finagle : https://medium.com/@knoldus/twitter-finagle-ecosystem-ec943f3e795f
+
+
+Note : If we need to use Http/2, we need to configure it somehow on server to enable coomunication via http/2.
+
+Sidecar pattern is basically using proxies that would prevent upgrading/changing client/server library in case we would need to change protocol
+like chnaging from Http1.1 to http2
+
+Service Mesh in microservice uses sidecar pattern.
+
+
+Architecture :
+
+Client ----> Client Sidecar Proxy () ----------------------------------> Server Sidecar Proxy () --------> Server.
+
+
+Sidecar pattern examples :
+
+1. Service Mesh Proxies : Linkerd, Istio, Envoy
+
+2. Must be layer 7 proxy 
+
+
+One evident cons is Latency as we have added extra hops for proxies.

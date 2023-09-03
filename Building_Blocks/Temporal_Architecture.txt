@@ -1,0 +1,36 @@
+--- Temporal
+
+
+Heart Beat : Let's temporal knows that activity is still alive.
+
+What is fan out - fan in pattern?
+
+
+Design principle for temporal : https://www.youtube.com/watch?v=t524U9CixZ0
+
+Implement a poller (for polling a queue) by taking reference on how worker process does it in temporal?
+
+
+APIs for monitoring :
+
+1. We can send execution metric to Prometheus and Grafana.
+
+2. We have heart beat signals to validate if activity is running or terminated.
+
+3. Signals to block execution until we get a particular input.
+
+4. Query to fetch current state of execution.
+
+5. retry & timeout.
+
+6. compensating transaction for rollback.
+
+7. Cron schedule.
+
+8. namespaces for segregating workflow executions for different environments.
+
+9. Searching workflows based on parameters other than workflow Id.
+
+
+
+Worker uses polling.

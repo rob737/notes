@@ -1,0 +1,48 @@
+--------------------------------- DOubt -----------------------------
+1. What is chaining and circuit breaking in Http request/response ?
+
+2. 
+
+
+-------------------------------- XXXXXXXXXXX ---------------------------------------------
+
+
+
+--- Flow :
+
+Producer publishes something to the server and moves on.
+
+Now, consumer consumes data from the server.
+
+It is designed to solve communication between many clients who can interact with each other, that would have created a mesh.
+
+
+Client --- Pushes to --- Facade Service (Just my fancy name) and then facade service sends the response back to the client.
+
+
+Now, facade service will put the data into different topics or within different partition of topic to which a consumer would be subscribed.
+
+
+This is almost impossible to get it done via normal Http request/response model as it would lead to clients waiting for 
+the processing to be done at all services.
+
+Note : Topics or queue would be present on a different server which is usually called a broker.
+
+
+--- Pros :
+
+1. Scales with multiple receivers
+
+2. Great for microservices
+
+3. Loose coupling
+
+4. Works while consumer is not running
+
+--- Cons :
+
+1. Message delivery issues : Classic two generals problem -- How do I know that the consumer actually got the message?
+
+2. Complex to implement
+
+3. 

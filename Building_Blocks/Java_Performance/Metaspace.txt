@@ -1,0 +1,83 @@
+--- What is metaspace?
+
+metaspace is another memory space for java processes apart from stack and heap.
+
+Metaspace is used to store metadata information of the process like which code block is converted to bytecode, which is in native code etc.
+
+It is not accessible directly by java programmers.
+
+--- Important :
+
+metaspace is where static variables are stored.
+
+Static primitives like stack is completely stored on the metaspace.
+static objects are stored on the heap but it's reference is stored on the metaspace.
+
+
+Unlike stack, any data in the metaspace is permanently there i.e. even if the execution of the scope is completed.
+
+So, any object in heap whose reference is present in metaspace will never be garbage collected.
+
+All threads have access to the metaspace and so static data can be accessed by any thread's code block.
+
+
+
+---- PermGen : It was in Java 7 and now removed.
+
+Now, we have metaspace instead of PermGen from Java 8 onwards.
+
+
+
+
+---- Are objects always created on the heap?
+
+Yes, it's always created on the heap.
+
+There is some optimization that JVM can create objects on the stack itself if it somehow figures out that the concerned object will not be needed
+after the execution of scope is done but this is not guaranteed and out of programmer's control so it's safer to assume that all objects are
+created on heap.
+
+
+---- String Pool :
+
+Since, String is immutable, JVM may perform optimization to not create different String objects for the same content and instead point 
+different references to same immutable String in heap.
+
+
+What I mean by above statement is this :
+
+String one = "hello";
+
+String two = "hello";
+
+Now, instead of creating two String objects in heap with the content as hello, JVM will create only one immutable String object and point
+
+both references one and two to that object.
+
+so, both one.equals(two) and one == two will return true.
+
+Basically, JVM puts String literals into a pool and re-uses it.
+
+It is only applicable for String literals and nothing else.
+
+
+
+---- Interning Strings :
+
+We can use intern() method on a String to make it reside in String pool such that instead of creating new objects at each reference.
+
+All references can be pointed to the same String in the pool.
+
+Hence, it saves a lot of memory.
+
+e.g. 76.toString().intern() will place it in the pool otherwise it would have been created everytime it is referenced.
+
+
+
+Note: String pool leaves in the heap and this can also be garbage collected.
+
+
+
+
+
+

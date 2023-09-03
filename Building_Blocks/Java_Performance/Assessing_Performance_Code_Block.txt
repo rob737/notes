@@ -1,0 +1,41 @@
+-------------------------------------------------  Doubt ---------------------------------------------------------
+
+
+------------------------------------------------- XXXX -----------------------------------------------------------
+
+The caveat with recording start and stop time of executing methods is that JVM may decide to 
+natively combine frequently running methods.
+
+Hence, it will always be faster which doesn't ensure whether it's coded in a performant way or not.
+
+Garbage collection marking is stop the world and if GC performs marking process then our method execution time will incorrectly increase.
+
+
+
+-- Technical Jargons :
+
+Microbenchmark : measuring the performance of a small piece of code.
+
+i.e. evaluating single method or single code block.
+
+Complication or caveats :
+
+- Different development and production hardware.
+
+- We test the performance in isolation and hence we are not considering many real world constraints.
+
+
+note : we can give VM arg : -XX:-TieredCompilation to turn off native compilation.
+
+Also, we can set CompileThreshold to decide when it should do native compilation.
+
+The CompileThreshold flag specifies the number of method invocations a bytecode method needs to undergo before the JIT compiler considers it for compilation. This threshold is a performance optimization strategy, as not all methods are immediately compiled. Some methods might only be executed a few times and might not benefit as much from compilation as frequently executed methods.
+
+When a method's invocation count surpasses the CompileThreshold, the JIT compiler can kick in and compile the method into native code. This compiled code typically provides faster execution because it's tailored to the specific hardware architecture and can make use of low-level optimizations.
+
+
+---- MacroBenchmarking :
+
+
+Assessing small piece of code but with the context of whole system and not in isolation.
+

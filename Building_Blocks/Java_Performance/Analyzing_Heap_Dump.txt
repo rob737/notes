@@ -1,0 +1,60 @@
+----------------------------------- Doubts ----------------------------------------------
+
+
+
+
+----------------------------------- XXXXX -----------------------------------------------
+
+
+
+
+---- Generating heap dump :
+
+This tool is helpful to identify which code block can cause heap memory being used up.
+
+
+We can give following command line argument to instruct JVM to generate heap dump on out of memory error :
+
+
+-XX:+HeapDumpOnOutOfMemoryError  
+
+-XX:HeapDumpPath=<someFilePath>
+
+
+on giving above 2 VM options, we would get following logs :
+
+
+Dumping heap to heapdump ...
+
+Exception: java.lang.OutOfMemoryError thrown from the UncaughtExceptionHandler in thread "Thread-1"
+Heap dump file created [65542118 bytes in 1.339 secs]
+
+
+
+---- How to view/read heap dump :
+
+Memory Analyzer Tool (MAT) is used to analyze heap dump.
+
+
+There are two components when we open this tool with heapdump file generated above :
+
+1. Leak Suspects Report : Report what objects are kept alive and why was it not GC.
+
+
+2. Component Report : Analyze a set of objects for suspected memory issues.
+
+
+Just go through this video to understand again in case of doubts.
+
+
+Note: Under Problem Suspect Section, we can expand details and we will get the exact method that is causing out of memory error.
+
+
+Retained Heap parameter is basically telling how many bytes of the heap are being used up by the corresponding object that could not be garbage collected.
+
+
+/home/robin/Desktop/MemoryAnalyzer-1.14.0.20230315-linux.gtk.x86_64/mat --- Installed at this location on my computer.
+
+Downloaded from : https://eclipse.dev/mat/downloads.php
+
+

@@ -1,0 +1,155 @@
+----------------------------------------------- Doubts -----------------------------------------------------------
+
+
+
+
+----------------------------------------------- XXXXX  -----------------------------------------------------------
+
+
+
+--- Why do we need profiler?
+
+There will be sceanrios when we would need to understand what is actually happening within JVM like
+
+CPU consumption, I/O consumption etc.
+
+Since, Java Program runs within JVM so we can leverage profiling tool/softwares to dig deep in case of issues.
+
+Profiler is a separate application/process that connects to the running JVM for metadata.
+Hence, it would also lead to some of application's processing resources.
+
+
+Java Mission Control (JMC) is one of the profiling tool.
+There are others but they are costly.
+
+
+--- Download and installation steps for linux :
+
+
+-- Download :
+
+https://jdk.java.net/jmc/8/
+
+
+
+-- Installation :
+
+$ tar zxf jmc-8.3.1_linux-x64.tar.gz
+
+Run below command from the directory where it was unzipped :
+
+$ ./jmc-8.3.1_linux-x64/JDK\ Mission\ Control/jmc
+
+
+Note: After starting up the application, connect to MBean Server (Also known as JMX Console Mode) for your particular process.
+
+Mbean server is basically a mode using which profiler (JMC) converts to our process.
+
+
+
+---- Customizing Overview Tab :
+
+To add new profiling parameters :
+
+Click on + sign and search like this : *Eden
+
+
+---- MBean Browser Tab :
+
+
+---- System, Memory and Diagnostic Commands tab :
+
+
+Diagnostic commands can be used to have information about JVM.
+
+e.g. VM.flags will give us list of all runtime flags.
+
+
+
+Documentation :  
+
+https://docs.oracle.com/en/java/java-components/jdk-mission-control/8/user-guide/working-remote-jvms.html#GUID-F6655AD1-0127-4952-BF44-CDA901CF7808
+
+https://jdk.java.net/jmc/8/
+
+
+If we are writing multi-threaded applications then it's a good idea to give threads the name as then it can be monitored 
+
+properly in JMC software.
+
+
+Live Set + Fragmentation dial tells us about how much heap is being used after Garbage Collection.
+
+The higher the number, the probability of memory leak is higher.
+
+For detecting where actually memory leak would have happened, we need to use MAT tool etc.
+
+JMC is a profiling tool which basically gives us the indicators of certain issues.
+
+
+JVM CPU Usage :
+
+Let's say you are performing some heavy computation work then your CPU usage must be as high as possible.
+
+If it is not then there is a scope of improvement in your code logic.
+
+
+Threads tab can be used to verify the threads that are blocked.
+Blocked means it is waiting for critical section to get free.
+
+It may indicate possible over use of synchronized keyword.
+
+
+We want our threads to be in Runnable state as much as possible.
+
+
+---- Using The Flight Recorder :
+
+This is alternative to MBean Server mode.
+
+We can instruct JVM to record various parameters and keep it handy which can be used for RCA in case our application crashes or something goes wrong.
+
+This is known as Flight recorder.
+
+So MBean Server is basically real time performance 
+
+and 
+
+Flight Recorder mode is for looking at historical performance data.
+
+
+Flight recording is basically instruction passed to the JVM to start recording.
+
+So, we can enable it using VM args as well.
+
+Example :
+
+
+-XX:StartFlightRecording=delay=2min, duration=60s, name=Test, filename=recording.jfr, settings=profile
+
+
+This will start a 60 seconds recording but after 2 mins after the application starts.
+
+
+Verify that FlightRecorder flag is enabled or else we would need to pass VM args : -XX:+FlightRecorder 
+
+
+
+---- Analyzing a Flight recording :
+
+Look at this video while preparing notes, it's pretty interesting.
+
+If we look at threads section, check the video then :
+
+blue color denotes waiting.
+
+green color denotes thread running.
+
+
+
+
+
+
+
+
+

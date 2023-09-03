@@ -1,0 +1,32 @@
+------------------------ Doubt -------------------------------------------
+
+1. Understand how event based communication works under the hood?
+ like callbacks e.g. onClick = {handler};
+
+--------------------------------- ***** -----------------------------------
+
+
+-- Push model design pattern :
+
+It is perfect for scenarios where one or more system needs to be notified when certain event is triggered from other system.
+
+In more formal terms :
+
+1. Client connects to a server.
+
+2. Server sends/push data to the client.
+
+3. Client doesn't have to request anything.
+
+4. Protocol must be bidirectional like TCP.
+
+It is used by RabbitMQ.
+
+
+--- Cons :
+
+1. Client must be online.
+
+2. Client may not be able to handle the load.
+
+Note : remote port in server socket is always unique, i think it represents client file descriptor.

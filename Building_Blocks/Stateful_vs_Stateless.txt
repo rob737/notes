@@ -1,0 +1,44 @@
+------------------------------------------- Doubt ------------------------------------------------------------
+
+1. What exactly is a session and how is it used? e.g. sessionId etc while login
+
+
+
+------------------------------------------XXXXXXX-------------------------------------------------------------
+
+
+
+--- Stateful :
+
+- some sort of state is stored somewhere in backend and correct functionality is dependent on that state.
+
+- More specifically, information/state of client is stored in server's memory and that information is needed to perform the task correctly.
+
+
+--- Stateless :
+
+- Client is responsible for sending the state with every request.
+
+- Server doesn't store client's state.
+
+
+
+hmm, so stateful and stateless is with respect to the backend/server.
+
+if backend is idle and can be re-started without any implication to workflow then it is stateless.
+It can fetch data from somewhere else and work as per use case.
+
+Note :
+
+Sticky session is needed to route client request to a server where it was logged in to take leverage of sessionId when load balancer is introduced.
+Otherwise if request goes to some other server then again it would need re-login because session information is being maintained in 
+process memory.
+
+
+---- Stateless vs Stateful protocols :
+
+TCP is stateful because client and server information is stored in each other.
+
+UDP is stateless.
+
+Stateless protocol on stateful protocol : e.g. Http on top of TCP.

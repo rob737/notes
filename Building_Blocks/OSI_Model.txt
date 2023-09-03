@@ -1,0 +1,128 @@
+----------------------------------------------- Doubt --------------------------------------------------------
+
+1. How eaxctly light represents bits? How fiber transmits data ? This is some super stuff.
+
+2. What is protocol ossification?
+
+3. What actually is a frame in Layer 2 ? Specifically, what does it represent? How is it different from datagram, segment and IP packets?
+
+4. Difference between Switch and Router ?
+
+5. What is a subnet ? What is the role of subnet with respect to a switch?
+
+6. Can lower level layers at receiver access higher level information e.g. can switch that typically acts
+   with layer 2 i.e. MAC address details can somehow access layer 3 i.e. IP information?
+
+   Ans : No, it can access information present in lower level but not of higher layer.
+
+----------------------------------------------- XXXXX --------------------------------------------------------
+
+
+
+-- OSI : Open Systems Interconnection
+
+OSI is an abstract concept that provides a common mode of communication between two systems.
+You can call it a language that all systems can talk in.
+
+There are 7 layers in OSI model, stating below these 7 layers from top to bottom :
+
+Note : Lower order layer will not have access to information that is propretiary to higher order layer but vice versa is feasible.
+       example layer 4 deals with port and layer 3 deals with IP, layer 3 will not have access to port information but layer 4 will have 
+       access to layer 3 information.
+
+
+---- Layer 7 : Application layer 
+
+-- Http, FTP, gRPC etc. Technically our application code along with it's processing data resides at this layer.
+
+
+---- Layer 6 : Presentation Layer 
+
+-- Serialization and Encoding happens at this level e.g. serialization of text to UTF8 etc.
+
+
+---- Layer 5 : Session Layer 
+
+-- Responsible for creating connection, TLS, maintaining state at client/server and all other tasks that can be related to session management. 
+
+-- After SYN ACK, creates connection
+
+
+---- Layer 4 : Transport Layer 
+
+-- packets in TCP is called segments and in UDP, it is called datagram.
+
+-- TCP/UDP resides at layer 4.
+
+-- We have visibility till ports.
+
+-- Sends SYN request
+
+-- Default port for Https is 443
+
+-- It assembles all the packets at receiver end such that business logic can be performed at presentation or application layer.
+
+
+---- Layer 3 : Network Protocol 
+
+-- Packet that has only IP information accessible i.e. all it cares about or filter about is IP.
+
+-- We have visibility only till IP addresses and not ports.
+
+
+---- Layer 2 : Data link - Frames, Mac Address
+
+-- This layer basically represents the actual physical device/hardware.
+
+-- We send frames in layer 2, packets in layer 3, segments in TCP and datagram in UDP (Layer 4).
+
+-- It has MAC address information.
+
+---- Layer 1 : Physical - Electric Signals (Ethernet), Fiber (Light waves) or radio waves (Wifi) 
+
+-- How we transport frames to other systems.
+
+-- Electric signal represents binary numbers.
+
+-- Network Interface Card belongs to layer 1. 
+
+
+
+Basically, lower layer is contained within higher layer in case of receiver as receiver starts from layer 1 to layer 7 
+
+while sender starts from layer 7 and goes down till layer 1 so sender keeps putting higher layer data into layer level unit.
+
+e.g. In sender, TCP segment would be put into IP packet and IP packet into data frame which would be sent over to receiver.
+(Each unit would have sender and receiver information.)
+
+To sum up, each layer has access to corresponding information and act on that information. 
+
+
+----- Switch and Router :
+
+Switch has access till Data link layer i.e. layer 1 and Layer 2 and acts on Layer 2 i.e. data frames.
+
+Router has access till Network layer i.e. Layer 1, Layer 2 and Layer 3 and acts on Layer 3 i.e. IP packets.
+
+
+Alternatively, we can say that router is a Layer 3 device and switch is a layer 2 device.
+
+
+Note : It is very important to understand that each layer while performing operation would take finite amount of time.
+
+
+------ Layer 4 vs Layer 7 :
+
+Layer 4 deals with segments or datagrams like port.
+
+layer 7 deals with application data like url etc.
+
+We have Layer 7 load balancer, CDN etc.
+
+Firewall is at layer 4 and we also have layer 4 proxy and load balancer.
+
+ISP is more or less layer 4 proxy.
+
+VPN is layer 3.
+
+Every CDN is layer 7 reverse proxy and that's it.

@@ -1,5 +1,46 @@
+-------------------------------------- Doubt ------------------------
+
+1. How server identifies client request using handler/requestId ? Is client_fd maps to requestId?
+
+
+-------------------- XXXXXXXXXXX -----------------------------------
+
 ---
 
 It is the alternative of short polling to remove too many network calls.
 
 Kafka uses long polling.
+
+-- Long polling :
+
+
+First request is to get the handle or jobId or taskId.
+
+Next request is effective long poll request which blocks if server is not ready with the task or rather correspong task identified
+by handler/jobId/taskId is not yet completed and put to ready queue.
+
+
+Note: Kafka uses long polling.
+
+Consumers subsribe to Kafka's topic partition via long polling.
+
+Consumer gets blocked if there is no entry in topic and keeps waiting.
+
+In this way, we didn't waste network bandwidth by sending multiple requests.
+
+
+Consumer/Client can disconnect and then again if needed it can create a long poll request to start listening.
+
+
+I think the way it works is :
+
+Kernel gets the message and pass it to it's accept queue then to read queue and then kafka process picks up that message from accept queue 
+and process it, once it is processed then it is put into write queue.
+
+
+Note : Some variations have timeout for long polling too.
+
+
+The difference between short polling and long polling is that long poll blocks if task is not yet ready.
+
+Main advantage over normal http request is client can disconnect and once back up it can retrigger long poll connection using the handle/jobId/taskId.

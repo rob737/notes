@@ -1,0 +1,133 @@
+------------------------------------------- Doubt -------------------------------------------------
+
+1. Can we connect to remote process via VisualVM and track it's heap etc?
+
+
+
+
+
+
+
+------------------------------------------- XXXX  -------------------------------------------------
+
+
+-- Mark and Sweep algorithm :
+
+It is basically the algorithm to mark the objects that is reachable from stack and then it would sweep all the objects 
+that were not referenced.
+
+Hence, it is a 2 stage process. (First stage is the marking and second is the sweeping).
+
+
+In the marking stage, program/application's execution is first paused which is called "Stop-the-world" event.
+
+Stopping is needed otherwise marking step may have some phantom references i.e. there can be references that are created 
+after the marking step is about to finish.
+
+Once mark and sweep process is done then remaining memory of concerned process is moved to contiguous memory locations which prevents 
+external fragmentation.
+
+
+-- Why the heap is divided into generations ?
+
+
+The problem with using above above algorithm as it is that Marking process is "Stop the world".
+Hence, if there are many objects that are not garbage then our application process would be suspended and users will not be able to access the application.
+
+To avoid above problem, we have the concept of Generation Garbage collection.
+
+The underlying fundamental on which it is based is that objects are usually short lived.
+However, if an object survives one marking process then it is likely to stay till the process is not terminated.
+
+Based on the longevity of the object, heap space is divided into two segments : Old Generation and Young Generation.
+
+
+-- Old Generation vs Young Generation Space :
+
+New objects are created in the Young Generation space.
+
+Young generation space is much smaller than Old Generation space and tentatively once young generation is full then garbage collection takes place.
+
+
+Any surviving object that survived marking process in first round of garbage collection is then moved to old generation space.
+
+
+Garbage Collection in Young generation is called minor collection.
+
+Minor collection is very frequent as young generation space is very less and so it completes very quickly.
+
+Garbage Collection in Old Generation is called major collection and it happens when major generation space is about to fill 
+and it is not that frequent as old generation space is huge.
+
+
+
+-- Internals of Young Generation :
+
+Young generation is split up into three sections :
+
+1. Eden 
+
+2. s0
+
+3. s1
+
+
+Note : s0 and s1 are called the survivor spaces.
+
+--- Java 8 working :
+
+when process starts all segments in Young space is empty i.e. Eden, s0 and s1.
+
+new objects are created in Eden space and since it is quite small in size, it gets full pretty quickly and then Garbage collection happens.
+
+The objects that survives is moved to s0 (Survivor Space 0).
+
+Now, let's say new objects are again created in Eden space and it gets full.
+
+Then, gargage collection is triggered in both Eden and S0 space and any surviving objects be in Eden space or S0 space is moved to S1.
+
+Now, next time it looks into Eden and S1 and continue the remaining process.
+
+
+So, the gist is that it uses surviving space to place the survival objects and then in next cycle run garbage collection in both eden 
+and one of the surviving process.
+
+Why is it being done like that ?
+
+As we had mentioned above marking process is stop the world so if we do marking at relatively lesser space then it would be faster.
+probably few miliseconds and instead of marking whole young generation at once, we are marking 2/3rd of it at a time.
+
+That is eden and either of the surviving spaces.
+
+One drawback of this approach is that one of the surviving spaces would always be empty.
+
+If you see this in VisualVM then we can easily notice that full heap area is not used, the empty area denotes one of the empty survivor spaces.
+
+When an object is moved from one survivor space to another then we say that it has survived one generation.
+
+After a threshold of surviving generations, it would be moved to old generation space.
+
+
+As a thumbrule, in well performing applications, major garbage collection should be pretty rare.
+
+
+--- Viewing the generations in Visual VM :
+
+
+To see the surviving generations, we need to install plugin called Visual GC.
+
+
+Tools -> Plugins -> Available Plugin -> Visual GC 
+
+
+
+It's a pretty wonderful tool.
+
+Note : By experimenting, I figured out that -XX:MaxHeapSize=50m actually is size of Eden space in heap. (Not neccessarily)
+
+
+
+Note : Above observations were using Java 8, there are some minor differences which is covered in Chapter 15 (Notes name : Garbage_Collection_Tuning).
+
+
+

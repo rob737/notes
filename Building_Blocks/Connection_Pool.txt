@@ -1,0 +1,37 @@
+------------------ Doubt --------------------
+
+1. What actually represents a domain ? name + port ? or only name ?
+
+-------------- XXXXXXXXX -------------------
+
+
+
+--- Multiplexing vs Demultiplexing (H2 proxying vs connection pooling) :
+
+
+Multiplexing is basically merging multiple connections into one connections or in more general term :
+
+combining multiple events into a single event that internally would be constituted of many events.
+
+Demultiplexing is the reverse.
+
+
+Note :
+
+Http/2 uses multiplexing to combine multiple requests into one connection.
+
+Reverse proxies like Nginx, Envoy receives Http/1.1 and then multiplex it to Http/2 to create one connection with backend server.
+
+Reverse proxies also does de-multiplexing.
+
+--- Connection pooling :
+
+
+Let's say scenario is communication from backend server to DB.
+
+backend server maintans already created connection to DB called hot connections instead of creating everytime it gets a new connection request.
+
+It saves 3 way handshake connection time for each request.
+
+As a matter of fact, connection pool is a general concept. Even limitation of google chrome to have atmost 
+6 simultaneous connection to a domain is a case of connection pool only.

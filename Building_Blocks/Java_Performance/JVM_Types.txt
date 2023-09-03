@@ -1,0 +1,50 @@
+------------------------------------------------ Doubt -------------------------------------------------------
+1. How to know which application is using a particular processId or rather which application is denoted by a processId?
+
+
+
+------------------------------------------------ XXXX --------------------------------------------------------
+
+
+Maximum Heap size that can be set is OS dependent.
+
+In 32 bit, only C1 compiler is present. (refer Byte_code notes in case forgotten about C1).
+
+In 64 bit, both C1 and C2 compiler is present.
+
+C1 is also called client compiler.
+
+C2 is also called server compiler.
+
+
+JVM heuristically decides which code block to be compiled to native language and store it in code cache by the frequency of the
+code block.
+
+
+java -XX:+PrintFlagsFinal
+
+After executing above command in terminal, we will get a long list of JVM flags with value that is set.
+
+one of them is : 
+
+intx CICompilerCount                          = 4                                         {product} {ergonomic}
+
+It denotes the number of threads available to JIT compile our byte code to native instructions.
+
+jps : this command will list all the running java processes.
+
+
+we can get the info of any of the flag (like CICompilerCount) for any of the process using jinfo command.
+
+Syntax : jinfo -flag CICompilerCount <pid>
+
+
+To give this as VM args in cases where we want to increase the number of threads used for JIT compilation :
+
+use -XX:CICompilerCount=<any_number>
+
+
+
+-XX:CompileThreshold=n -- This is the flag that controls how many times must the code block be executed before it's native code is put into code cache.
+
+ 
