@@ -72,3 +72,4 @@ removed entry is given a file descriptor which uniquely identifies client connec
 Note :
 1. NIC just forwards the frame to kernel.
 2. Kernel parses the packet and TCP handshake is performed by the kernel.
+3. 
