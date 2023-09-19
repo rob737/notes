@@ -127,6 +127,8 @@ that access that variable.
 
 Note: It doesn't guarantee thread safe behaviour but synchronized keyword does.	 
 
+volatile basically denotes that variable would be stored in memory and not in Thread's local stack.
+
 --- Producing return values from a task :
 
 A Runnable is a separate task that performs work but it doesn't return a value.
