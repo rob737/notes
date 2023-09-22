@@ -1,0 +1,63 @@
+--------------------------------------------- Doubts --------------------------------------------------------------
+1. Can we use Http with SOAP instead of REST?
+2. Is gRPC also Layer 7 protocol like http?
+3. Go through protobuffer video.
+
+
+
+--------------------------------------------- XXXXX  --------------------------------------------------------------
+
+
+gRPC is basically Google Remote Procedure Call.
+
+It leverages Http/2.
+
+
+---- Why is it even needed or rather what problem is it trying to solve?
+
+Creating a protocol requires consensus between client and server.
+Also, the language of protocol must be decided and stick to.
+
+e.g. SOAP library, REST library, Http Client library.
+
+
+Now, gRPC solves this problem by defining one client library i.e. language for the protocol.
+Now, we don't need to maintain SOAP library, REST library etc separately.
+
+
+---- How it works under the hood?
+
+1. We build protocol buffer (protobuf) that we used in JPMC, this is also called definition file.
+
+2. Then we build specific stubs and these stubs will be used for gRPC in our own language. (This own language concept is not very clear to me).
+
+3. Protocol that is leveraged under the hood is Http/2
+
+4. Message Format : Protocol Buffers as format.
+
+
+---- gRPC modes :
+
+mode basically represents the mode of communication.
+
+-- Unary gRPC :
+
+It is basically the usual request/response mechanism.
+
+-- Server Streaming gRPC :
+
+It is basically SSE (Server Sent Events).
+
+-- Client Streaming :
+
+Client is streaming the data instead of Server.
+
+-- Bi-directional Streaming :
+
+It is basically webRTC i.e. both client and server are streaming the data.
+
+
+
+
+
+

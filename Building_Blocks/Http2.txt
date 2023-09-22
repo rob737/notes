@@ -13,7 +13,7 @@ Let's understand it using the below scenario :
 In Http1.1
 
 1. Client establishes a TCP connection with the server.
-2. Now, let's say there are 3 requests that client wants to send to server to download image, js and rest api call.
+2. Now, let's say there are 3 requests that client wants to send to server to download image, js and rest api call respectively.
 
 3. Now, client will send request to download image on the underlying connection and wait for the response.
 
