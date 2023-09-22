@@ -187,7 +187,7 @@ This is just a hint to scheduler and doesn't guarantee anything.
 -- yield() vs sleep() :
 
 sleep : It pauses the thread for specified time during which thread is not scheduled by the scheduler i.e. it isn't active and ready to run during sleep timing.
-yiled : It hints scheduler that it can be context switched with other thread but it will remain active and ready to run.
+yield : It hints scheduler that it can be context switched with other thread but it will remain active and ready to run.
 
 
 --- Daemon threads :
