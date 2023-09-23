@@ -2,6 +2,7 @@
 1. Can we use Http with SOAP instead of REST?
 2. Is gRPC also Layer 7 protocol like http?
 3. Go through protobuffer video.
+4. How protobuf is different from JSON and what advantage does it provide?
 
 
 
@@ -56,6 +57,34 @@ Client is streaming the data instead of Server.
 
 It is basically webRTC i.e. both client and server are streaming the data.
 
+
+
+---- gRPC Pros :
+
+1. Built on top of Http/2 so fast and compact.
+
+2. One client library for interaction between client and server.
+    
+   What this means is this, communication is via protobuf and grpc itself provides stubs for all languages (supported by Google community)
+   to convert request/response to protobuf.
+   Hence, we can code in any language but it will get converted to protobuf for transmission and processing.
+   
+   According to me, REST also does the same so not a valid difference.
+
+3. Request cancellation.
+
+
+---- gRPC Cons :
+
+1. proto Schema and maintaining it.
+
+2. Proxies are tricky to implement in gRPC.
+
+3. No native Error Handling in gRPC so need to built it on our own.
+
+4. No native Browser support for gRPC unlike Http as it uses some kernel level methods available as part of Http/2
+
+5. Timeouts.
 
 
 
