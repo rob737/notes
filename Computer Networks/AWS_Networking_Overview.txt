@@ -1,0 +1,73 @@
+---------------------------------------- Doubts --------------------------------------------------------
+1. Understand how routing happens between Load balancer in public subnet with EC2 instance in private subnet.
+
+2. What exactly is referred to as 3 tier architecture?
+    - I think it's webserver, application server and DB server but verify.
+
+
+---------------------------------------- XXXXX  --------------------------------------------------------
+
+
+
+1. Region has availability Zones (AZ).
+
+2. VPC is Virtual Private Cloud which encompasses Availability Zones (AZ).
+	-- We can better understand it as private address space allocated to our use case.
+	
+3. EC2 machine is launched in a particular AZ within a subnet i.e. each EC2 machine belongs to a subnet.
+
+4. VPC is connected to the Internet using Internet Gateway.
+
+5. Public Subnet : We can communicate with EC2 instances in Public Subnet directly via Internet Gateway i.e. without any pem files etc.
+   Private Subnet : We can't communicate with EC2 instance in Private Subnet directly.
+   
+6. Scope of subnet is AZ level.
+
+7. Since, we can't communicate with private subnet directly from the internet, we leverage Application load balancer to do so.
+   Load Balancer would be in Public Subnet.
+   
+8. NAT (Network Address Translation) Gateway is used for the following use case :
+
+   1. Let's say our web server is running in a private subnet and it wants to install any software patch from the internet.
+   
+   2. Being in private subnet it can't directly connect to Internet via Internet Gateway.
+   
+   3. Here comes the NAT, it routes all outbound traffic from private subnet to Internet Gateway which in turn routes to Internet.
+      NAT is also in public subnet.
+	  
+
+9. VPC Peering Connection is the service provided by AWS which is used for connecting between different VPCs without going through the Internet.
+	It flows through AWS managed network and not via Internet.
+	It is non transitive i.e. each VPC needs to be connected to other VPCs in order to facilitate connectivity.
+
+10. To mitigate point 9, Transit Gateway was introduced which can be used to connect any VPC to any other VPC through it and also 
+    to "On Premise" Network.
+
+11. If S3 and DynamoDb or any other AWS services are not in same region as VPC then traffic is via Internet Gateway.
+    To mitigate this issue, we must ensure that these two are in the same region and then leverage VPC Endpoint (Gateway) to connect between them
+	without going through Internet Gateway.
+
+12. VPC Endpoint type to be used for S3 and DynamoDb is Gateway while for connecting with lambda, SQS and SNS it must be of type Interface.
+
+13. Private Link service provided by AWS can be leveraged to connect to different VPCs privately over the internet.
+    
+	Difference between Private link and Transit Gateway/VPC Peering is that with Transit Gateway and VPC Peering, any service can connect with any other service
+	directly which is not a very secure way to get things done on the internet.
+	
+	However, with private link one service (e.g. Load Balancer) can be configured that can communicate with different services and vice versa.
+	(more like reverse proxy).
+	
+14. Route53 is a DNS service.
+
+15. Cloudfront is CDN (Content Delivery Network).
+
+16. We can have VPC Flow logs to troubleshoot VPC connectivity issues.
+
+17. AWS Direct Connect Service can be leveraged to connect from VPC to Corporate Datacenter or On premise Datacenter.	
+
+	
+   
+      
+
+	
+
