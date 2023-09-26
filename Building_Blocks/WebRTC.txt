@@ -1,0 +1,97 @@
+--------------------------------- Doubts ---------------------------------------------------
+1. Understand ARP request and how is it used to connect to NAT ?
+2. Is NAT actually a router only or something else?
+
+
+--------------------------------- XXXXX  ----------------------------------------------------
+
+
+WebRTC is acronym for Web Real Time Communication.
+
+
+---- Why is it needed ?
+
+It is solving for the use case where peer to peer communication can be used to exchange video and audio (Media)
+in an efficient, standardized way with minimal latency. 
+
+The way to standardized way is to create a protocol for it.
+
+session is basically a bunch of Strings.
+Also called SDP (Session Description Protocol).
+
+This session information is transferred between two piers via ways such as Http fetch, Web Socket, QR scan, Whatsapp etc.
+
+As part of sending session information, shortest path is identified between two peers.
+
+
+---- WebRTC Demystified :
+
+
+-- NAT (Network Address Translation) :
+
+Note: Client is always behind NAT and not directly connected to the Internet.
+
+- Router has a public IP address and a private IP address (which is called a Gateway). 
+
+- Let's say Client wants to connect to a public server then following are the steps that are performed.
+
+1. Client creates an IP packet with source as it's address and destination as server's address.
+2. It performs Subnet masking to identify whether server is within the same network or not.
+3. If server is not in the same network then it needs to connect to NAT or the gateway.
+4. Client interacts with the NAT by creating an ARP request specifying the MAC address of the router.
+5. Now, NAT(Router) replaces source Id with it's IP and destination IP remains the same i.e. public server's IP.
+
+6. However, It needs to store the client IP address as well otherwise it will lose the source of packet so it 
+	keeps it in the NAT table which basically has following fields :
+	
+	Internal IP : Client IP
+	Internal Port : Client Port
+	External IP : Router's public IP
+	External Port : Router's Public port
+	
+	Destination IP : Server's public IP
+	
+	Destination Port : Server's public Port.
+	
+	
+7. Now, when Server sends back the package to NAT then it refers NAT table and then using Internal IP identifies the client 
+   so source would be server's IP and destination would be client's IP after NAT lookup.
+
+
+-- NAT Translation methods :
+
+Note : Different Vendor router may implement below methods differently.
+
+
+- One to One NAT (Full cone NAT)   
+
+The above example that we took, External IP address and Port always has a corresponding Internal IP and port entry.
+It doesn't care from where the packet is coming from, if packet reaches NAT then it would forward it to Client identified by Internal IP and port.
+
+This method of lookup when deployed is called One to One NAT or Full cone NAT.
+
+- Address Restricted NAT 
+
+Difference between One to One NAT and Address Restricted NAT is that it matches the destination IP with the source IP of packet being 
+received from the server while in One to One NAT, we didn't have any constraint on the source IP of packet being received from the server.
+
+If Destination IP matches source IP in this case irrespective of the port then it gets forwarded to Client identified by Internal IP entry.
+
+
+- Port Restricted NAT 
+
+it's exactly the same thing as Address Restricted NAT with an extra constraint on the destination port as well i.e.
+
+packet coming from the server must have same source IP and port both as destination IP and port in NAT table.	
+
+
+- Symmetric NAT 
+
+This is the most restricted one.
+
+It matches all 4 things i.e. packet coming from the server must have destination IP and port as External IP and port.
+Also, source IP and port must match Destination IP and port in NAT table.
+
+Prior to this, we only had constraints on destination IP and/or Port but never on External IP and port in NAT table.
+
+Note : Symmetric NAT doesn't work with WebRTC. (We will know the reason shortly). 
