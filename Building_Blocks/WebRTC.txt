@@ -95,3 +95,99 @@ Also, source IP and port must match Destination IP and port in NAT table.
 Prior to this, we only had constraints on destination IP and/or Port but never on External IP and port in NAT table.
 
 Note : Symmetric NAT doesn't work with WebRTC. (We will know the reason shortly). 
+
+
+---- STUN (Session Traversal utilities for NAT) :
+
+- The utility that it provides is that it returns back the Public IP and port for corresponding request from a host.
+  So, After getting Public IP and port combination from STUN, host can initiate communication with hosts over other network. 
+
+- Works for Full cone, Port/Address restricted NAT but doesn't work for Symmetric NAT.
+
+- Flow is as below :
+
+1. Client sends a packet to NAT in the following format :
+
+   ClientIp | Client Port | STN | STUN IP | STUN PORT
+
+2. Router does NAT and change the packet to the following format :
+
+   NATIp | NAT Port | STN | STUN IP | STUN PORT
+
+   Also, it puts these information in the NAT table as defined above. (Point 6 in NAT section)
+   
+3. Now, STUN receives this Packet and change the packet to the following format then sends it to the NAT:
+
+   STUN IP | STUN PORT | RSP | NAT IP | NAT PORT
+
+4. Now, NAT changes this packet to following after doing NAT lookup:
+
+   STUN IP | STUN PORT | RSP | Client IP | Client Port
+   
+5. Now, at client , we have the package with my public presence i.e. public IP of my NAT.
+
+   Client receives the packet in the following format from NAT :
+
+   STUN IP | STUN PORT | RSP | Client IP | Client PORT 
+
+   
+---- TURN (Traversal using Relay around NAT) :
+
+Since STUN doesn't work with Symmetric NAT so we need to use TURN.
+
+It's just a server that relays packet just like reverse proxy.
+
+---- ICE (Interactive Connectivity Establishment) :
+
+It is required because of the fact that there can be many STUN and TURN servers and we would need a consolidated place 
+where all available STUN and TURN server's local, public addresses are accessible.
+
+consolidated STUN and TURN servers are called ICE candidates which ensures that stored information can be used for connection 
+between two peers.
+
+All the collected addresses i.e. ICE candidates are sent to remote peer which can be used for connection via SDP.
+
+---- SDP :
+
+SDP (Session Description Protocol) is basically the collection of ICE candidates, media information, security information and many other metadata
+required for connection.
+SDP is just a file of Strings.
+
+
+SDP is not a protocol but a format.
+
+It is the most important concept in WebRTC.
+
+Note : Discord uses SDP.
+
+The goal is to take the SDP generated from the user and send it "somehow" to the other party.
+
+---- Signaling :
+
+Signaling is basically the process of sending SDP to receiever.
+
+Signaling can be done via a tweet, QR code, Whatsapp, WebSockets, HTTP request, well literally anything.
+
+The goal is to just send the SDP to the other party.
+
+There are two SDP's basically, local and remote.
+local is for the host initiating the connection and remote is of the host to which connection needs to be established.
+
+
+---- WebRTC connection establishment process :
+
+Note : Offer and Answer are basically SDP.
+
+1. let's say A wants to connect to B.
+
+2. A creates an "offer" after finding all the ICE candidates.
+
+3. A signals the offer to B (assume shared SDP via Whatsapp).
+
+4. B creates the answer after setting A's offer i.e. after figuring out all ICE candidates w.r.t. B
+
+5. B signals the answer to A.
+
+6. Connection is created.
+
+   
