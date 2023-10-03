@@ -190,4 +190,17 @@ Note : Offer and Answer are basically SDP.
 
 6. Connection is created.
 
-   
+
+
+Note : WEB API called RTCPeerConnection exists by default in Browser for initiating WebRTC communication.
+
+
+---- Pros :
+
+1. P2P like WebRTC is great as it is the fastest path to communicate for high bandwidth content.
+
+2. It has standardized WEB API present so we need not implement it on our own.
+
+---- Cons :
+
+1. We need to maintain STUN and TURN servers.
