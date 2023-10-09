@@ -1,0 +1,16 @@
+---------- Doubts -------------
+1. what is CSRF attack.
+
+2. What is Cross site scripting attack?
+
+3. What is broken authentication ?
+
+
+---------- XXXXX ---------------
+
+
+
+Security like availability, scalability and performance are non functional requirements.
+
+Clients won't ask for non functional requirement but it is a must to have.
+
