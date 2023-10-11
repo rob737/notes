@@ -1,5 +1,5 @@
 ---------- Doubts -------------
-1. what is CSRF attack.
+1. what is CSRF attack and what is the use of CSRF token?
 
 2. What is Cross site scripting attack?
 
@@ -46,3 +46,37 @@ App/Web server basically comprises of Filters and Servlets.
 
 Note: Spring security uses these filters only for enforcing security constraints.
  
+
+---- Building blocks of Spring Security :
+
+1. Spring Security Filters : This is the first point of contact for client's request.
+							 It forms Authentication object and can be used to perform first level of authentication.
+
+2. Authentication object : This is the POJO on which authentication business logic would be performed.
+
+3. Authentication Manager : This takes Authentication object as input and based on certain criteria delegate it to Authentication Providers
+							which actually has the business logic to perform validation.
+
+4. Authentication Provider : These are the actual classes where business logic for authentication and authorization is present.
+							 It will leverage inbuilt classes (e.g. Password Encoder, UserDetails Manager/Service) to perform the operation 
+							 or we can create our custom implementation as well.
+
+5. Security Context : After performing all 4 operations above, Authentication object is stored in Security Context which is basically used as a
+					  session to allow subsequent requests to pass on without re-performing all validation steps.	
+									
+Note: Revisit this section and distinguish classes and interfaces among building blocks.
+									
+
+---- Important Filters to be aware of :
+
+1. AuthorizationFilter.java
+
+2. DefaultLoginPageGeneratingFilter.java
+
+3. UsernamePasswordAuthenticationFilter.java
+
+4. ProviderManager.java (Implementation of AuthneticationManager)
+
+5. DaoAuthenticationProvider.java.
+   However, by default we have AnonymousAuthenticationProvider.java which implements interface AuthenticationProvider.	
+									
