@@ -75,8 +75,17 @@ Note: Revisit this section and distinguish classes and interfaces among building
 
 3. UsernamePasswordAuthenticationFilter.java
 
-4. ProviderManager.java (Implementation of AuthneticationManager)
+4. ProviderManager.java (Implementation of AuthenticationManager)
 
 5. DaoAuthenticationProvider.java.
-   However, by default we have AnonymousAuthenticationProvider.java which implements interface AuthenticationProvider.	
+   However, by default we have AnonymousAuthenticationProvider.java which implements interface AuthenticationProvider.
 									
+
+---- Why subsequent requests after getting authenticated once need not be authenticated again ?	
+
+Note: If you login once from a browser then it will allow you to access the APIs without relogin.
+	  However, if you switch to a different browser then we need to re-login.
+	  This is because they are using cookie to store the session in the field called JSESSIONID.
+
+Interestingly, it compares the JSESSIONID value in backend so technically it's a String match operation only.	  
+	  
