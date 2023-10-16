@@ -10,6 +10,8 @@
 5. Is each endpoint mapped to one servlet class ?
 Ans : No, each servlet can be mapped to multiple endpoints by mapping url patterns.
 
+6. If we define two beans of same type then what would happen?
+
 ---------- XXXXX ---------------
 
 
@@ -89,3 +91,23 @@ Note: If you login once from a browser then it will allow you to access the APIs
 
 Interestingly, it compares the JSESSIONID value in backend so technically it's a String match operation only.	  
 	  
+
+---- Custom Security configuration at API level.
+
+SpringBootWebSecurityConfiguration class' method defaultSecurityFilterChain is called when any rest API is called 
+and it by default secures all the endpoints.
+
+First class that is loaded is ApplicationFilterChain and the corresponding method is internalDoFilter().
+
+To write our own filter to whitelist some of the APIs, I think we would need to override this class and provide our own implementation.
+So, we need to define bean of type SecurityFilterChain as per the documentation over the concerned method.
+
+/**
+The default configuration for web security. It relies on Spring Security's content-negotiation strategy to determine what sort of authentication to use. 
+If the user specifies their own SecurityFilterChain bean, this will back-off completely 
+and the users should specify all the bits that they want to configure as part of the custom security configuration.
+**/
+
+We can use @Configuration annotation over class and define a bean within it to override default SecurityFilterChain bean.
+
+If you define multiple beans of the same type in @Configuration file then first one in order of declaration is considered.
