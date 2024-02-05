@@ -50,7 +50,7 @@ e.g. Window sliding problem - when to use it and when not to use it.
 9. have a sense of curiosity.
 
 
-NOTE ::: things will take time so have patience and the only way to know how much time is to test in real world.
+NOTE ::: things will take time so have patience and the only way to know how much time, is to test in real world.
 
 --- Illussion of competence :
 
