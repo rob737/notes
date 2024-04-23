@@ -100,7 +100,9 @@ Syntax : ExecutorService exec = Executors.newFixedThreadPool(<num of threads>);
 -- CachedThreadPool Executor Service - depends on the load underlying library decides the number of threads that needs to be executed.
 Syntax : ExecutorService exec = Executors.newCachedThreadPool();
 
-e.g. this will create 15 threads for CachedThreadPool:
+e.g. this will create 15 threads for CachedThreadPool: (Revisit this, it doesn't look correct
+According to me, it would execute critical section 15 times but number of threads won't be deterministic.
+)
 
 for(int i =0; i<15; i++)
             executorService.execute(new RunnableExample());
