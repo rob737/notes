@@ -224,6 +224,7 @@ Note (Important) : All synchronized keyword defined method will be blocked/locke
 that object within a task.
 
 All objects implicitly contain a single lock which is called a monitor.
+This is intrinsically the object referenced via "this" reference.
 This monitor object is shared across all synchronized methods and that's why only one synchronized method can be executed at a time within a task by a thread. 
 
 Note :: There is also a single separate lock for static members of the class which are synchronized.
@@ -410,7 +411,7 @@ e.g. AtomicInteger class uses compare and swap ISA to ensure atomicity.
 Note :  
 
  If two threads try to update the value of the atomic integer at the same time, 
- only one of them will succeed, while the other will fail and have to retry the operation.
+ only one of them will succeed, while the other will fail and have to retry the operation. (Optimistic Locking)
  
  Note : Understanding compare and swap :
  
