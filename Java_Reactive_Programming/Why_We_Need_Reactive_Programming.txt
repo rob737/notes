@@ -1,0 +1,86 @@
+-------- Doubt ----------------
+
+1. Revisit Imperative vs Declarative .
+Ans : Imperative is basically programmers telling each instruction that needs to be performed while declarative is basically defining operations without
+providing low level implementantion details.
+e.g. streams.filter etc is declarative as we are just defining what we want to achieve without providing step by step implementantion.
+
+
+--------- XXXX ------------------
+
+
+
+First and foremost non-blocking I/O can be done in Java as well.
+
+
+-- Why do we need it ?
+
+Thread gets blocked as part of I/O and CPU cycles are wasted so we need a mechanism to utilize the thread until I/O controller notifies 
+us that I/O activity is completed.
+
+
+-- Input Output Models :
+
+There are 4 types of I/O models :
+
+1. sync + blocking : Thread performs I/O operation and is blocked until I/O operation is completed.
+
+2. Async : Main thread spawns a child thread and that child thread performs I/O operation and gets blocked while main thread is free to perform 
+		   other tasks.
+		   
+3. Non Blocking or Event Driven Model (Java also supports this) : 	Thread initiates the I/O and moves on to do other work then once I/O is completed
+then OS notifies our thread that I/O is completed and it's result can be utilized.
+ (More like callback reference in javascript).	   
+ 
+4.  Non Blocking + Async : Combination of 2 and 3 i.e. child thread will also be unblocked and notified once I/O results are ready.
+
+(Reactive Programming helps with case 4 i.e. Non Blocking + Async)
+
+
+Note : Reactive Programming/Streams is based on Observer pattern.
+
+So there are primarily 4 types of interfaces that we need to deal with :
+
+1. Publisher : The one generating the result.
+
+2. Subscription : The mode of communication between publisher and subscriber. 
+
+3. Subscriber : The one requesting data from Publisher via Subscription.
+
+P.S. : Looks like pull model but verify it as you learn more about it.
+
+4. Processor : It can act as both Publisher and Subscriber.
+ These are generally middlewares between Publisher and Subscriber.
+ Some would act as Publisher and some would act as Subscriber.
+ 
+Note: Reactive programming is a declarative data flow programming.
+Something similar to how streams in Java is implemented where next step is dependent on previous step. 
+
+-- Three pillars of Reactive Programming :
+
+- Asynchronous data processing.
+- Non-blocking.
+- Functional/Declarative style.
+
+
+Note : Reactive Streams are specification/interfaces like JPA and not implementantions like Hibernate is implementantion of JPA.
+	   Similarly, reactor, akka and rxJava2 are implementations of Reactive Streams.
+	   
+
+-- Publisher/ Subscriber Communication wrt Reactive Streams :
+
+	   
+  1. Subscriber wants to get updates from the Publisher so it's a Pull model.
+     It does so by using subscribe method of Publisher interface.
+	 
+  2. If Publisher accepts the subscription request then it hands over the Subscription object to the Subscriber.
+  
+  3. Now Subscriber can request for the data via subscription object or cancel the subscription itself.
+  
+  4. Publisher pushes data via onNext method of the subscriber interface.
+  
+  5. If pusblisher has emitted all the items then publisher calls onComplete method to notify subscriber that transfer is complete.
+  
+  6. Similarly, onError method of Subscriber is invoked to notify subscribers of errors while processing.
+  
+  Note : onComplete and OnError are terminal states and publisher will not be emitting any record post that.
