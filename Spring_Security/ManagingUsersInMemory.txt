@@ -1,0 +1,20 @@
+------------------------------------------ Doubts ------------------------------------------
+
+
+------------------------------------------  XXXXX ------------------------------------------
+
+
+InMemoryUserDetailsManager class can be used for creating different users with different roles/authorization.
+
+i.e. we can define a bean of type InMemoryUserDetailsManager which in turn implements the interface UserDetails Manager.
+
+By default, Spring Security has User class which can be levergaed to create multiple users with username, pwd and roles/authorities.
+
+
+@Bean annotation in @Configuration class creates a bean of type as per return type of method and register it in Spring context.
+
+With this, we need not define anything in application.properties file and we can login with user credentials defined as part of 
+InMemoryUserDetailsManager bean.
+
+Note: Just by defining bean of type NoOpPasswordEncoder in @Configuration file, it will tell spring context to use this encoder instead of default encoder.
+
