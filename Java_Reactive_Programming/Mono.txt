@@ -1,0 +1,26 @@
+
+-- Reactive Stream is the specification while Reactor is one of the implementation (i.e. library) for asynchronous non blocking stream processing.
+
+-- Publisher is one of the interfaces which has 2 implementations :
+   - Mono : It can emit 0 or 1 item followed by onComplete or onError. 
+   
+   - Flux : It can emit 0 to N items followed by onComplete or onError.
+   
+   Typical flow is as follows :
+   
+   Mono/Flux ------- 0..1/0..N --------------> Subscriber
+		^
+		|										  |	
+	    ------------ Subscription Object <---------
+
+   Note : It is pull based model i.e. Subscriber requests data from Publisher's implementation i.e. Mono/Flux.
+
+-- Just to compare, Mono is similar to Optional while Flux is similar to Streams in Java.
+
+-- Stream is lazy operation i.e. it would not do anything unless we connect it with terminal operator.
+
+---- Simplest way to create Mono is doing :
+
+Mono.just()
+
+    -- Nothing happens in reactor until we subscribe to the publisher (e.g. Mono created above).
