@@ -1,0 +1,22 @@
+
+
+---- Workflow 
+
+  User Application --- talks to ----> O.S. kernel APIs ----- talks to -----> Hardware
+  
+  Notes : 
+  1. Kernel APIs will be different for different types of hardware architecture.
+  2. Once Process waits for I/O, it is swapped with other process by the Scheduler.
+
+
+---- System Architecture - Overview of Hardware :  
+
+1. The Kernel is the OS core component that manages hardware etc i.e. it is the component of OS that our application code interacts with.
+   Technically, OS is collection of apps which in turn leverages kernel to interact with hardware.
+   e.g. top command is an app that uses kernel APIs to get the list of running processes and it's associated resource consumption.
+   
+-- CPU :
+
+   - CPU has cores.
+   - Each core has it's own ALU, CU, Registers, MMU, L1 and L2 cache.
+	 However, L3 cache is usually shared among all the cores.	
