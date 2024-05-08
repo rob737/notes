@@ -20,3 +20,77 @@
    - CPU has cores.
    - Each core has it's own ALU, CU, Registers, MMU, L1 and L2 cache.
 	 However, L3 cache is usually shared among all the cores.	
+
+   - Earlier days had only one CPU.
+   - It is also called Processor.
+   e.g. quad core proceeeor means CPU has 4 cores.
+   
+   - Executes Machine Level Instructions.
+   
+   
+   Note : Usual execution flow : High level code --> compiled ---> Interpreted into underlying machine instruction.
+
+-- Memory : 
+
+   - RAM is Random Access Memory as we need not access it sequentially.
+   - Magnetic Disks (HDD) however needs to be accessed sequentially. ( By moving across sectors)   
+   - Important : SSD are technically random.
+   
+   - Slower than CPU cache as distance is more from core.
+   
+-- Storage :
+   - HDD and SSD
+	- Persisted Storage 
+	- Kernel has APIs that allow us to deal with hard drives, SSDs etc.
+	- Kernel APIs -- talks to --> Controller APIs --- talks to ---> Disk.
+	
+-- Network : 	
+
+   - NIC (Network Interface Controller)
+   - Layer 3 and Layer 4 packets are dealt by OS.
+   - Protocol is implementes in the O.S.
+
+-- Kernel :
+
+   - Core of the OS.
+   - All Scheduling, Address lookup etc is done by the kernel i.e. tasks that we are mostly concerned about as part of application development
+     is done by Kernel.
+   - It is agnostic of any O.S.
+   - Kernel exposes API for OS to create other tools.
+   - Drivers also leverages Kernel.
+		- Some of the drivers are part of Kernel e.g. keyboard driver and some can be externally installed as per use case like DB driver.
+   - Distros e.g. Ubuntu is basically about packaging multiple tools based out of Kernel.
+
+-- File System :
+   
+	- Nowadays, Storage is mostly block of bytes.
+	- For Magnetic disks, addressing is based on CHS (Cylinder, Head and Sectors) instead of block/array of bytes.
+	- HDD consists of platter, heads, tracks and sectors.
+	- OS kernel has APIs that are aware of physical layout of HDD.
+	- Even whole contents of files are stored in the blocks.
+	   Note: On write, whole block gets associated with a file irrespective of the portion of block that is being used.
+	- File System is also part of the kernel.
+	- Format of file systems : btrfs, ext4, NTFs etc.
+		- formatting is basically how contents are organized within a block so OS may not support some formats.
+
+
+-- Program vs Process :
+
+   - Metaphorically, Program is like Class and Processes are objects in Java.
+     e.g. Application code is a program but it can be executed by spawning different processes at different ports.
+	 So, same class but multiple objects.
+
+   - Technically, program is the compiled executable e.g. postgresql.exe while process is instance of the program on executing it.
+   
+   - Kernel manages process i.e. Schedules processes .   
+   
+   - We deal with Virtual addresses and not physical addresses.
+   
+   
+-- System calls :
+  
+   - Typically, we have two types of processes :
+     - User Processes
+	 - Kernel Processes 
+	 
+	 User processes interacts with kernel processes via System calls (interrupts)
