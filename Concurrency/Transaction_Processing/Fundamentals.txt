@@ -1,0 +1,13 @@
+---- What is a transaction ?
+
+A transaction is a collection of operations on the physical and abstract application state.
+
+Begin transaction;
+
+
+<Set of operations within Transaction>
+
+
+Commit Transaction;
+
+In case of failure, Rollback transaction pipeline would be triggered.
