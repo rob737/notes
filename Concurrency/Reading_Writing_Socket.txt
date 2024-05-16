@@ -3,7 +3,7 @@
 2. Understand epoll that helps in async copy and non-blocking read from receive buffer.
 3. What is Ethernet used for?
 
-
+4. What is meant by terminating the connection ?
 
 
 
