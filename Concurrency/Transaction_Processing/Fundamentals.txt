@@ -11,3 +11,9 @@ Begin transaction;
 Commit Transaction;
 
 In case of failure, Rollback transaction pipeline would be triggered.
+
+---- RPC :
+
+Remote procedure calls (RPCs) are a way for one process to invoke a program in another remote process as though the subroutine in the remote process were local.
+
+Continue : 2.2.1 Memories
