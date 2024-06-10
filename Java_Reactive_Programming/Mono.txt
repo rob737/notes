@@ -24,3 +24,42 @@
 Mono.just()
 
     -- Nothing happens in reactor until we subscribe to the publisher (e.g. Mono created above).
+	
+	e.g. 
+	
+	psvm(String[] args) {
+	
+	// Publisher 
+	
+	Mono<Integer> mono = Mono.just(1);
+	
+	sout(mono);
+	
+	// nothing will happen in above statement as there is no consumer subscribing to the publisher so it would just print Mono's reference.
+	
+	mono.subscribe(i -> sout("received : " + i));
+	// It is pull based model so it would make publisher emit items to subscribed consumer.
+	// It is based on callback reference mechanism just like in Javascript.
+	/*
+	*
+	e.g. Mono.subscribe(item->{}, err->{}, ()->{});
+	* Based on publisher's emitted item, corresponding callback reference would be called.
+	*
+	*/
+	
+	}
+	
+	Note: There is faker library that can be used for generating dummy data.
+	
+	
+---- Mono.fromSupplier() 
+
+  - Mono.just() emits items irrespective of the fact whether it is subscribed or not.
+  - Mono.fromSupplier() only emits items if there is consumber subscribed to it.  
+  
+  
+---- Pipeline build vs execution :
+
+Mono execution is divided into two steps building and executing.
+
+JVM builds the pipeline whenever a Mono is defined but it will only execute it if there is an associated consumer for it.  
