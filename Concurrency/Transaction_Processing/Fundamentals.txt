@@ -16,4 +16,28 @@ In case of failure, Rollback transaction pipeline would be triggered.
 
 Remote procedure calls (RPCs) are a way for one process to invoke a program in another remote process as though the subroutine in the remote process were local.
 
-Continue : 2.2.1 Memories
+
+---- Memory :
+
+At a low level of abstraction, the memory looks like an array of bytes to the processor; but at the processor instruction set level, 
+there is already a memory-mapping mechanism that translates logical addresses (virtual memory addresses) to physical addresses. 
+This mapping hardware is manipulated by the operating system software to give the processor a virtual address space at any instant. 
+The processor executes instructions from virtual memory, and it reads and alters bytes from the virtual memory.
+
+
+---- Electronic Memory :
+
+Bit is identified by electronic charge i.e. if charged then 1 else 0.
+
+Main/Primary Memory : RAM
+
+Secondary Memory : Disk
+
+Processor cannot directly access secondary memory.
+
+A block of memory say 10 KB (Kilo Bytes) is copied to main memory from secondary memory and then processor accesses it.
+
+Since, speed of memory and processor is different so we need to have a cache on processor itself that will allow processor
+to continue execution rather than waiting for memory to provide instructions.
+
+2.2.1.2 Magnetic Memory
