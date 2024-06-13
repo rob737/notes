@@ -40,4 +40,25 @@ A block of memory say 10 KB (Kilo Bytes) is copied to main memory from secondary
 Since, speed of memory and processor is different so we need to have a cache on processor itself that will allow processor
 to continue execution rather than waiting for memory to provide instructions.
 
-2.2.1.2 Magnetic Memory
+
+
+---- Magnetic Disks :
+
+Each disk has track which in turn has sectors.
+
+There are multiple disks that are stacked one over another with the help of spindle. (Imagine Idli container)
+
+spindle is attached to a disk rod which in turn has disk head that read/writes sectors from a track.
+
+Since, disks are stacked on top of another so at any instant all disk heads form a cyliner like structure which combines all the sectors
+from all the tracks from all the disks pointed by the head.
+
+Disk Access time = seek time + disk head rotation time + transfer rate.
+
+seek time is basically identifying the cylinder then track and then sector to read/write.
+This is termed as sector address space which is 3 Dimensional as it involves cylinder number, track number and ultimately sector number.
+
+rotation time is the overhead to rotate the disk to reach to intended cylinder.
+
+
+Sequential access on disk is always faster than random access as it involves seek time and rotation time overhead only once.
