@@ -62,3 +62,23 @@ rotation time is the overhead to rotate the disk to reach to intended cylinder.
 
 
 Sequential access on disk is always faster than random access as it involves seek time and rotation time overhead only once.
+
+Principle of locality: It states that data that was used recently is likely to soon be used again.
+
+
+---- Processors :
+
+Processor speed is measured in terms of mips i.e. million instructions per second.
+
+
+---- Communication Hardware :
+
+Processors and memories are connected by wires called the network.
+
+While some wires are just impurities on a chip, others are fiber-optic cables carrying light signals. 
+The basic property of a wire is that a signal injected at one end eventually arrives at the other end.
+
+
+The time to transmit a message of M bits via a wire is determined by two parameters: 
+(1) the wire’s bandwidth—that is, how many bits/second it can carry—and 
+(2) the wire’s length (in meters), which determines how long the first bit will take to arrive.
