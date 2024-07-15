@@ -82,3 +82,18 @@ The basic property of a wire is that a signal injected at one end eventually arr
 The time to transmit a message of M bits via a wire is determined by two parameters: 
 (1) the wire’s bandwidth—that is, how many bits/second it can carry—and 
 (2) the wire’s length (in meters), which determines how long the first bit will take to arrive.
+
+Address spaces, processes, and messages are the software analogs of memories, processors, and wires.
+
+The process address space is actually virtual memory; that is, the addresses go through at least one level of translation to compute the physical memory address.
+
+To simplify memory addressing, the virtual address space is divided into fixed-size segment slots.
+Thus, addressing becomes 2 dimensional of the form (segment_number, byte).
+In turn, segments are partitioned into virtual memory pages which are the unit of transfer between main and secondary memory.
+
+Hence, virtual memory addressing is basically of the form (segment_number, page, byte).
+
+Threads share the same address space as process but different threads may have different scheduling priorities. 
+
+
+--- Continue : Messages and Sessions
