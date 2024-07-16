@@ -96,4 +96,18 @@ Hence, virtual memory addressing is basically of the form (segment_number, page,
 Threads share the same address space as process but different threads may have different scheduling priorities. 
 
 
---- Continue : Messages and Sessions
+--- Messages and Sessions :
+
+Session is analogous to wire and message is analogous to signal on the wire.
+
+Formally, Session is a bi-directional message pipe using which two processes can communicate.
+
+Session needs to be present for processes to communicate among themselves.
+
+Client sends an open_session datagram to the server and waits for a response.
+
+Server listens to network interface card for incoming open_session datagram.
+
+
+One of the benefits of creating session is to cache dns resolution, client/server authentication information which are expensive operations
+and can be done only once at the inception i.e. it's one time cost is amortized across future messages.
