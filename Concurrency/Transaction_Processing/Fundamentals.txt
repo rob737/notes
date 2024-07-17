@@ -111,3 +111,18 @@ Server listens to network interface card for incoming open_session datagram.
 
 One of the benefits of creating session is to cache dns resolution, client/server authentication information which are expensive operations
 and can be done only once at the inception i.e. it's one time cost is amortized across future messages.
+
+--- Remote Procedure Call :
+
+Remote procedure call mechanisms give the client and the server the illusion that they are local to each other. 
+The RPC mechanism packs the client’s parameters as a message sent to the server. 
+At the server process, the rpc invocation mechanism unpacks the parameters and invokes the server method with a local call. 
+The results of the server method are packed by the rpc mechanism as a reply message that is returned to the client. 
+The client RPC mechanism unpacks this reply, moves it to the client address space, and continues the client execution. 
+In their pure forms, local procedure call and a remote procedure call look identical to the client and the server.
+
+
+Note : The need for peer-to-peer is because client-server is one-to-one mapping while there can be use cases wherein for one request,
+multiple responses are expected.
+
+Continue : 2.4.2 Naming
