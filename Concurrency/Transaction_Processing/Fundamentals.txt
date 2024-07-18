@@ -125,4 +125,9 @@ In their pure forms, local procedure call and a remote procedure call look ident
 Note : The need for peer-to-peer is because client-server is one-to-one mapping while there can be use cases wherein for one request,
 multiple responses are expected.
 
-Continue : 2.4.2 Naming
+Note :
+If the file is found, the file server looks at the file descriptor, which, among other things, contains an access control list.
+
+The standard UNIX read routine sequentially reads or writes the next bytes of the file. UNIX file positioning is done by a separate call, lseek().
+
+Continue : File Organizations
