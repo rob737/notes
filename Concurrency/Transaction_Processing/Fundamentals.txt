@@ -130,4 +130,18 @@ If the file is found, the file server looks at the file descriptor, which, among
 
 The standard UNIX read routine sequentially reads or writes the next bytes of the file. UNIX file positioning is done by a separate call, lseek().
 
-Continue : File Organizations
+-- File Organizations
+
+The descriptor contains the file name, the authid of the file creator, 
+and an access control list of who can do what to the file. 
+The descriptor also keeps information on the time the file was created, when it was last accessed, and when it was last archived. 
+Of course, the file size, along with a description of how the file is mapped to storage, is part of the descriptor.
+
+
+Note : If a file is distributed across multiple nodes then each fragment's file descriptor will have information of all other fragments i.e. complete file.
+
+--- Portable vs Interoperable :
+
+Portability : Programs can run on different machines.
+
+Interoperability : Exchange between different systems in common format.
