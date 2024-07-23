@@ -1,0 +1,8 @@
+
+
+--
+
+Note that atomicity is defined only from the perspective of the caller of the operation, 
+because almost no atomic action—including machine instructions—is truly atomic at all levels of implementation.
+
+Continue : 4.2 Atomic Actions and Flat Transactions
