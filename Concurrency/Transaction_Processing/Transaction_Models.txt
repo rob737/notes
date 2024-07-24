@@ -5,4 +5,11 @@
 Note that atomicity is defined only from the perspective of the caller of the operation, 
 because almost no atomic action—including machine instructions—is truly atomic at all levels of implementation.
 
-Continue : 4.2 Atomic Actions and Flat Transactions
+At hardware level, the block on disk can be left half-changed, and the controller returns an error code indicating that this happened.
+
+It might even produce a normal return code in spite of the fact that, 
+due to some transient error in the controller’s circuitry or a fault in the disk media, the block was not written correctly. 
+And if there is a power loss in the middle of the operation, it might happen that the first part of the block is written, but the rest is not. 
+In all these cases the outcome of the action is neither all nor nothing, but something in between.
+
+Continue : Logged write.
