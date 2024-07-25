@@ -12,4 +12,4 @@ due to some transient error in the controller’s circuitry or a fault in the di
 And if there is a power loss in the middle of the operation, it might happen that the first part of the block is written, but the rest is not. 
 In all these cases the outcome of the action is neither all nor nothing, but something in between.
 
-Continue : Logged write.
+Continue : 4.2.3 Flat Transactions
