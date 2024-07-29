@@ -12,4 +12,14 @@ due to some transient error in the controller’s circuitry or a fault in the di
 And if there is a power loss in the middle of the operation, it might happen that the first part of the block is written, but the rest is not. 
 In all these cases the outcome of the action is neither all nor nothing, but something in between.
 
-Continue : 4.2.3 Flat Transactions
+---- ACID :
+
+Atomic : Everything or nothing.
+
+Consistency : Abiding by the constraints of the application.
+
+Isolation : Forms an illusion that application is accessed by single user only.
+
+Durability : Once transaction is committed, information is expected to be preserved in the system even in case of crash.
+
+A flat transaction like what we have used usually is useful to divide our application into chunks of atomic processing units.
