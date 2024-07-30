@@ -23,3 +23,11 @@ Isolation : Forms an illusion that application is accessed by single user only.
 Durability : Once transaction is committed, information is expected to be preserved in the system even in case of crash.
 
 A flat transaction like what we have used usually is useful to divide our application into chunks of atomic processing units.
+
+Note :
+
+Complex updates are supported by savepoints or by nested transactions, bulk updates are supported by chained transactions or sagas, and so on.
+This overcomes the limitation of flat transactions all or nothing approach.
+
+
+Continue : 4.3.1 Definition of Spheres of Control
