@@ -30,4 +30,8 @@ Complex updates are supported by savepoints or by nested transactions, bulk upda
 This overcomes the limitation of flat transactions all or nothing approach.
 
 
-Continue : 4.3.1 Definition of Spheres of Control
+Flat transactions have finally made their way into all commercially available database systems, 
+and they are about to be used in operating systems and communication systems. 
+The implementation techniques are well-understood, and so are the limitations.
+
+Continue : Structural dependencies.
