@@ -34,4 +34,15 @@ Flat transactions have finally made their way into all commercially available da
 and they are about to be used in operating systems and communication systems. 
 The implementation techniques are well-understood, and so are the limitations.
 
-Continue : Structural dependencies.
+---- Save Point :
+
+A savepoint is established by invoking the SAVE WORK function, which causes the system to record the current state of processing. 
+This returns to the application program a handle that can subsequently be used to refer to that savepoint.
+
+ It is worthwhile considering the subtle difference between rolling a transaction back completely (aborting it) 
+ and rolling back to savepoint 1. In the first case, the transaction disappears from the scene, 
+ gets detached from the program that was running it, and loses all its resources. 
+ When rolling back to savepoint 1, the transaction stays alive, keeps its resources, and simply returns to a state where it has not yet done anything.
+ 
+ 
+ Continue : one paragraph before 4.5.2 Developing the Rules for the Savepoint Model
