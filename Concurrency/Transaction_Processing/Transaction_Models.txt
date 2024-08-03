@@ -45,4 +45,4 @@ This returns to the application program a handle that can subsequently be used t
  When rolling back to savepoint 1, the transaction stays alive, keeps its resources, and simply returns to a state where it has not yet done anything.
  
  
- Continue : one paragraph before 4.5.2 Developing the Rules for the Savepoint Model
+ Continue : 4.8 Distributed Transactions
