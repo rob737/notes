@@ -45,4 +45,15 @@ This returns to the application program a handle that can subsequently be used t
  When rolling back to savepoint 1, the transaction stays alive, keeps its resources, and simply returns to a state where it has not yet done anything.
  
  
- Continue : 4.8 Distributed Transactions
+---- Compensating Transactions :
+
+Consider the “insert tuple” part of the INSERT statement. It is easy to make this a subtransaction, 
+consisting of two leaf-level actions: one action puts the new tuple into a page, 
+which involves finding a page with enough free space and doing some other bookkeeping; 
+the other action makes the new tuple addressable by putting 
+its page number into the entry of some system-internal address translation table that corresponds to its unique identifier.
+
+
+But how can the transaction be kept isolated if parts of its results are committed early? 
+Specifically, how can some other transaction be prevented from deleting the new tuple from its page before T is committed? 
+To understand the problem of atomicity in multi-level transactions, let us consider the sequence of updates in bottom-up order.
