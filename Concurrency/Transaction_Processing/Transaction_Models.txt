@@ -57,3 +57,18 @@ its page number into the entry of some system-internal address translation table
 But how can the transaction be kept isolated if parts of its results are committed early? 
 Specifically, how can some other transaction be prevented from deleting the new tuple from its page before T is committed? 
 To understand the problem of atomicity in multi-level transactions, let us consider the sequence of updates in bottom-up order.
+
+----- Multilevel Transaction :
+
+Put in terms of the example, having executed the “insert tuple” subtransaction, 
+the updates on the data page as well as on the page holding the address table are committed. 
+Now everybody else can access these pages, yet nobody can access the tuple t, 
+because such an access would have to go through the SQL layer (according to the layering assumption), 
+and at that layer transaction T is still controlling the commitment of tuple t.
+
+Assumption is that top layer controls the operations/constraints permissible in below layers.
+
+e.g. lock is at tuple level and not entire table level.
+
+
+Continue : 4.11 Long-Lived Transactions
