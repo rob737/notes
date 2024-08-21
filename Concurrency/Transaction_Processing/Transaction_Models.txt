@@ -71,4 +71,24 @@ Assumption is that top layer controls the operations/constraints permissible in 
 e.g. lock is at tuple level and not entire table level.
 
 
-Continue : 4.11 Long-Lived Transactions
+----- Transaction Processing Context :
+
+f(input, context ) -> (output, context)
+
+if context is empty then it is called context-free else it is called context-sensitive.
+
+Basically context is metadata that allows server to manage transactions and process supplied inputs.
+
+e.g. Let's say we have determined a cursor to read through the tuples.
+First, the current position of the cursor determines which tuple qualifies as the next one. 
+The cursor position is a context that is private to the program containing the read loop
+
+Let us summarize what has been said so far. Programs frequently use information in addition to the input parameters; 
+this information is called context and is (potentially) modified every time the program is invoked. 
+Context can consist of simple counters (how often the program was called), user-related data (last screen sent), 
+information about durable storage (last record read, most recently modified tuple), and much more. 
+All programs that read durable storage (a database, for instance) 
+and modify it based on what they see become dependent on that context, whether they like it or not.
+
+
+Continue : 4.11.3 Sagas
