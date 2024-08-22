@@ -143,5 +143,7 @@ Note : If a file is distributed across multiple nodes then each fragment's file 
 --- Portable vs Interoperable :
 
 Portability : Programs can run on different machines.
+These standards require that when a program is ported to a new system, it must be recompiled for the instruction set and operating system of the new machine.
 
 Interoperability : Exchange between different systems in common format.
+
