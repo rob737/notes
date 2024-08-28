@@ -1,1 +1,1 @@
-Continue : Because queued transaction messages do not originate from a terminal
+Continue : In essence, then, the application programmer is provided with an environment that comes with the following guarantees
