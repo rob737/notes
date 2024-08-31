@@ -1,1 +1,6 @@
-Continue : In essence, then, the application programmer is provided with an environment that comes with the following guarantees
+Continue : 5.2.4 Summary
+
+
+1. Process switches are very expensive operations in most operating systems (typically 2,000–5,000 instructions).
+
+A standard RPC (Remote Procedure call) mechanism just forwards a call to another node.
