@@ -1,6 +1,14 @@
-Continue : 5.2.4 Summary
-
 
 1. Process switches are very expensive operations in most operating systems (typically 2,000–5,000 instructions).
 
 A standard RPC (Remote Procedure call) mechanism just forwards a call to another node.
+
+The first thing the application does is to register with the transaction manager by issuing a BEGIN WORK command; 
+it gets back a transaction identifier (TRID), which from now on is used to tag all messages and requests issued on behalf of that transaction.
+
+After each resource manager has agreed to commit this transaction, the transaction manager 
+writes the final log records and tells the log manager to put them on durable storage. 
+Now, the screen can actually be written, the locks can be released, and so on.
+
+
+Continue : This leads to the notion of sessions and context-sensitive scheduling, which are discussed in detail in Chapter 6.
