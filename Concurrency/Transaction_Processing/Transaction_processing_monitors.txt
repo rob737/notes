@@ -11,4 +11,6 @@ writes the final log records and tells the log manager to put them on durable st
 Now, the screen can actually be written, the locks can be released, and so on.
 
 
+Resource Managers are typically servers.
+
 Continue : This leads to the notion of sessions and context-sensitive scheduling, which are discussed in detail in Chapter 6.
