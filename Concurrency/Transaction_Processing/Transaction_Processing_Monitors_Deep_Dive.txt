@@ -1,0 +1,5 @@
+After the server is done, it forgets everything (frees its dynamic storage).
+
+
+
+Continue : 6.2 Transactional Remote Procedure Calls
