@@ -1,5 +1,14 @@
 After the server is done, it forgets everything (frees its dynamic storage).
 
 
+At this point, it is necessary to remember that TRPCs never go directly from the client to the server; 
+rather, they are forwarded by the TRPC stub, which is linked to each resource manager’s address space
 
-Continue : 6.2 Transactional Remote Procedure Calls
+
+A client and a server are said to be in session if they have agreed to cooperate for some time, 
+and if both are keeping state information about that cooperation.
+
+Having the communication system manage the context is the simplest approach for both sides. 
+There is some magic around them, called session, that makes sure all invocations from the same client go to the same instance of the server.
+
+Continue : The procedure calls required for system startup and shutdown are exchanged directly among the resource managers
