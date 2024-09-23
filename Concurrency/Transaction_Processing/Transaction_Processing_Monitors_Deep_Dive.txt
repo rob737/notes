@@ -11,4 +11,4 @@ and if both are keeping state information about that cooperation.
 Having the communication system manage the context is the simplest approach for both sides. 
 There is some magic around them, called session, that makes sure all invocations from the same client go to the same instance of the server.
 
-Continue : The procedure calls required for system startup and shutdown are exchanged directly among the resource managers
+Continue : 6.3.1.1 Defining the System Control Blocks
