@@ -1,0 +1,241 @@
+----------------------------------------------- Doubts -------------------------------------------------
+1. What exactly is an event ?
+
+2. How to decide which server to communicate to as Kafka always runs in a cluster ?
+
+3. How Kafka achieves exactly once processing of events ?
+
+4. Difference between topic and queue ?
+
+5. How exactly topics are partitioned and how it is organized in a broker ?
+   -- Also, what exactly is the broker ?
+   
+6. What are SATA drives and RAID structure ?   
+
+7. What is multi tenancy ?
+
+8. What is Zero copy optimization?
+-- https://developer.ibm.com/articles/j-zerocopy/
+
+9. How long polling actually works and it's advantage over short polling i.e. normal http requets ?
+
+10. What if different producers are storing message on the same partition and different consumers are reading from the same partition?
+    How is relevant event delivered to the consumer in that case?
+	
+11. Where does broker stores the message?
+"When publishing a message we have a notion of the message being "committed" to the log".	
+
+12. How is Kafka streams different ?
+
+13. How 2 phase commit actually works?
+
+14. Kafka does not handle so-called "Byzantine" failures in which nodes produce arbitrary or malicious responses (perhaps due to bugs or foul play).
+
+---------------------------------- XXXX ----------------------------------------------------------------
+
+
+Event streaming is the practice of capturing data in real-time from event sources like databases, sensors, mobile devices, 
+cloud services, and software applications in the form of streams of events; 
+storing these event streams durably for later retrieval.
+
+
+Kafka is basically a client server communication.
+
+Server : It runs as a cluster of one or more servers with some of the servers forming a storage layer known as brokers.
+
+Note: Kafka connect can be used to import data as event streams from existing systems like relational databases etc.
+
+Client : Basically the process that reads from (Consumer) or writes to (Producers) kafka servers.
+
+
+event is basically the record or message that is sent to the Kafka.
+
+each event contains the following attributes :
+key, value, timestamp.
+
+Important : Kafka provides various guarantees such as the ability to process events exactly-once.
+
+Events are stored in topic which can have multiple producers/consumers writing to and reading from it.
+Think of topic as folders and event as files within a folder.
+
+Events in a topic can be read as often as needed—unlike traditional messaging systems, events are not deleted after consumption.
+It is defined by user for how long topic needs to store events.
+
+Topics are partitioned i.e. it is divided into different buckets which can be present on different brokers (servers with whom client connects).
+Broker contains different partititions of different topics.
+
+New event is appended to one of the partitions of a topic and events with same key will always be appended to the same partition of a topic. 
+Kafka is append only write so consumers read the events in the same order as it was written. 
+
+Topics are replicated across different brokers to ensure reliability (fault tolerant and highly available).
+
+--- How Kafka events are stored in the topic :
+
+All data is immediately written to a persistent log on the filesystem without necessarily flushing to disk. 
+In effect this just means that it is transferred into the kernel's pagecache.
+
+Kafka uses append writes to disks.
+Though they have poor seek performance, these drives have acceptable performance for large reads (read ahead) and 
+writes and come at 1/3 the price and 3x the capacity.
+
+A modern operating system provides read-ahead and write-behind techniques that prefetch data in large block multiples 
+and group smaller logical writes into large physical writes.
+
+Since, Kafka uses disks directly for storage so it can store data for longer as hard disks are way cheaper than in memory alternatives.
+
+Apart from append only writes that uses underlying disks to the fullest, Kafka is efficient because it solves two bottlenecks :
+
+1. Too many I/O operations i.e. write operations.
+
+-- This is solved by batching multiple operations together which saves on the latency of fetching the data between process and disk.
+
+2. Too many copy operations to transfer data from producer to consumer.
+
+-- Zero copy is used here to copy directly from OS pagecache to NIC buffer instead of copying the data in broker's 
+   different queues (i.e. user space - read my article on how client server communication works).
+   
+   This by pass of broker is feasible because a standard binary format is used to encode events.
+   Thus, there will not be any message transformation needed at broker level.
+   
+   
+End-to-end Batch Compression :
+
+Kafka producer groups multiple messages together in a batch and compresses it in a format like GZip etc. and send it to broker (server).
+The broker decompresses it to do sanity checks and then again compress it and store it in compressed format in disk which is sent to consumer which 
+decompresses the data to process it.
+
+-- Producer :
+
+Producer sends data to a particular partition of a topic which will be on the leader broker as Kafka starts with a cluster of brokers/servers.
+Producer usually does an api call to retrieve the information of which is the leader broker for the particular partition that it is interested in.
+
+Producer controls which partition it publishes messages to which can be random or based on a well defined logic (called semantic partitioning function).
+Example if semantic partitioning function is based on userId then all requests will be hashed based on the userId and will be directed to the resultant 
+partition.
+
+Also, requests are batched to store multiple messages/events into one request which may increase latency but also yields to a better throughput.
+This batching logic is configurable.
+
+-- Consumer :
+
+Consumer "fetches" data from the broker i.e. pull model (Apache Flume, follow a very different push-based path where data is pushed downstream).
+
+Consumer specifies the offset from which it needs to start reading messages on the partition.
+Thus, it can rewind and re-read the same messages.
+
+Consumer uses long polling.
+
+-- Consumer Position :
+
+Our topic is divided into a set of totally ordered partitions, 
+each of which is consumed by exactly one consumer within each subscribing consumer group at any given time. 
+This means that the position of a consumer in each partition is just a single integer, the offset of the next message to consume.
+
+This makes the state about what has been consumed very small, just one number for each partition.
+
+Kafka’s group management protocol allows group members (e.g. consumer groups) to provide persistent entity ids. 
+Group membership remains unchanged based on those ids, thus no rebalance will be triggered.
+
+
+-- Message Delivery Semantics (Revisit tomorrow)
+
+Kafka provides atleast one delivery semantics.
+
+Since 0.11.0.0, the Kafka producer also supports an idempotent delivery option which guarantees that resending 
+will not result in duplicate entries in the log. 
+To achieve this, the broker assigns each producer an ID and deduplicates messages using a sequence number 
+that is sent by the producer along with every message.
+
+The consumer's position is stored as a message in an internal topic, so we can write the offset to Kafka in the same transaction 
+as the output topics receiving the processed data.
+
+
+Important :::
+
+Although Kafka provides atleast once delivery semantics.
+
+but 
+
+Kafka supports exactly-once delivery in Kafka Streams, and the transactional (committing offset and data on consumer) producer and the consumer 
+using read-committed isolation level can be used generally to provide exactly-once delivery when reading, 
+processing and writing data on Kafka topics.
+
+
+-- Transaction :
+
+To achive exactly once in Producer Consumer setting, following needs to be followed :
+
+There are three key aspects to exactly-once processing using the producer and consumer, which match how Kafka Streams works.
+
+The consumer uses partition assignment to ensure that it is the only consumer in the consumer group currently processing each partition.
+The producer uses transactions so that all the records it produces, and any offsets it updates on behalf of the consumer, are performed atomically.
+In order to handle transactions properly in combination with rebalancing, it is advisable to use one producer instance for each consumer instance. 
+More complicated and efficient schemes are possible, but at the cost of greater complexity.
+
+
+-- Replication
+
+Kafka replicates the log for each topic's partitions across a configurable number of servers (you can set this replication factor on a topic-by-topic basis). 
+This allows automatic failover to these replicas when a server in the cluster fails so messages remain available in the presence of failures.
+
+The unit of replication is the topic partition. 
+Under non-failure conditions, each partition in Kafka has a single leader and zero or more followers. 
+The total number of replicas including the leader constitute the replication factor. 
+All writes go to the leader of the partition, and reads can go to the leader or the followers of the partition.
+Typically, there are many more partitions than brokers and the leaders are evenly distributed among brokers. 
+The logs on the followers are identical to the leader's log—all have the same offsets 
+and messages in the same order (though, of course, at any given time the leader may have a few as-yet unreplicated messages at the end of its log).
+
+Followers consume messages from the leader just as a normal Kafka consumer would and apply them to their own log.
+
+In Kafka, a special node known as the "controller" is responsible for managing the registration of brokers in the cluster. Broker liveness has two conditions:
+
+Brokers must maintain an active session with the controller in order to receive regular metadata updates.
+Brokers acting as followers must replicate the writes from the leader and not fall "too far" behind.
+
+We refer to nodes satisfying above two conditions as being "in sync".
+The leader keeps track of the set of "in sync" replicas, which is known as the ISR.
+
+For example, if a follower dies, then the controller will notice the failure through the loss of its session, and will remove the broker from the ISR.
+
+For KRaft clusters, an active session is maintained by sending periodic heartbeats to the controller. 
+If the controller fails to receive a heartbeat before the timeout configured by broker.session.timeout.ms expires, then the node is considered offline.
+
+replica.lag.time.max.ms configuration :
+Replicas that cannot catch up to the end of the log on the leader within the max time set by this configuration are removed from the ISR.
+
+We can now more precisely define that a message is considered committed when all replicas in the ISR for that partition have applied it to their log. 
+Only committed messages are ever given out to the consumer.
+i.e. Kafka follows synchronous replication.
+
+If a less stringent acknowledgment is requested by the producer, 
+then the message is committed asynchronously across the set of in-sync replicas if acks=0, 
+or synchronously only on the leader if acks=1. Regardless of the acks setting, 
+the messages will not be visible to the consumers until all the following conditions are met:
+
+The messages are replicated to all the in-sync replicas.
+The number of the in-sync replicas is no less than the min.insync.replicas setting.
+
+If you choose the number of acknowledgements required and the number of logs that must be compared to elect a leader 
+such that there is guaranteed to be an overlap, 
+then this is called a Quorum (basically, meaning number of alive servers to ensure consistency is maintained).
+
+One of the ways to improve latency is to follow majority vote approach i.e. leaders will commit to atleast more than 50% of the 
+replicas before confirming to the client that message is successfully committed.
+However, Kafka doesn't follow this approach.
+
+Kafka takes a slightly different approach to choosing its quorum set. Instead of majority vote, 
+Kafka dynamically maintains a set of in-sync replicas (ISR) that are caught-up to the leader. 
+Only members of this set are eligible for election as leader.
+
+Our protocol for allowing a replica to rejoin the ISR ensures that before rejoining, it must fully re-sync again even if it lost unflushed data in its crash.
+
+-- Availability and Durability Guarantees
+
+When writing to Kafka, producers can choose whether they wait for the message to be acknowledged by 0,1 or all (-1) replicas.
+By default, when acks=all, acknowledgement happens as soon as all the current in-sync replicas have received the message. 
+For example, if a topic is configured with only two replicas and one fails (i.e., only one in sync replica remains), 
+then writes that specify acks=all will succeed.
+
+
+-- Replica Management (Continue)
