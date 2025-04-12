@@ -23,7 +23,7 @@
     How is relevant event delivered to the consumer in that case?
 	
 11. Where does broker stores the message?
-"When publishing a message we have a notion of the message being "committed" to the log".	
+"When publishing a message we have a notion of the message being "committed" to the log".	What is a log?
 
 12. How is Kafka streams different ?
 
@@ -238,4 +238,28 @@ For example, if a topic is configured with only two replicas and one fails (i.e.
 then writes that specify acks=all will succeed.
 
 
--- Replica Management (Continue)
+-- 4.9 Log Compaction
+
+Log compaction gives us a more granular retention mechanism so that we are guaranteed to retain at least the last update for each primary key 
+(e.g. bill@gmail.com). 
+By doing this we guarantee that the log contains a full snapshot of the final value for every key not just keys that changed recently. 
+This means downstream consumers can restore their own state off this topic without us having to retain a complete log of all changes.
+
+The idea is to selectively remove records where we have a more recent update with the same primary key. 
+This way the log is guaranteed to have at least the last state for each key.
+This retention policy can be set per-topic, so a single cluster can have some topics 
+where retention is enforced by size or time and other topics where retention is enforced by compaction.
+
+Unlike Databus, Kafka acts as a source-of-truth store so it is useful even in situations where the upstream data source would not otherwise be replayable.
+
+
+Compaction also allows for deletes. A message with a key and a null payload will be treated as a delete from the log. 
+Such a record is sometimes referred to as a tombstone. This delete marker will cause any prior message with that key to be 
+removed (as would any new message with that key), 
+but delete markers are special in that they will themselves be cleaned out of the log after a period of time to free up space.
+
+The compaction is done in the background by periodically recopying log segments.
+I think it is combining various fragments after marking the log sections to be deleted.
+
+
+on Saturday/Sunday : write a java program to insert/consume/delete message from kafka with illustration of replication and message semantics.
