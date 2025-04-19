@@ -31,6 +31,67 @@
 
 14. Kafka does not handle so-called "Byzantine" failures in which nodes produce arbitrary or malicious responses (perhaps due to bugs or foul play).
 
+15. Understand the difference between kraft and zookeeper ?
+
+16. When to use Kafka and when not to use Kafka?
+
+17. Who decides which consumer will be part of which consumer group and based on which logic ?
+
+
+18. Leader Election in Kafka broker?
+-- when we say "leader election," we imply electing the leader of a partition.
+The component responsible for leader election is Kafka's controller, which is a special broker elected among all Kafka brokers.
+
+Partition leader election:
+
+The controller checks the list of in-sync replicas (ISR) for each partition.
+It picks the first broker in the ISR list as the leader.
+This info is propagated to all brokers, so they know which broker is the leader for each partition.
+
+
+Each VoteRequest(term, candidateId, lastLogIndex, lastLogTerm) includes:
+
+Candidate’s ID
+Term number : It is basically a monotonically increasing number that determines the count of number of times "leader" election has taken place.
+Index and term of the candidate’s latest log entry (from the metadata log)
+
+Other brokers use this info to decide whether the candidate is caught up enough to be the leader i.e. candidate which is most up to date deems fit to be the leader.
+
+🔹 In Raft:
+The lastLogIndex is the index of the last entry in the broker’s metadata log (i.e., the replicated log of metadata changes).
+
+🔹 In Kafka KRaft:
+The metadata log is stored in an internal log (@metadata), where each entry represents a change in the Kafka cluster’s state — such as:
+
+Topic creation
+Broker registration
+ISR updates
+Partition leadership changes
+
+Each entry has:
+An index (like a log offset in Kafka)
+A term (when it was written)
+The record/data
+
+
+So, leader election process is as follows :
+
+1. Newly joined broker waits for heartbeat message from the current leader.
+If it doesn't get the message within the stipulated time then it calls for an election assuming that leader is not present.
+
+2. All brokers sends a VoteMessage as described above to all the other brokers and the one who gets the majority vote becomes the leader.
+
+3. Broker votes in favor of another candidate if :
+   - Broker has not voted in the current term.
+   - Broker's lastLogIndex is less than the candidate's lastLogIndex i.e. candidate is more upto date.
+   
+4. Each broker is aware of all the other brokers because of a static configuration in Kafka's server.properties
+  # The connect string for the controller quorum
+controller.quorum.voters=1@localhost:9093
+
+This needs to be setup before starting up Kafka instances.   
+
+
 ---------------------------------- XXXX ----------------------------------------------------------------
 
 
@@ -262,4 +323,37 @@ The compaction is done in the background by periodically recopying log segments.
 I think it is combining various fragments after marking the log sections to be deleted.
 
 
-on Saturday/Sunday : write a java program to insert/consume/delete message from kafka with illustration of replication and message semantics.
+Rules Used by Sticky/CooperativeSticky:
+Try to balance partitions across consumers
+
+Keep previous ownership (when possible) to minimize movement (important only in rebalances)
+
+Assign a partition to only one consumer
+
+Respect topic subscription (only assign partitions of topics the consumer subscribed to)
+
+
+--- When to use Kafka and when not to use Kafka ?
+
+When to use :
+
+- Write heavy workflows.
+
+- Heterogeneous downstreams with different use cases and complexity of processing.
+  (Distributed and stateless.) 
+  
+- Ordering Guarantees ( SQS does it with FIFO queue configuration based on MessageId )  
+
+
+Not to use :
+
+- When system is not expected to encounter too many writes.
+
+- Homogenous downstreams.
+
+- Broadcasting service.
+
+
+To read the contents of Kafka partition in human readable format:
+
+./kafka-dump-log.sh --files /tmp/kraft-combined-logs/movie-1/00000000000000000000.log --print-data-log
