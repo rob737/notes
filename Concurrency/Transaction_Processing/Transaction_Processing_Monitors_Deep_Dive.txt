@@ -11,4 +11,7 @@ and if both are keeping state information about that cooperation.
 Having the communication system manage the context is the simplest approach for both sides. 
 There is some magic around them, called session, that makes sure all invocations from the same client go to the same instance of the server.
 
-Continue : 6.3.1.1 Defining the System Control Blocks
+
+A transaction can have many sessions, but a session, although it may be open for a long time, is associated with only one transaction at any instant.
+
+Continue : Another type of control block rooted at RMCB is needed to implement volatile queues.

@@ -1,0 +1,106 @@
+🔹 Core Concepts
+ACID Properties
+
+Atomicity: All operations in a transaction either complete or none do.
+
+Consistency: The database moves from one valid state to another.
+
+Isolation: Transactions appear to run independently.
+
+Durability: Once committed, the results persist even after a crash.
+
+Transaction Lifecycle
+
+States: Active → Partially Committed → Committed/Aborted
+
+Commands: BEGIN, COMMIT, ROLLBACK, SAVEPOINT
+
+Isolation Levels (SQL standard)
+
+Read Uncommitted – Dirty reads allowed
+
+Read Committed – Prevents dirty reads
+
+Repeatable Read – Prevents dirty and non-repeatable reads
+
+Serializable – Highest isolation, prevents all anomalies
+
+🔹 Common Anomalies (and how isolation levels handle them)
+Dirty Read: Reading uncommitted changes
+
+Non-Repeatable Read: Reading different data in same transaction
+
+Phantom Read: New rows appearing in subsequent reads
+
+🔹 Concurrency Control Mechanisms
+Pessimistic Locking
+
+Locks resources early to prevent conflicts
+
+E.g., SELECT ... FOR UPDATE
+
+Optimistic Locking
+
+Assumes conflicts are rare; checks for version mismatches
+
+Useful in high-concurrency systems
+
+Two-Phase Locking (2PL)
+
+Guarantees serializability
+
+Phase 1: Acquire locks; Phase 2: Release locks
+
+🔹 Implementation-Specific Concepts
+PostgreSQL:
+
+MVCC (Multi-Version Concurrency Control)
+
+Savepoints and nested transactions
+
+MySQL (InnoDB):
+
+Default isolation: Repeatable Read
+
+Behavior of autocommit mode
+
+MongoDB:
+
+Multi-document transactions in replica sets and sharded clusters
+
+Redis:
+
+Transactions via MULTI, EXEC, WATCH
+
+🔹 Advanced Topics
+Distributed Transactions
+
+Two-Phase Commit (2PC)
+
+Three-Phase Commit (3PC)
+
+Sagas (for microservices)
+
+Retry Logic and Idempotency
+
+Critical when handling failures or deadlocks
+
+Deadlocks
+
+Detection and resolution
+
+How to prevent: consistent locking order, timeouts
+
+Savepoints
+
+Partial rollbacks within a transaction
+
+🔹 Best Practices
+Keep transactions short and fast
+
+Avoid user input within a transaction
+
+Handle errors and always clean up
+
+Design for idempotency in distributed systems
+
