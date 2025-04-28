@@ -1,5 +1,7 @@
 ---------------------------- Doubts ------------------------------------
+1. Is there any way to just have atomic operations without using transaction ? (I think that's what optimistic locking is e.g. AtomicInteger etc)
 
+2. What is the role of Storage Engine ?
 
 
 
@@ -27,4 +29,68 @@ executed as one operation: either the entire transaction succeeds (commit) or it
 Almost all relational databases today, and some nonrelational databases, support transactions.
 
 
-Continue : The Meaning of ACID
+-- Atomicity :
+
+In multi-threaded programming, if one thread executes an atomic
+operation, that means there is no way that another thread could see the half-finished
+result of the operation. 
+
+In a nutshell, atomicity is basically that the system can only be in the state it was before the operation or after the operation, not something in between.
+
+-- Consistency :
+
+Consistent hashing is an approach to partitioning that some systems use for rebalancing.
+
+In the context of ACID, consistency refers to an application-specific notion of the database being in a “good state”.
+i.e. it should be in a correct state wrt to the use case like debit and credit reconciliation.
+
+
+Atomicity, isolation, and durability are properties of the database, whereas consistency (in the ACID sense) is a property of the application. 
+The application may rely on the database’s atomicity and isolation properties in order to achieve consistency,
+but it’s not up to the database alone.
+
+-- Isolation :
+
+The classic database
+textbooks formalize isolation as serializability, which means that each transaction can
+pretend that it is the only transaction running on the entire database. The database
+ensures that when the transactions have committed, the result is the same as if they
+had run serially (one after another), even though in reality they may have run concurrently.
+
+However, in practice, serializable isolation is rarely used, because it carries a performance penalty.
+
+
+-- Durability :
+
+Durability is the promise that once a transaction has committed successfully, any data it has written will not be forgotten, even if there is a
+hardware fault or the database crashes.
+
+In a single-node database, durability typically means that the data has been written to nonvolatile storage such as a hard drive or SSD. 
+It usually also involves a write-ahead log.
+
+In a replicated database, durability may mean that the data has been successfully copied to some number of nodes.
+
+-- Single-Object and Multi-Object Operations :
+
+
+Dirty read :
+One transaction reads another transaction's uncommitted writes.
+
+
+For Single Object :
+
+Atomicity can be implemented using a log for crash recovery
+(see “Making B-trees reliable” on page 82), and isolation can be implemented
+using a lock on each object (allowing only one thread to access an object at any one
+time).
+
+Similarly popular is a compare-and-set operation, which allows a write to
+happen only if the value has not been concurrently changed by someone else (see
+“Compare-and-set” on page 245).
+
+Compare-and-set and other single-object operations have been dubbed “lightweight
+transactions” or even “ACID” for marketing purposes, but that
+terminology is misleading. A transaction is usually understood as a mechanism for
+grouping multiple operations on multiple objects into one unit of execution.
+
+Continue : The need for multi-object transactions
