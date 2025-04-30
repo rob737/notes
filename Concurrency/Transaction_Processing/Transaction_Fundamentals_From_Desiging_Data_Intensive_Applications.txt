@@ -1,8 +1,9 @@
 ---------------------------- Doubts ------------------------------------
-1. Is there any way to just have atomic operations without using transaction ? (I think that's what optimistic locking is e.g. AtomicInteger etc)
+1. Is there any way to just have atomic operations without using transaction ? (I think that's what optimistic locking is e.g. AtomicInteger etc)?
 
-2. What is the role of Storage Engine ?
+2. What is the role of Storage Engine?
 
+3. What exactly is a secondary index?
 
 
 
@@ -72,6 +73,8 @@ In a replicated database, durability may mean that the data has been successfull
 
 -- Single-Object and Multi-Object Operations :
 
+Single Object basically denotes same table and Multi-Object denotes multiple tables in context of relational database.
+
 
 Dirty read :
 One transaction reads another transaction's uncommitted writes.
@@ -93,4 +96,52 @@ transactions” or even “ACID” for marketing purposes, but that
 terminology is misleading. A transaction is usually understood as a mechanism for
 grouping multiple operations on multiple objects into one unit of execution.
 
-Continue : The need for multi-object transactions
+-- Handling errors and aborts :
+
+If you want to make sure that several different systems either commit or
+abort together, two-phase commit can help (we will discuss this in “Atomic
+Commit and Two-Phase Commit (2PC)” on page 354)
+
+
+-- Weak Isolation Levels :
+
+Concurrency issues (race conditions) only
+come into play when one transaction reads data that is concurrently modified by
+another transaction, or when two transactions try to simultaneously modify the same
+data.
+
+In practice, isolation is unfortunately not that simple. Serializable isolation has a performance
+cost, and many databases don’t want to pay that price. It’s therefore
+common for systems to use weaker levels of isolation, which protect against some
+concurrency issues, but not all. Those levels of isolation are much harder to understand,
+and they can lead to subtle bugs, but they are nevertheless used in practice.
+
+"Rather than blindly relying on tools, we need to develop a good understanding of the
+kinds of concurrency problems that exist, and how to prevent them."
+
+In this section, we will look at several weak (nonserializable) isolation levels.
+
+
+-- Read Committed :
+
+The most basic level of transaction isolation is read committed. 
+
+It makes two guarantees:
+
+1. When reading from the database, you will only see data that has been committed.
+(no dirty reads).
+2. When writing to the database, you will only overwrite data that has been committed
+(no dirty writes).
+
+What exactly is dirty read ?
+
+Imagine a transaction has written some data to the database, but the transaction has
+not yet committed or aborted. Can another transaction see that uncommitted data? If
+yes, that is called a dirty read.
+
+Transactions running at the read committed isolation level must prevent dirty reads.
+This means that any writes by a transaction only become visible to others when that
+transaction commits (and then all of its writes become visible at once).
+
+
+-- Continue : No dirty writes
