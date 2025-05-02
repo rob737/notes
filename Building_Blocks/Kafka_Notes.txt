@@ -36,6 +36,7 @@
 16. When to use Kafka and when not to use Kafka?
 
 17. Who decides which consumer will be part of which consumer group and based on which logic ?
+-- Controller module in Broker.
 
 
 18. Leader Election in Kafka broker?

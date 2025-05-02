@@ -5,12 +5,17 @@
 
 3. What exactly is a secondary index?
 
+4. When we have a transaction then why do we need different isolation levels?
+-- While transactions help maintain atomicity, consistency, isolation, and durability (ACID), 
+   the "isolation" part comes in varying degrees to control 
+   how much one transaction is affected by others that are happening concurrently.
 
+5. What is the criteria to create a snapshot of object in MVCC or Snapshot isolation ?
+    Also, does it create snapshot of whole DB or only associated rows ?
 
+6. How atomic operations prevent lost update anamoly ?
 
-
-
-
+7. Relation between CPU cycle and instruction execution ?
 
 
 
@@ -144,4 +149,300 @@ This means that any writes by a transaction only become visible to others when t
 transaction commits (and then all of its writes become visible at once).
 
 
--- Continue : No dirty writes
+-- No dirty writes :
+
+However, what happens if the earlier write is part of a transaction that has not yet
+committed, so the later write overwrites an uncommitted value? This is called a dirty
+write.
+
+Read committed solves both Dirty read and Dirty write.
+
+
+-- Implementing read committed :
+
+Most commonly, databases prevent dirty writes by using row-level locks: when a
+transaction wants to modify a particular object (row or document), it must first
+acquire a lock on that object. It must then hold that lock until the transaction is committed
+or aborted. Only one transaction can hold the lock for any given object; if
+another transaction wants to write to the same object, it must wait until the first
+transaction is committed or aborted before it can acquire the lock and continue. This
+locking is done automatically by databases in read committed mode (or stronger isolation
+levels).
+
+In short, read committed isolation level is implemented using row level locking.
+
+Most databases prevent dirty reads using the approach illustrated in
+Figure 7-4 i.e. for every object that is written, the database remembers both the old committed
+value and the new value set by the transaction that currently holds the write
+lock. While the transaction is ongoing, any other transactions that read the object are
+simply given the old value. Only when the new value is committed, do transactions
+switch over to reading the new value.
+
+
+-- Snapshot Isolation and Repeatable Read Isolation levels :
+
+Non Repeatable read or read skew : In this anamoly with read committed isolation level, there can be instances where result of a query when read was perfomed 
+while transaction is in progress may be different once it is performed after the transaction is committed.
+e.g. Let's say you are calculating a sum of a column, while you are reading the value then at the same time some transaction is initiated which modifies
+the value but you will not see it with read committed isolation level so your value of sum will be different if you re-calculate it after the transaction is completed.
+
+
+some situations cannot tolerate such temporary inconsistency: 
+
+Backups :
+Taking a backup requires making a copy of the entire database, which may take
+hours on a large database. During the time that the backup process is running,
+writes will continue to be made to the database. Thus, you could end up with
+some parts of the backup containing an older version of the data, and other parts
+containing a newer version. If you need to restore from such a backup, the
+inconsistencies (such as disappearing money) become permanent.
+
+Analytic queries and integrity checks
+Sometimes, you may want to run a query that scans over large parts of the database.
+Such queries are common in analytics (see “Transaction Processing or Analytics?”
+on page 90), or may be part of a periodic integrity check that everything
+is in order (monitoring for data corruption). These queries are likely to return
+nonsensical results if they observe parts of the database at different points in
+time.
+
+To mitigate Non Repeatable read or read skew anamoly, Snapshot isolation is the most common solution.
+
+-- Snapshot isolation
+
+The idea is that
+each transaction reads from a consistent snapshot of the database—that is, the transaction
+sees all the data that was committed in the database at the start of the transaction.
+Even if the data is subsequently changed by another transaction, each
+transaction sees only the old data from that particular point in time.
+
+Snapshot isolation is a popular feature: it is supported by PostgreSQL, MySQL with
+the InnoDB storage engine, Oracle etc.
+
+-- Implementing snapshot isolation
+
+Like read committed isolation, implementations of snapshot isolation typically use
+write locks to prevent dirty writes (see “Implementing read committed” on page 236),
+which means that a transaction that makes a write can block the progress of another
+transaction that writes to the same object. However, reads do not require any locks.
+From a performance point of view, a key principle of snapshot isolation is readers
+never block writers, and writers never block readers.
+
+To implement snapshot isolation, databases use a generalization of the mechanism
+we saw for preventing dirty reads in Figure 7-4. The database must potentially keep
+several different committed versions of an object, because various in-progress transactions
+may need to see the state of the database at different points in time. Because it
+maintains several versions of an object side by side, this technique is known as multiversion
+concurrency control (MVCC).
+
+Storage engines that support snapshot isolation typically use MVCC for their read committed isolation level as well.
+
+
+How snapshot isolation is implemented in PostgreSQL :
+
+When a transaction is started, it is
+given a unique, always-increasingvii transaction ID (txid). Whenever a transaction
+writes anything to the database, the data it writes is tagged with the transaction ID of
+the writer.
+
+Each row in a table has a created_by field, containing the ID of the transaction that
+inserted this row into the table. Moreover, each row has a deleted_by field, which is
+initially empty. If a transaction deletes a row, the row isn’t actually deleted from the
+database, but it is marked for deletion by setting the deleted_by field to the ID of the
+transaction that requested the deletion. At some later time, when it is certain that no
+transaction can any longer access the deleted data, a garbage collection process in the
+database removes any rows marked for deletion and frees their space.
+
+An update is internally translated into a delete and a create. For example, in
+Figure 7-7, transaction 13 deducts $100 from account 2, changing the balance from
+$500 to $400. The accounts table now actually contains two rows for account 2: a
+row with a balance of $500 which was marked as deleted by transaction 13, and a row
+with a balance of $400 which was created by transaction 13.
+
+Visibility rules for Snapshot isolation :
+
+Basically snapshot is taken at the point of need with already committed data so transactions that are in progress/aborted or 
+started after taking the snapshot is ignored.
+
+Using visibility rules, the database can present a consistent snapshot of the database to the application. This
+works as follows:
+
+1. At the start of each transaction, the database makes a list of all the other transactions
+that are in progress (not yet committed or aborted) at that time. Any writes
+that those transactions have made are ignored, even if the transactions subsequently
+commit.
+2. Any writes made by aborted transactions are ignored.
+3. Any writes made by transactions with a later transaction ID (i.e., which started
+after the current transaction started) are ignored, regardless of whether those
+transactions have committed.
+4. All other writes are visible to the application’s queries. 
+
+By never updating values in place but instead creating a new
+version every time a value is changed, the database can provide a consistent snapshot while incurring only a small overhead.
+
+-- Indexes and Snapshot isolation :
+
+How do indexes work in a multi-version database? One option is to have the index
+simply point to all versions of an object and require an index query to filter out any
+object versions that are not visible to the current transaction. When garbage collection
+removes old object versions that are no longer visible to any transaction, the corresponding
+index entries can also be removed.
+
+In practice, many implementation details determine the performance of multiversion
+concurrency control. For example, PostgreSQL has optimizations for avoiding
+index updates if different versions of the same object can fit on the same page.
+
+-- Repeatable read and naming confusion
+
+Snapshot isolation is a useful isolation level, especially for read-only transactions.
+However, many databases that implement it call it by different names. In Oracle it is
+called serializable, and in PostgreSQL and MySQL it is called repeatable read.
+
+-- Preventing lost updates :
+
+The read committed and snapshot isolation levels we’ve discussed so far have been
+primarily about the guarantees of what a read-only transaction can see in the presence
+of concurrent writes.
+
+The lost update problem can occur if an application reads some value from the database,
+modifies it, and writes back the modified value (a read-modify-write cycle). If
+two transactions do this concurrently, one of the modifications can be lost, because
+the second write does not include the first modification. (We sometimes say that the
+later write clobbers the earlier write.)
+
+Because this is such a common problem, a variety of solutions have been developed as follows :
+
+-- Atomic write operations :
+
+Many databases provide atomic update operations, which remove the need to implement
+read-modify-write cycles in application code. They are usually the best solution
+if your code can be expressed in terms of those operations. For example, the following
+instruction is concurrency-safe in most relational databases:
+UPDATE counters SET value = value + 1 WHERE key = 'foo';
+
+Atomic operations are usually implemented by taking an exclusive lock on the object
+when it is read so that no other transaction can read it until the update has been applied.
+
+Note :
+Unfortunately, object-relational mapping frameworks make it easy to accidentally
+write code that performs unsafe read-modify-write cycles instead of using atomic
+operations provided by the database. That’s not a problem if you know what you
+are doing, but it is potentially a source of subtle bugs that are difficult to find by
+testing.
+
+
+-- Explicit locking :
+
+Another option for preventing lost updates, if the database’s built-in atomic operations
+don’t provide the necessary functionality, is for the application to explicitly lock
+objects that are going to be updated. Then the application can perform a readmodify-
+write cycle, and if any other transaction tries to concurrently read the same
+object, it is forced to wait until the first read-modify-write cycle has completed.
+
+Example :
+
+BEGIN TRANSACTION;
+SELECT * FROM figures
+WHERE name = 'robot' AND game_id = 222
+FOR UPDATE;
+-- Check whether move is valid, then update the position
+-- of the piece that was returned by the previous SELECT.
+UPDATE figures SET position = 'c4' WHERE id = 1234;
+COMMIT;
+
+
+The FOR UPDATE clause indicates that the database should take a lock on all rows
+returned by this query.
+
+Indeed, PostgreSQL’s repeatable read, Oracle’s
+serializable, and SQL Server’s snapshot isolation levels automatically detect when a
+lost update has occurred and abort the offending transaction.
+
+-- Compare & Set :
+
+In databases that don’t provide transactions, you sometimes find an atomic compareand-
+set operation.
+
+However, if the database allows the WHERE clause to read from an old snapshot,
+this statement may not prevent lost updates, because the condition may be true even
+though another concurrent write is occurring. Check whether your database’s
+compare-and-set operation is safe before relying on it.
+
+-- Conflict resolution and replication :
+
+Locks and compare-and-set operations assume that there is a single up-to-date copy
+of the data. However, databases with multi-leader or leaderless replication usually
+allow several writes to happen concurrently and replicate them asynchronously, so
+they cannot guarantee that there is a single up-to-date copy of the data. Thus, techniques
+based on locks or compare-and-set do not apply in this context. (We will revisit
+this issue in more detail in “Linearizability” on page 324.)
+
+Atomic operations can work well in a replicated context, especially if they are commutative
+(i.e., you can apply them in a different order on different replicas, and still
+get the same result). For example, incrementing a counter or adding an element to a
+set are commutative operations. That is the idea behind Riak 2.0 datatypes, which
+prevent lost updates across replicas. When a value is concurrently updated by different
+clients, Riak automatically merges together the updates in such a way that no
+updates are lost.
+
+
+-- Write Skew & Phantoms :
+
+Note : Different objects may mean different rows of a table as well.
+
+You can think of write skew as a generalization of the lost update problem. Write
+skew can occur if two transactions read the same objects, and then update some of
+those objects (different transactions may update different objects). In the special case
+where different transactions update the same object, you get a dirty write or lost
+update anomaly (depending on the timing).
+
+So write skew is basically there is a precondition based on which decision is made whether to write 
+a particular output or not.
+Initially, precondition is met but the time write is supposed to happen, precondition is changed by another transaction altogether.
+e.g. slot booking system where condition can be a particular slot should be free between a partiucular time.
+
+This effect, where a write in one transaction changes the result of a search query in
+another transaction, is called a phantom [3]. Snapshot isolation avoids phantoms in
+read-only queries, but in read-write transactions like the examples we discussed,
+phantoms can lead to particularly tricky cases of write skew.
+
+-- Serializability :
+
+Serializable isolation is usually regarded as the strongest isolation level. It guarantees
+that even though transactions may execute in parallel, the end result is the same as if
+they had executed one at a time, serially, without any concurrency. Thus, the database
+guarantees that if the transactions behave correctly when run individually, they continue
+to be correct when run concurrently—in other words, the database prevents all
+possible race conditions.
+
+Most databases that provide serializability today use one of three techniques, which we will explore in the
+rest of this chapter:
+• Literally executing transactions in a serial order (see “Actual Serial Execution” on
+page 252)
+• Two-phase locking (see “Two-Phase Locking (2PL)” on page 257), which for several
+decades was the only viable option
+• Optimistic concurrency control techniques such as serializable snapshot isolation
+(see “Serializable Snapshot Isolation (SSI)” on page 261)
+
+-- Actual Serial Execution :
+
+The approach of executing transactions serially is implemented in VoltDB/H-Store, Redis, and Datomic.
+
+One of the problem with stored procedure :
+
+A database is often much more performance-sensitive than an application server,
+because a single database instance is often shared by many application servers. A
+badly written stored procedure (e.g., using a lot of memory or CPU time) in a
+database can cause much more trouble than equivalent badly written code in an
+application server.
+
+Modern implementations of stored procedures
+have abandoned PL/SQL and use existing general-purpose programming languages
+instead: VoltDB uses Java or Groovy, Datomic uses Java or Clojure, and Redis
+uses Lua.
+
+Note : VoltDB also uses stored procedures for replication: instead of copying a transaction’s
+writes from one node to another, it executes the same stored procedure on each replica.
+VoltDB therefore requires that stored procedures are deterministic (when run on
+different nodes, they must produce the same result).
+
+Continue : Partitioning ( Page 255 )
