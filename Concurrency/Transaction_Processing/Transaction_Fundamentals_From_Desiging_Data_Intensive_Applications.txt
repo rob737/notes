@@ -445,4 +445,132 @@ writes from one node to another, it executes the same stored procedure on each r
 VoltDB therefore requires that stored procedures are deterministic (when run on
 different nodes, they must produce the same result).
 
-Continue : Partitioning ( Page 255 )
+-- 2PL (Two Phase Locking) :
+
+For around 30 years, there was only one widely used algorithm for serializability in
+databases: two-phase locking (2PL).
+
+Two-phase locking is similar, but makes the lock requirements much stronger. Several
+transactions are allowed to concurrently read the same object as long as nobody
+is writing to it. 
+
+But as soon as anyone wants to write (modify or delete) an object,
+exclusive access is required:
+• If transaction A has read an object and transaction B wants to write to that
+object, B must wait until A commits or aborts before it can continue. (This
+ensures that B can’t change the object unexpectedly behind A’s back.)
+• If transaction A has written an object and transaction B wants to read that object,
+B must wait until A commits or aborts before it can continue. (Reading an old
+version of the object, like in Figure 7-1, is not acceptable under 2PL.)
+
+2PL is used by the serializable isolation level in MySQL (InnoDB).
+
+-- Implementation of 2 Phase Locking :
+
+The blocking of readers and writers is implemented by a having a lock on each object
+in the database. The lock can either be in shared mode or in exclusive mode. The lock
+is used as follows:
+
+• If a transaction wants to read an object, it must first acquire the lock in shared
+mode. Several transactions are allowed to hold the lock in shared mode simultaneously,
+but if another transaction already has an exclusive lock on the object,
+these transactions must wait.
+
+• If a transaction wants to write to an object, it must first acquire the lock in exclusive
+mode. No other transaction may hold the lock at the same time (either in
+shared or in exclusive mode), so if there is any existing lock on the object, the
+transaction must wait.
+
+• If a transaction first reads and then writes an object, it may upgrade its shared
+lock to an exclusive lock. The upgrade works the same as getting an exclusive
+lock directly.
+
+• After a transaction has acquired the lock, it must continue to hold the lock until
+the end of the transaction (commit or abort). This is where the name “twophase”
+comes from: the first phase (while the transaction is executing) is when
+the locks are acquired, and the second phase (at the end of the transaction) is
+when all the locks are released.
+
+Since so many locks are in use, it can happen quite easily that transaction A is stuck
+waiting for transaction B to release its lock, and vice versa. This situation is called
+deadlock. The database automatically detects deadlocks between transactions and
+aborts one of them so that the others can make progress. The aborted transaction
+needs to be retried by the application.
+
+
+Two phase locking is rarely used because of it's performance bottleneck.
+
+-- Predicate locks :
+
+It works similarly to the shared/exclusive lock described earlier, but rather than belonging to a
+particular object (e.g., one row in a table), it belongs to all objects that match some
+search condition, such as:
+
+SELECT * FROM bookings
+WHERE room_id = 123 AND
+end_time > '2018-01-01 12:00' AND
+start_time < '2018-01-01 13:00';
+
+A predicate lock restricts access as follows:
+
+• If transaction A wants to read objects matching some condition, like in that
+SELECT query, it must acquire a shared-mode predicate lock on the conditions of
+the query. If another transaction B currently has an exclusive lock on any object
+matching those conditions, A must wait until B releases its lock before it is
+allowed to make its query.
+
+• If transaction A wants to insert, update, or delete any object, it must first check
+whether either the old or the new value matches any existing predicate lock. If
+there is a matching predicate lock held by transaction B, then A must wait until B
+has committed or aborted before it can continue.
+
+-- Index range locks : (260)
+
+Unfortunately, predicate locks do not perform well: if there are many locks by active
+transactions, checking for matching locks becomes time-consuming. For that reason,
+most databases with 2PL actually implement index-range locking (also known as nextkey
+locking), which is a simplified approximation of predicate locking.
+
+-- Serializable Snapshot Isolation :
+
+Today SSI is used both in single-node databases (the serializable isolation level in
+PostgreSQL since version 9.1 [41]) and distributed databases (FoundationDB uses a
+similar algorithm). As SSI is so young compared to other concurrency control mechanisms,
+it is still proving its performance in practice.
+
+
+-- Pessimistic versus optimistic concurrency control :
+
+Pessimistic concurrency control : basically 2 PL and other locking mechanisms to safeguard against future contention issues.
+
+Optimistic concurrency control : let transactions do whatever they want to but before committing check if any integrity violations have happened.
+If so then fail the transaction and retry.
+e.g. using compareAndSet and then retry in case of condition not matching as needed.
+
+Also, SSI is an example of optimistic locking.
+
+-- Detecting stale MVCC reads
+
+Recall that snapshot isolation is usually implemented by multi-version concurrency
+control (MVCC; see Figure 7-10). When a transaction reads from a consistent snapshot
+in an MVCC database, it ignores writes that were made by any other transactions
+that hadn’t yet committed at the time when the snapshot was taken. In
+Figure 7-10, transaction 43 sees Alice as having on_call = true, because transaction
+42 (which modified Alice’s on-call status) is uncommitted. However, by the time
+transaction 43 wants to commit, transaction 42 has already committed. This means
+that the write that was ignored when reading from the consistent snapshot has now
+taken effect, and transaction 43’s premise is no longer true.
+
+In order to prevent this anomaly, the database needs to track when a transaction
+ignores another transaction’s writes due to MVCC visibility rules. When the transaction
+wants to commit, the database checks whether any of the ignored writes have
+now been committed. If so, the transaction must be aborted.
+
+
+Note: There is a transaction manager which identify whether read has become stale or not.
+
+
+
+
+
+
