@@ -15,9 +15,36 @@
 
 6. How atomic operations prevent lost update anamoly ?
 
+Answer :
+
+An atomic operation guarantees that no other operation can observe the system in an intermediate state and no interleaving can happen during its execution.
+
+In the above example, if incrementing x is done using an atomic increment operation like x++ (atomically):
+Only one thread/process can read, increment, and write x at a time.
+Others will have to wait or retry, ensuring no updates are lost.
+
+Mechanisms for Atomicity:
+
+ - Low-level (in-memory)
+ - CPU instructions like LOCK XADD on x86
+ - Java's AtomicInteger.incrementAndGet()
+ - Compare-And-Swap (CAS) loops
+
+
 7. Relation between CPU cycle and instruction execution ?
 
+Answer :
 
+ In ideal pipelined RISC CPUs, each stage (Fetch, Decode, Execute, etc.) is designed to take 1 CPU cycle.
+ ❌ But actual instruction execution time (in cycles) may vary due to instruction type and CPU architecture.
+
+ Pipelining improves throughput, not the cycle time per instruction individually.
+ But in Real CPUs (especially CISC like x86):
+ Not every stage always takes 1 cycle.
+
+ Complex instructions (e.g., DIV, MUL, memory access) may take multiple cycles even in a pipelined architecture.
+ Modern CPUs have super-scalar, out-of-order, and speculative execution, making actual cycle counts much harder to predict.
+ Cache misses, branch mispredictions, and instruction stalls can also increase cycle counts.
 
 
 --------------------------- XXXXX ---------------------------------------------------
@@ -569,7 +596,9 @@ now been committed. If so, the transaction must be aborted.
 
 Note: There is a transaction manager which identify whether read has become stale or not.
 
-
+Note: each machine on the network has its own clock, which is an actual hardware
+device: usually a quartz crystal oscillator. These devices are not perfectly accurate,
+so each machine has its own notion of time, which may be slightly faster.
 
 
 
